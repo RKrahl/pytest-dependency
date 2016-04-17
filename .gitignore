@@ -1,0 +1,13 @@
+*.pyc
+*~
+__pycache__/
+/.cache/
+/MANIFEST
+/build/
+/dist/
+/doc/doctest/
+/doc/doctrees/
+/doc/html/
+/doc/latex/
+/doc/linkcheck/
+/pytest_dependency.egg-info/
