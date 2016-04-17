@@ -10,7 +10,7 @@ System requirements
 -------------------
 
  + Python 2.6, 2.7, or 3.1 and newer.
- + `pytest`_
+ + `pytest`_ 2.8.0 or newer.
 
 
 Copyright and License

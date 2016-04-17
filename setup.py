@@ -16,7 +16,7 @@ setup(
     license='Apache Software License 2.0',
     long_description=pytest_dependency.__doc__,
     py_modules=['pytest_dependency'],
-    install_requires=['pytest'],
+    install_requires=['pytest >= 2.8.0'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Framework :: Pytest',
