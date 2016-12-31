@@ -10,6 +10,7 @@ System requirements
 -------------------
 
 + Python 2.6, 2.7, or 3.1 and newer.
++ `setuptools`_.
 + `pytest`_ 2.8.0 or newer.
 
 
@@ -33,4 +34,5 @@ implied.  See the License for the specific language governing
 permissions and limitations under the License.
 
 
+.. _setuptools: http://pypi.python.org/pypi/setuptools/
 .. _pytest: http://pytest.org/
