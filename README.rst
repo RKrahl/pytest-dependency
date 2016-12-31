@@ -9,16 +9,16 @@ skipped if any of the dependencies did fail or has been skipped.
 System requirements
 -------------------
 
- + Python 2.6, 2.7, or 3.1 and newer.
- + `pytest`_ 2.8.0 or newer.
++ Python 2.6, 2.7, or 3.1 and newer.
++ `pytest`_ 2.8.0 or newer.
 
 
 Copyright and License
 ---------------------
 
- - Copyright 2013-2015
-   Helmholtz-Zentrum Berlin für Materialien und Energie GmbH
- - Copyright 2016 Rolf Krahl
+- Copyright 2013-2015
+  Helmholtz-Zentrum Berlin für Materialien und Energie GmbH
+- Copyright 2016 Rolf Krahl
 
 Licensed under the Apache License, Version 2.0 (the "License"); you
 may not use this file except in compliance with the License.  You may
