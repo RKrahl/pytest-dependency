@@ -1,3 +1,9 @@
+.. note:: This is the ``tests`` branch of the code.
+          It is an attempt to implement Issue `#1`__.
+
+.. __: https://github.com/RKrahl/pytest-dependency/issues/1
+
+
 pytest-dependency - Manage dependencies of tests
 ================================================
 
