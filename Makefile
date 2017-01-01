@@ -4,7 +4,7 @@ PYTHON   = python
 build:
 	$(PYTHON) setup.py build
 
-sdist: doc-html
+sdist: python2_6.patch doc-html
 	$(PYTHON) setup.py sdist
 
 doc-html:
@@ -30,7 +30,12 @@ distclean: clean
 	rm -rf __pycache__
 	rm -rf dist
 	rm -rf pytest_dependency.egg-info
+	rm -f python2_6.patch
 	$(MAKE) -C doc distclean
 
 
-.PHONY: sdist build doc-html doc-pdf clean distclean
+python2_6.patch:
+	git diff `git merge-base master python2_6` python2_6 > $@
+
+
+.PHONY: build sdist doc-html doc-pdf doc-dist clean distclean

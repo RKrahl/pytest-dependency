@@ -5,3 +5,4 @@ include doc/html/*.html
 include doc/html/*.js
 include doc/html/_static/*
 include doc/html/objects.inv
+include python2_6.patch
