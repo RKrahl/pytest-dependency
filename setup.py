@@ -1,5 +1,10 @@
 #! /usr/bin/python
 
+import sys
+if sys.version_info < (2, 7):
+    raise RuntimeError("You are using Python %s.\n"
+                       "Please apply python2_6.patch first." 
+                       % sys.version.split()[0])
 from setuptools import setup
 import pytest_dependency
 
