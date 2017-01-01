@@ -1,8 +1,12 @@
 PYTHON   = python
+BUILDDIR = $(CURDIR)/build
 
 
 build:
 	$(PYTHON) setup.py build
+
+test: build
+	cd tests; env PYTHONPATH=$(BUILDDIR)/lib $(PYTHON) -m pytest
 
 sdist: doc-html
 	$(PYTHON) setup.py sdist
@@ -27,10 +31,10 @@ distclean: clean
 	rm -rf .cache
 	rm -f MANIFEST
 	rm -f *.pyc
-	rm -rf __pycache__
+	rm -rf __pycache__ tests/__pycache__
 	rm -rf dist
 	rm -rf pytest_dependency.egg-info
 	$(MAKE) -C doc distclean
 
 
-.PHONY: sdist build doc-html doc-pdf clean distclean
+.PHONY: build test sdist doc-html doc-pdf clean distclean
