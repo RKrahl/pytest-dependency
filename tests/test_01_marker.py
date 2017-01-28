@@ -3,8 +3,6 @@
 
 import pytest
 
-pytest_plugins = "pytester"
-
 
 def test_marker(testdir):
     testdir.makepyfile("""

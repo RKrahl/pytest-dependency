@@ -3,8 +3,6 @@
 
 import pytest
 
-pytest_plugins = "pytester"
-
 
 def test_no_skip(testdir):
     """One test is skipped, but no other test depends on it,
