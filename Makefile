@@ -5,8 +5,8 @@ BUILDDIR = $(CURDIR)/build
 build:
 	$(PYTHON) setup.py build
 
-test: build
-	cd tests; env PYTHONPATH=$(BUILDDIR)/lib $(PYTHON) -m pytest
+test:
+	$(PYTHON) -m pytest
 
 sdist: python2_6.patch doc-html
 	$(PYTHON) setup.py sdist
@@ -30,7 +30,7 @@ clean:
 distclean: clean
 	rm -rf .cache
 	rm -f MANIFEST
-	rm -f *.pyc
+	rm -f *.pyc tests/*.pyc
 	rm -rf __pycache__ tests/__pycache__
 	rm -rf dist
 	rm -rf pytest_dependency.egg-info
