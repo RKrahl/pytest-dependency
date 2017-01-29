@@ -1,8 +1,12 @@
 PYTHON   = python
+BUILDDIR = $(CURDIR)/build
 
 
 build:
 	$(PYTHON) setup.py build
+
+test:
+	$(PYTHON) -m pytest
 
 sdist: python2_6.patch doc-html
 	$(PYTHON) setup.py sdist
@@ -26,8 +30,8 @@ clean:
 distclean: clean
 	rm -rf .cache
 	rm -f MANIFEST
-	rm -f *.pyc
-	rm -rf __pycache__
+	rm -f *.pyc tests/*.pyc
+	rm -rf __pycache__ tests/__pycache__
 	rm -rf dist
 	rm -rf pytest_dependency.egg-info
 	rm -f python2_6.patch
@@ -38,4 +42,4 @@ python2_6.patch:
 	git diff `git merge-base master python2_6` python2_6 > $@
 
 
-.PHONY: build sdist doc-html doc-pdf doc-dist clean distclean
+.PHONY: build test sdist doc-html doc-pdf doc-dist clean distclean
