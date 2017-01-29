@@ -4,11 +4,9 @@
 import pytest
 
 
-def test_multiple(testdir):
-    testdir.makepyfile("""
+def test_multiple(ctestdir):
+    ctestdir.makepyfile("""
         import pytest
-
-        pytest_plugins = "pytest_dependency"
 
         @pytest.mark.dependency(name="a")
         def test_a():
@@ -54,7 +52,7 @@ def test_multiple(testdir):
         def test_k():
             pass
     """)
-    result = testdir.runpytest("--verbose")
+    result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=5, skipped=5, failed=1)
     result.stdout.fnmatch_lines("""
         *::test_a SKIPPED

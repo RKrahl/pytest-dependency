@@ -4,14 +4,12 @@
 import pytest
 
 
-def test_no_skip(testdir):
+def test_no_skip(ctestdir):
     """One test is skipped, but no other test depends on it,
     so all other tests pass.
     """
-    testdir.makepyfile("""
+    ctestdir.makepyfile("""
         import pytest
-
-        pytest_plugins = "pytest_dependency"
 
         @pytest.mark.dependency()
         def test_a():
@@ -29,7 +27,7 @@ def test_no_skip(testdir):
         def test_d():
             pass
     """)
-    result = testdir.runpytest("--verbose")
+    result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=3, skipped=1, failed=0)
     result.stdout.fnmatch_lines("""
         *::test_a SKIPPED
@@ -38,14 +36,12 @@ def test_no_skip(testdir):
         *::test_d PASSED
     """)
 
-def test_skip_depend(testdir):
+def test_skip_depend(ctestdir):
     """One test is skipped, other depending tests are skipped as well.
     This also includes indirect dependencies.
     """
-    testdir.makepyfile("""
+    ctestdir.makepyfile("""
         import pytest
-
-        pytest_plugins = "pytest_dependency"
 
         @pytest.mark.dependency()
         def test_a():
@@ -63,7 +59,7 @@ def test_skip_depend(testdir):
         def test_d():
             pass
     """)
-    result = testdir.runpytest("--verbose")
+    result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=1, skipped=3, failed=0)
     result.stdout.fnmatch_lines("""
         *::test_a PASSED
@@ -73,14 +69,12 @@ def test_skip_depend(testdir):
     """)
 
 
-def test_fail_depend(testdir):
+def test_fail_depend(ctestdir):
     """One test fails, other depending tests are skipped.
     This also includes indirect dependencies.
     """
-    testdir.makepyfile("""
+    ctestdir.makepyfile("""
         import pytest
-
-        pytest_plugins = "pytest_dependency"
 
         @pytest.mark.dependency()
         def test_a():
@@ -98,7 +92,7 @@ def test_fail_depend(testdir):
         def test_d():
             pass
     """)
-    result = testdir.runpytest("--verbose")
+    result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=1, skipped=2, failed=1)
     result.stdout.fnmatch_lines("""
         *::test_a PASSED
@@ -108,13 +102,11 @@ def test_fail_depend(testdir):
     """)
 
 
-def test_named_fail_depend(testdir):
+def test_named_fail_depend(ctestdir):
     """Same as test_fail_depend, but using custom test names.
     """
-    testdir.makepyfile("""
+    ctestdir.makepyfile("""
         import pytest
-
-        pytest_plugins = "pytest_dependency"
 
         @pytest.mark.dependency(name="a")
         def test_a():
@@ -132,7 +124,7 @@ def test_named_fail_depend(testdir):
         def test_d():
             pass
     """)
-    result = testdir.runpytest("--verbose")
+    result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=1, skipped=2, failed=1)
     result.stdout.fnmatch_lines("""
         *::test_a PASSED

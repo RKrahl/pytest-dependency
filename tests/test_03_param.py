@@ -4,11 +4,9 @@
 import pytest
 
 
-def test_multiple(testdir):
-    testdir.makepyfile("""
+def test_multiple(ctestdir):
+    ctestdir.makepyfile("""
         import pytest
-
-        pytest_plugins = "pytest_dependency"
 
         @pytest.mark.parametrize("x,y", [
             pytest.mark.dependency(name="a1")((0,0)),
@@ -38,7 +36,7 @@ def test_multiple(testdir):
         def test_c(w):
             pass
     """)
-    result = testdir.runpytest("--verbose")
+    result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=7, skipped=5, failed=1)
     result.stdout.fnmatch_lines("""
         *::test_a?0-0? PASSED

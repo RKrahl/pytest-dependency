@@ -4,12 +4,10 @@
 import pytest
 
 
-def test_marker(testdir):
-    testdir.makepyfile("""
+def test_marker(ctestdir):
+    ctestdir.makepyfile("""
         import pytest
         from pytest_dependency import DependencyManager
-
-        pytest_plugins = "pytest_dependency"
 
         @pytest.mark.dependency()
         def test_marker(request):
@@ -18,5 +16,5 @@ def test_marker(testdir):
             assert isinstance(node.dependencyManager, DependencyManager)
             assert 'test_marker' in node.dependencyManager.results
     """)
-    result = testdir.runpytest("--verbose")
+    result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=1)
