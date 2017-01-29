@@ -6,6 +6,8 @@ pytest_plugins = "pytester"
 @pytest.fixture
 def ctestdir(testdir):
     testdir.makeconftest("""
-        pytest_plugins = "pytest_dependency"
+        import sys
+        if "pytest_dependency" not in sys.modules:
+            pytest_plugins = "pytest_dependency"
     """)
     return testdir
