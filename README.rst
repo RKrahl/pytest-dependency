@@ -54,6 +54,16 @@ It removes the use of certain language features (dict comprehensions)
 that were introduced in Python 2.7.
 
 
+Bugs and limitations
+--------------------
+
++ The test fails with Python 3.1.  At first glance, this looks like a
+  problem between pytest and Python 3.1 rather then an issue in
+  pytest-dependency.  I didn't investigate this in detail, though.  In
+  any case, the module can be installed and the plugin seem to work
+  fine also with Python 3.1.
+
+
 Copyright and License
 ---------------------
 
