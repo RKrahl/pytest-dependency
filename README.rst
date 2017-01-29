@@ -42,9 +42,8 @@ step:
 
      $ patch -p1 < python2_6.patch
 
-It removes the use of certain language features (dict comprehensions,
-curly braces notation of sets, bytes string literal prefix 'b') that
-were introduced in Python 2.7.
+It removes the use of certain language features (dict comprehensions)
+that were introduced in Python 2.7.
 
 
 Copyright and License
@@ -52,7 +51,7 @@ Copyright and License
 
 - Copyright 2013-2015
   Helmholtz-Zentrum Berlin für Materialien und Energie GmbH
-- Copyright 2016 Rolf Krahl
+- Copyright 2016-2017 Rolf Krahl
 
 Licensed under the Apache License, Version 2.0 (the "License"); you
 may not use this file except in compliance with the License.  You may
