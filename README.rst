@@ -6,6 +6,14 @@ some tests as dependent from other tests.  These tests will then be
 skipped if any of the dependencies did fail or has been skipped.
 
 
+Download
+--------
+
+The latest release version can be found at PyPI, see
+
+    https://pypi.python.org/pypi/pytest_dependency
+
+
 System requirements
 -------------------
 
