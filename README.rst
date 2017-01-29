@@ -16,8 +16,41 @@ System requirements
 -------------------
 
 + Python 2.6, 2.7, or 3.1 and newer.
+  Python 2.6 requires patching the sources, see below.
 + `setuptools`_.
 + `pytest`_ 2.8.0 or newer.
+
+
+Installation
+------------
+
+1. Download the sources, unpack, and change into the source directory.
+
+2. Build (optional)::
+
+     $ python setup.py build
+
+3. Test (optional)::
+
+     $ python -m pytest
+
+4. Install::
+
+     $ python setup.py install
+
+The last step might require admin privileges in order to write into
+the site-packages directory of your Python installation.
+
+If you are using Python 2.6, apply python2_6.patch after the first
+step:
+
+1a. Patch::
+
+     $ patch -p1 < python2_6.patch
+
+It removes the use of certain language features (dict comprehensions,
+curly braces notation of sets, bytes string literal prefix 'b') that
+were introduced in Python 2.7.
 
 
 Copyright and License
