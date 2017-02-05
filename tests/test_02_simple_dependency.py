@@ -36,8 +36,9 @@ def test_no_skip(ctestdir):
         *::test_d PASSED
     """)
 
+
 def test_skip_depend(ctestdir):
-    """One test is skipped, other depending tests are skipped as well.
+    """One test is skipped, other dependent tests are skipped as well.
     This also includes indirect dependencies.
     """
     ctestdir.makepyfile("""
@@ -70,7 +71,7 @@ def test_skip_depend(ctestdir):
 
 
 def test_fail_depend(ctestdir):
-    """One test fails, other depending tests are skipped.
+    """One test fails, other dependent tests are skipped.
     This also includes indirect dependencies.
     """
     ctestdir.makepyfile("""
@@ -130,5 +131,73 @@ def test_named_fail_depend(ctestdir):
         *::test_a PASSED
         *::test_b FAILED
         *::test_c SKIPPED
+        *::test_d SKIPPED
+    """)
+
+
+def test_explicit_select(ctestdir):
+    """Explicitly select only a single test that depends on another one.
+
+    Since the other test has not been run at all, the selected test
+    will be skipped.
+    """
+    ctestdir.makepyfile("""
+        import pytest
+
+        @pytest.mark.dependency()
+        def test_a():
+            pass
+
+        @pytest.mark.dependency()
+        def test_b():
+            pass
+
+        @pytest.mark.dependency()
+        def test_c():
+            pass
+
+        @pytest.mark.dependency(depends=["test_c"])
+        def test_d():
+            pass
+    """)
+    result = ctestdir.runpytest("--verbose", "test_explicit_select.py::test_d")
+    result.assert_outcomes(passed=0, skipped=1, failed=0)
+    result.stdout.fnmatch_lines("""
+        *::test_d SKIPPED
+    """)
+
+
+def test_depend_unknown(ctestdir):
+    """Depend on an unknown test that is not even defined in the test set.
+
+    Note that is not an error to depend on an undefined test, but the
+    dependent test will be skipped since the non-existent dependency
+    has not been run successfully.
+    """
+    ctestdir.makepyfile("""
+        import pytest
+
+        @pytest.mark.dependency()
+        def test_a():
+            pass
+
+        @pytest.mark.dependency()
+        def test_b():
+            pass
+
+        @pytest.mark.dependency()
+        def test_c():
+            pass
+
+        @pytest.mark.dependency(depends=["test_x"])
+        def test_d():
+            pass
+    """)
+    result = ctestdir.runpytest("--verbose")
+    result.assert_outcomes(passed=3, skipped=1, failed=0)
+    result.stdout.fnmatch_lines("""
+        *::test_a PASSED
+        *::test_b PASSED
+        *::test_c PASSED
         *::test_d SKIPPED
     """)
