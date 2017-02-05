@@ -1,3 +1,9 @@
+.. note:: This is the ``documentation`` branch of the code.
+          Its purpose is to write documentation and to solve Issue `#2`__.
+
+.. __: https://github.com/RKrahl/pytest-dependency/issues/2
+
+
 pytest-dependency - Manage dependencies of tests
 ================================================
 
