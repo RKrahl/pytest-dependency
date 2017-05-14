@@ -24,7 +24,7 @@ that B cannot work without A, then it may simply be pointless to run
 the test for B unless the test for A has succeeded.  Another case may
 be if the subject of the tests has an internal state that unavoidably
 is influenced by the tests.  In this situation it may happen that test
-A as a side effect, sets the system in some state that is the
+A, as a side effect, sets the system in some state that is the
 precondition to be able to run test B.  Again, in this case it would
 be pointless to try running test B unless test A has been run
 successful.
@@ -61,9 +61,9 @@ If tests depend on each other in such a way that test B cannot work
 unless test A has been run successfully, a failure of test A will
 likely result in failure messages from both tests.  But the failure
 message from test B will not be helpful in any way.  It will only
-clutter the test reports and distract the user from the real issue
-that is the failure of test A.  Skipping test B in this case will help
-the user to concentrate on those results that really matter.
+distract the user from the real issue that is the failure of test A.
+Skipping test B in this case will help the user to concentrate on
+those results that really matter.
 
 
 Copyright and License
