@@ -2,6 +2,7 @@ include CHANGES
 include LICENSE.txt
 include MANIFEST.in
 include README.rst
+include doc/examples/*.py
 include doc/html/*.html
 include doc/html/*.js
 include doc/html/_static/*

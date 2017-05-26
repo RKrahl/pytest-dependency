@@ -10,6 +10,12 @@
 # serve to show the default.
 
 import sys, os
+import os.path
+
+# Add the top source directory to the module path.  This file is
+# exec'ed with its directory as cwd.  This is "doc/src" relativ to the
+# top source directory.  So we need to go 2 dirs up.
+sys.path.insert(0,os.path.dirname(os.path.dirname(os.getcwd())))
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -39,7 +45,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'pytest-dependency'
-copyright = u'2016, Rolf Krahl'
+copyright = u'2016-2017, Rolf Krahl'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
