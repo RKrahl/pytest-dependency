@@ -5,6 +5,8 @@
 
 ** New features
 
+ + Issue #2: Add documentation.
+
  + Issue #4: Add a depend() function to add a dependency to a test at
    runtime.
 
