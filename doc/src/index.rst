@@ -14,3 +14,4 @@ Content of the documentation
    about
    install
    usage
+   reference

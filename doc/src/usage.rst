@@ -1,7 +1,7 @@
 Using pytest-dependency
 =======================
 
-The plugin defines a new marker `dependency`.
+The plugin defines a new marker :func:`pytest.mark.dependency`.
 
 Basic usage
 -----------
@@ -10,7 +10,7 @@ Consider the following example test module:
 
 .. literalinclude:: ../examples/basic.py
 
-All the tests are decorated with `@pytest.mark.dependency()`.  This
+All the tests are decorated with :func:`pytest.mark.dependency`.  This
 will cause the test results to be registered internally and thus other
 tests may depend on them.  The list of dependencies of a test may be
 set in the optional `depends` argument to the marker.  The first test
@@ -49,24 +49,27 @@ exactly as the last one, only the test names are explicitely set:
 Parametrized tests
 ------------------
 
-In the same way as the `skip` and `xfail` markers, the `dependency`
+In the same way as the :func:`pytest.mark.skip` and
+:func:`pytest.mark.xfail` markers, the :func:`pytest.mark.dependency`
 marker may be applied to individual test instances in the case of
 parametrized tests.  Consider the following example:
 
 .. literalinclude:: ../examples/parametrized.py
 
-The test instance `test_a[0-1]`, named `a2` in the `dependency`
-marker, is going to fail.  As a result, the dependent tests `b1`,
-`b4`, `b5`, and in turn `c1` and `c3` will be skipped.
+The test instance `test_a[0-1]`, named `a2` in the
+:func:`pytest.mark.dependency` marker, is going to fail.  As a result,
+the dependent tests `b1`, `b4`, `b5`, and in turn `c1` and `c3` will
+be skipped.
 
 Marking dependencies at runtime
 -------------------------------
 
 Sometimes, dependencies of test instances are too complicated to be
-formulated explicitely beforehand using the `dependency` marker.  
-It may be easier to compile the list of dependencies of a test at run
-time.  In such cases, the function :func:`pytest_dependency.depends`
-comes handy.  Consider the following example:
+formulated explicitely beforehand using the
+:func:`pytest.mark.dependency` marker.  It may be easier to compile
+the list of dependencies of a test at run time.  In such cases, the
+function :func:`pytest_dependency.depends` comes handy.  Consider the
+following example:
 
 .. literalinclude:: ../examples/runtime.py
 
@@ -74,4 +77,4 @@ Tests `test_c` and `test_d` set their dependencies at runtime calling
 :func:`pytest_dependency.depends`.  The first argument is the values
 of the `request` pytest fixture, the second argument is the list of
 dependencies.  It has the same effect as passing this list as the
-`depends` argument to the `dependency` marker.
+`depends` argument to the :func:`pytest.mark.dependency` marker.
