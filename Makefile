@@ -5,8 +5,8 @@ BUILDDIR = $(CURDIR)/build
 build:
 	$(PYTHON) setup.py build
 
-test:
-	$(PYTHON) -m pytest
+test: build
+	PYTHONPATH=$(BUILDDIR)/lib $(PYTHON) -m pytest tests
 
 sdist: python2_6.patch doc-html
 	$(PYTHON) setup.py sdist
@@ -28,7 +28,7 @@ clean:
 	$(MAKE) -C doc clean
 
 distclean: clean
-	rm -rf .cache
+	rm -rf .cache tests/.cache
 	rm -f MANIFEST
 	rm -f *.pyc tests/*.pyc doc/examples/*.pyc
 	rm -rf __pycache__ tests/__pycache__ doc/examples/__pycache__
