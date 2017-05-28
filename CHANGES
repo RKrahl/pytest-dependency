@@ -1,7 +1,7 @@
                History of changes to pytest-dependency
                =======================================
 
-* Version 0.2.0 (not yet released)
+* Version 0.2 (2017-05-28)
 
 ** New features
 
@@ -10,7 +10,7 @@
  + Issue #4: Add a depend() function to add a dependency to a test at
    runtime.
 
-* Version 0.1.0 (2017-01-29)
+* Version 0.1 (2017-01-29)
 
  + Initial release as an independent Python module.
 
