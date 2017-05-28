@@ -9,4 +9,5 @@ include doc/html/_static/*
 include doc/html/objects.inv
 include python2_6.patch
 include tests/conftest.py
+include tests/pytest.ini
 include tests/test_*.py
