@@ -65,11 +65,11 @@ class DependencyManager(object):
 def depends(request, other):
     """Add dependency on other test.
 
-    Call pytest.skip() unless a successful outcome of all of the tests
-    in other has been registered previously.  This has the same effect
-    as the `depends` keyword argument to the `dependency` marker.  In
-    contrast to the marker, this function may be called at runtime
-    during a test.
+    Call pytest.skip() unless a successful outcome of all of the tests in
+    other has been registered previously.  This has the same effect as
+    the `depends` keyword argument to the :func:`pytest.mark.dependency`
+    marker.  In contrast to the marker, this function may be called at
+    runtime during a test.
 
     :param request: the value of the `request` pytest fixture related
         to the current test.

@@ -11,8 +11,8 @@ Reference
     for the test may be set in the depends argument.
 
     :param name: the name of the test to be used for referencing by
-	dependent tests.  If not set, it defaults to the internal name
-	used in pytest, that is the name of the test function,
+	dependent tests.  If not set, it defaults to the node ID
+	defined by pytest, that is the name of the test function,
 	extended by the parameters if applicable.
     :type name: :class:`str`
     :param depends: dependencies, a list of names of tests that this
