@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/RKrahl/pytest-dependency.svg?branch=master
+   :target: https://travis-ci.org/RKrahl/pytest-dependency
+
 pytest-dependency - Manage dependencies of tests
 ================================================
 
