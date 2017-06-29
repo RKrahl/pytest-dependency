@@ -76,6 +76,8 @@ def depends(request, other):
     :param other: dependencies, a list of names of tests that this
         test depends on.
     :type other: iterable of :class:`str`
+
+    .. versionadded:: 0.2
     """
     item = request.node
     manager = DependencyManager.getManager(item)
