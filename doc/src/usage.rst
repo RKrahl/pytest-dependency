@@ -47,6 +47,8 @@ set:
 
 .. literalinclude:: ../examples/named.py
 
+.. _usage-parametrized:
+
 Parametrized tests
 ------------------
 

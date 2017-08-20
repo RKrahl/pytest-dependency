@@ -14,4 +14,5 @@ Content of the documentation
    about
    install
    usage
+   advanced
    reference
