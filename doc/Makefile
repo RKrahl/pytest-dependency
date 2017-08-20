@@ -32,10 +32,12 @@ doctest: $(SRCDIRS)
 	$(SPHINXBUILD) -b doctest $(ALLSPHINXOPTS) doctest
 
 clean:
-	rm -f *~ src/*~
+	rm -f *~ examples/*~ src/*~
 
 distclean: clean
 	rm -rf doctrees html latex linkcheck doctest
+	rm -f examples/*.pyc
+	rm -rf examples/__pycache__
 
 src/_static:
 	mkdir $@
