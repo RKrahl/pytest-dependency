@@ -47,6 +47,8 @@ set:
 
 .. literalinclude:: ../examples/named.py
 
+.. _usage-parametrized:
+
 Parametrized tests
 ------------------
 
@@ -75,7 +77,7 @@ following example:
 .. literalinclude:: ../examples/runtime.py
 
 Tests `test_c` and `test_d` set their dependencies at runtime calling
-:func:`pytest_dependency.depends`.  The first argument is the values
+:func:`pytest_dependency.depends`.  The first argument is the value
 of the `request` pytest fixture, the second argument is the list of
 dependencies.  It has the same effect as passing this list as the
 `depends` argument to the :func:`pytest.mark.dependency` marker.
