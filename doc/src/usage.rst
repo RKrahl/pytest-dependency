@@ -49,6 +49,21 @@ set:
 
 .. _usage-parametrized:
 
+Using test classes
+------------------
+
+Tests may be grouped in classes in pytest.  Marking the dependencies
+of methods in test classes works the same way as for simple test
+functions.  In the following example we define two test classes.  Each
+works in the same manner as the previous examples respectively:
+
+.. literalinclude:: ../examples/testclass.py
+
+In `TestClass` the default names for the tests are used, which is the
+name of the respective method in this case, while in `TestClassNamed`
+these names are overridden an explicit name argument to the
+:func:`pytest.mark.dependency` marker.
+
 Parametrized tests
 ------------------
 
