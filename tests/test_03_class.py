@@ -82,3 +82,36 @@ def test_class_simple_named(ctestdir):
         *::TestClassNamed::test_d PASSED
         *::TestClassNamed::test_e SKIPPED
     """)
+
+
+@pytest.mark.xfail(reason="Issue #6")
+def test_class_default_name(ctestdir):
+    """For methods of test classes, the default name is the method name.
+    This may cause conflicts if there is a function having the same
+    name outside the class.  Note how the method test_a() of class
+    TestClass shadows the failure of function test_a().
+    """
+    ctestdir.makepyfile("""
+        import pytest
+
+        @pytest.mark.dependency()
+        def test_a():
+            assert False
+
+        class TestClass(object):
+
+            @pytest.mark.dependency()
+            def test_a(self):
+                pass
+
+        @pytest.mark.dependency(depends=["test_a"])
+        def test_b():
+            pass
+    """)
+    result = ctestdir.runpytest("--verbose")
+    result.assert_outcomes(passed=1, skipped=1, failed=1)
+    result.stdout.fnmatch_lines("""
+        *::test_a FAILED
+        *::TestClass::test_a PASSED
+        *::test_b SKIPPED
+    """)
