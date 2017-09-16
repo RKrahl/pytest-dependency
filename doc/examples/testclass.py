@@ -12,15 +12,15 @@ class TestClass(object):
     def test_b(self):
         pass
 
-    @pytest.mark.dependency(depends=["test_a"])
+    @pytest.mark.dependency(depends=["TestClass::test_a"])
     def test_c(self):
         pass
 
-    @pytest.mark.dependency(depends=["test_b"])
+    @pytest.mark.dependency(depends=["TestClass::test_b"])
     def test_d(self):
         pass
 
-    @pytest.mark.dependency(depends=["test_b", "test_c"])
+    @pytest.mark.dependency(depends=["TestClass::test_b", "TestClass::test_c"])
     def test_e(self):
         pass
 

@@ -21,15 +21,16 @@ def test_class_simple(ctestdir):
             def test_b(self):
                 pass
 
-            @pytest.mark.dependency(depends=["test_a"])
+            @pytest.mark.dependency(depends=["TestClass::test_a"])
             def test_c(self):
                 pass
 
-            @pytest.mark.dependency(depends=["test_b"])
+            @pytest.mark.dependency(depends=["TestClass::test_b"])
             def test_d(self):
                 pass
 
-            @pytest.mark.dependency(depends=["test_b", "test_c"])
+            @pytest.mark.dependency(depends=["TestClass::test_b", 
+                                             "TestClass::test_c"])
             def test_e(self):
                 pass
     """)
@@ -84,12 +85,15 @@ def test_class_simple_named(ctestdir):
     """)
 
 
-@pytest.mark.xfail(reason="Issue #6")
 def test_class_default_name(ctestdir):
-    """For methods of test classes, the default name is the method name.
-    This may cause conflicts if there is a function having the same
-    name outside the class.  Note how the method test_a() of class
-    TestClass shadows the failure of function test_a().
+    """Issue #6: for methods of test classes, the default name used to be
+    the method name.  This could have caused conflicts if there is a
+    function having the same name outside the class.  In the following
+    example, before fixing this issue, the method test_a() of class
+    TestClass would have shadowed the failure of function test_a().
+
+    Now the class name is prepended to the default test name, removing
+    this conflict.
     """
     ctestdir.makepyfile("""
         import pytest

@@ -59,10 +59,10 @@ works in the same manner as the previous examples respectively:
 
 .. literalinclude:: ../examples/testclass.py
 
-In `TestClass` the default names for the tests are used, which is the
-name of the respective method in this case, while in `TestClassNamed`
-these names are overridden an explicit name argument to the
-:func:`pytest.mark.dependency` marker.
+In `TestClass` the default names for the tests are used, which is
+build from the name of the class and the respective method in this
+case, while in `TestClassNamed` these names are overridden by an
+explicit name argument to the :func:`pytest.mark.dependency` marker.
 
 Parametrized tests
 ------------------
