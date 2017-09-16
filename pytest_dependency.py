@@ -52,7 +52,10 @@ class DependencyManager(object):
     def addResult(self, item, marker, rep):
         name = marker.kwargs.get('name')
         if not name:
-            name = item.name
+            if item.cls:
+                name = "%s::%s" % (item.cls.__name__, item.name)
+            else:
+                name = item.name
         status = self.results.setdefault(name, DependencyItemStatus())
         status.addResult(rep)
 

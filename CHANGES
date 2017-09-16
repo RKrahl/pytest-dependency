@@ -1,6 +1,42 @@
                History of changes to pytest-dependency
                =======================================
 
+* Version 0.3 (not yet released)
+
+** Incompatible changes
+
+ + Prepend the class name to the default test name for test class
+   methods.  This fixes a potential name conflict, see Issue #6.
+
+   If your code uses test classes and you reference test methods by
+   their default name, you must add the class name.  E.g. if you have
+   something like:
+
+         class TestClass(object):
+
+             @pytest.mark.dependency()
+             def test_a():
+                 pass
+
+             @pytest.mark.dependency(depends=["test_a"])
+             def test_b():
+                 pass
+
+   you need to change this to:
+
+         class TestClass(object):
+
+             @pytest.mark.dependency()
+             def test_a():
+                 pass
+
+             @pytest.mark.dependency(depends=["TestClass::test_a"])
+             def test_b():
+                 pass
+
+   If you override the test name in the pytest.mark.dependency()
+   marker, nothing need to be changed.
+
 * Version 0.2 (2017-05-28)
 
 ** New features
