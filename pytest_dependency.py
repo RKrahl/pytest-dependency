@@ -8,7 +8,9 @@ skipped if any of the dependencies did fail or has been skipped.
 import pytest
 
 __version__   = "0.2"
+from blessings import Terminal
 
+terminal = Terminal()
 
 class DependencyItemStatus(object):
     """Status of a test item in a dependency manager.
@@ -59,10 +61,13 @@ class DependencyManager(object):
         status = self.results.setdefault(name, DependencyItemStatus())
         status.addResult(rep)
 
-    def checkDepend(self, depends):
+    def checkDepend(self, depends, item):
         for i in depends:
             if not(i in self.results and self.results[i].isSuccess()):
-                pytest.skip("depends on %s" % i)
+                msg = "%s depends on %s %s" % (terminal.yellow(item.name),
+                                               terminal.yellow(i),
+                                               terminal.red('(failed)'))
+                pytest.skip(msg)
 
 
 def depends(request, other):
@@ -84,7 +89,7 @@ def depends(request, other):
     """
     item = request.node
     manager = DependencyManager.getManager(item)
-    manager.checkDepend(other)
+    manager.checkDepend(other, item)
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
@@ -108,4 +113,4 @@ def pytest_runtest_setup(item):
         depends = marker.kwargs.get('depends')
         if depends:
             manager = DependencyManager.getManager(item)
-            manager.checkDepend(depends)
+            manager.checkDepend(depends, item)
