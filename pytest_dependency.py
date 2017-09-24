@@ -6,9 +6,9 @@ skipped if any of the dependencies did fail or has been skipped.
 """
 
 import pytest
+from blessings import Terminal
 
 __version__   = "0.2"
-from blessings import Terminal
 
 terminal = Terminal()
 
@@ -64,9 +64,11 @@ class DependencyManager(object):
     def checkDepend(self, depends, item):
         for i in depends:
             if not(i in self.results and self.results[i].isSuccess()):
-                msg = "%s depends on %s %s" % (terminal.yellow(item.name),
-                                               terminal.yellow(i),
-                                               terminal.red('(failed)'))
+                msg = "%s depends on %s (failed)" % (item.name, i)
+                # color version
+                # msg = "%s depends on %s %s" % (terminal.yellow(item.name),
+                                               # terminal.yellow(i),
+                                               # terminal.red('(failed)'))
                 pytest.skip(msg)
 
 
