@@ -6,11 +6,11 @@ skipped if any of the dependencies did fail or has been skipped.
 """
 
 import pytest
-from blessings import Terminal
+# from blessings import Terminal
 
 __version__   = "0.2"
 
-terminal = Terminal()
+# terminal = Terminal()
 
 class DependencyItemStatus(object):
     """Status of a test item in a dependency manager.
