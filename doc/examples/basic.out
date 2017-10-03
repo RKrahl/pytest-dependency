@@ -1,0 +1,15 @@
+$ py.test -rsx basic.py
+============================= test session starts ==============================
+platform linux -- Python 3.4.6, pytest-2.8.7, py-1.4.30, pluggy-0.3.1
+rootdir: /home/user/pytest-dependency-0.2, inifile: 
+plugins: dependency-0.2
+collected 5 items 
+
+basic.py x.s.s
+=========================== short test summary info ============================
+SKIP [1] /usr/lib/python3.4/site-packages/pytest_dependency.py:65: test_e depends on test_c
+SKIP [1] /usr/lib/python3.4/site-packages/pytest_dependency.py:65: test_c depends on test_a
+XFAIL basic.py::test_a
+  deliberate fail
+
+================ 2 passed, 2 skipped, 1 xfailed in 0.02 seconds ================

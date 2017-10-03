@@ -13,9 +13,13 @@ Consider the following example test module:
 All the tests are decorated with :func:`pytest.mark.dependency`.  This
 will cause the test results to be registered internally and thus other
 tests may depend on them.  The list of dependencies of a test may be
-set in the optional `depends` argument to the marker.  The first test
-has deliberately been set to fail to illustrate the effect.  We will
-get the following resuts:
+set in the optional `depends` argument to the marker.  Running this
+test, we will get the following result:
+
+.. literalinclude:: ../examples/basic.out
+
+The first test has deliberately been set to fail to illustrate the
+effect.  We will get the following resuts:
 
 `test_a`
   deliberatly fails.
