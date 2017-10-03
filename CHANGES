@@ -37,6 +37,10 @@
    If you override the test name in the pytest.mark.dependency()
    marker, nothing need to be changed.
 
+** Bug fixes and minor changes
+
+ + PR #11: show the name of the skipped test (thanks asteriogonzalez).
+
 * Version 0.2 (2017-05-28)
 
 ** New features
