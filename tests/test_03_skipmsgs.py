@@ -34,6 +34,8 @@ def test_simple(ctestdir):
         *::test_b FAILED
         *::test_c SKIPPED
         *::test_d SKIPPED
+    """)
+    result.stdout.fnmatch_lines_random("""
         SKIP * test_c depends on test_b
         SKIP * test_d depends on test_c
     """)
