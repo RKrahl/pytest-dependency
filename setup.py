@@ -1,4 +1,10 @@
 #! /usr/bin/python
+"""pytest-dependency - Manage dependencies of tests
+
+This pytest plugin manages dependencies of tests.  It allows to mark
+some tests as dependent from other tests.  These tests will then be
+skipped if any of the dependencies did fail or has been skipped.
+"""
 
 import sys
 if sys.version_info < (2, 7):
@@ -6,12 +12,11 @@ if sys.version_info < (2, 7):
                        "Please apply python2_6.patch first." 
                        % sys.version.split()[0])
 from setuptools import setup
-import pytest_dependency
 
 
 setup(
     name='pytest-dependency',
-    version=pytest_dependency.__version__,
+    version='0.2',
     description='Manage dependencies of tests',
     author='Rolf Krahl',
     author_email='rolf@rotkraut.de',
@@ -19,7 +24,7 @@ setup(
     maintainer_email='rolf@rotkraut.de',
     url='https://github.com/RKrahl/pytest-dependency',
     license='Apache Software License 2.0',
-    long_description=pytest_dependency.__doc__,
+    long_description=__doc__,
     py_modules=['pytest_dependency'],
     install_requires=['pytest >= 2.8.0'],
     classifiers=[
