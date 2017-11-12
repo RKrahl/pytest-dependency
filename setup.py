@@ -39,9 +39,13 @@ class sdist(st_sdist.sdist):
         if not self.dry_run:
             src = "pytest_dependency.py"
             dest = os.path.join(base_dir, src)
+            gitrevfile = ".gitrevision"
             if hasattr(os, 'link') and os.path.exists(dest):
                 os.unlink(dest)
             subst = {'DOC': __doc__, 'VERSION': __version__}
+            if os.path.exists(gitrevfile):
+                with open(gitrevfile, "rt") as f:
+                    subst['REVISION'] = f.readline().strip()
             _filter_file(src, dest, subst)
 
 
