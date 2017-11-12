@@ -8,7 +8,7 @@ build:
 test: build
 	PYTHONPATH=$(BUILDDIR)/lib $(PYTHON) -m pytest tests
 
-sdist: python2_6.patch doc-html
+sdist: python2_6.patch .gitrevision doc-html
 	$(PYTHON) setup.py sdist
 
 doc-html:
@@ -37,9 +37,11 @@ distclean: clean
 	rm -f python2_6.patch
 	$(MAKE) -C doc distclean
 
+.gitrevision:
+	git describe --always --dirty > .gitrevision
 
 python2_6.patch:
 	git diff `git merge-base master python2_6` python2_6 > $@
 
 
-.PHONY: build test sdist doc-html doc-pdf doc-dist clean distclean
+.PHONY: build test sdist doc-html doc-pdf doc-dist clean distclean .gitrevision

@@ -2,6 +2,7 @@
 *~
 .cache/
 __pycache__/
+/.gitrevision
 /MANIFEST
 /build/
 /dist/

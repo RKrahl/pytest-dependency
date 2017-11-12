@@ -41,6 +41,9 @@
 
  + PR #11: show the name of the skipped test (thanks asteriogonzalez).
 
+ + Issue #13: Do not import pytest in setup.py to make it compatible
+   with pipenv.
+
 * Version 0.2 (2017-05-28)
 
 ** New features
