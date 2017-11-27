@@ -41,7 +41,8 @@ distclean: clean
 	git describe --always --dirty > .gitrevision
 
 python2_6.patch:
-	git diff `git merge-base master python2_6` python2_6 > $@
+	git diff `git merge-base master python2_6` python2_6 \
+	    -- . ':(exclude).travis.yml' > $@
 
 
 .PHONY: build test sdist doc-html doc-pdf doc-dist clean distclean .gitrevision
