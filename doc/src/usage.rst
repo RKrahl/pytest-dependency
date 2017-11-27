@@ -51,8 +51,6 @@ set:
 
 .. literalinclude:: ../examples/named.py
 
-.. _usage-parametrized:
-
 Using test classes
 ------------------
 
@@ -67,6 +65,8 @@ In `TestClass` the default names for the tests are used, which is
 build from the name of the class and the respective method in this
 case, while in `TestClassNamed` these names are overridden by an
 explicit name argument to the :func:`pytest.mark.dependency` marker.
+
+.. _usage-parametrized:
 
 Parametrized tests
 ------------------
