@@ -44,14 +44,12 @@ Naming tests
 Tests are referenced by their name in the `depends` argument.  The
 default for this name is the node ID defined by pytest, that is the
 name of the test function, extended by the parameters if applicable.
-As these node IDs may become complicated, the name can be overridden
-by an explicit `name` argument to the marker.  The following example
-works exactly as the last one, only the test names are explicitely
-set:
+In some cases, it's not easy to predict the names of the node IDs.
+For this reason, the name of the tests can be overridden by an
+explicit `name` argument to the marker.  The following example works
+exactly as the last one, only the test names are explicitely set:
 
 .. literalinclude:: ../examples/named.py
-
-.. _usage-parametrized:
 
 Using test classes
 ------------------
@@ -67,6 +65,8 @@ In `TestClass` the default names for the tests are used, which is
 build from the name of the class and the respective method in this
 case, while in `TestClassNamed` these names are overridden by an
 explicit name argument to the :func:`pytest.mark.dependency` marker.
+
+.. _usage-parametrized:
 
 Parametrized tests
 ------------------
@@ -100,3 +100,9 @@ Tests `test_c` and `test_d` set their dependencies at runtime calling
 of the `request` pytest fixture, the second argument is the list of
 dependencies.  It has the same effect as passing this list as the
 `depends` argument to the :func:`pytest.mark.dependency` marker.
+
+The present example is certainly somewhat artificial, as the use of
+the :func:`pytest_dependency.depends` function would not be needed in
+such a simple case.  For a more involved example that can not as
+easily be formulated with the static the `depends` argument, see
+:ref:`advanced-grouping-fixtures`.

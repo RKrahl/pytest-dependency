@@ -20,10 +20,12 @@ The latest release version can be found at PyPI, see
 System requirements
 -------------------
 
-+ Python 2.6, 2.7, or 3.1 and newer.
++ Python 2.6, 2.7, or 3.2 and newer.
   Python 2.6 requires patching the sources, see below.
 + `setuptools`_.
 + `pytest`_ 2.8.0 or newer.
+
+(Python 3.1 is not supported by pytest 2.8.0 itself.)
 
 
 Installation
@@ -68,16 +70,6 @@ doc/html/index.html.  The documentation can also be found online at
 
 The example test modules used in the documentation can be found in
 doc/examples in the source distribution.
-
-
-Bugs and limitations
---------------------
-
-+ The test fails with Python 3.1.  At first glance, this looks like a
-  problem between pytest and Python 3.1 rather then an issue in
-  pytest-dependency.  I didn't investigate this in detail, though.  In
-  any case, the module can be installed and the plugin seem to work
-  fine also with Python 3.1.
 
 
 Copyright and License
