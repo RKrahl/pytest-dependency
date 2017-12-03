@@ -15,4 +15,5 @@ Content of the documentation
    install
    usage
    advanced
+   configuration
    reference

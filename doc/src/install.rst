@@ -4,10 +4,12 @@ Installation instructions
 System requirements
 -------------------
 
-+ Python 2.6, 2.7, or 3.1 and newer.
++ Python 2.6, 2.7, or 3.2 and newer.
   Python 2.6 requires patching the sources, see below.
 + `setuptools`_.
 + `pytest`_ 2.8.0 or newer.
+
+(Python 3.1 is not supported by pytest 2.8.0 itself.)
 
 
 Download
