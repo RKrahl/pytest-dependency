@@ -39,6 +39,7 @@ def test_set_false(ctestdir):
     ctestdir.makefile('.ini', pytest="""
         [pytest]
         automark_dependency = false
+        console_output_style = classic
     """)
     ctestdir.makepyfile("""
         import pytest
@@ -68,6 +69,7 @@ def test_set_true(ctestdir):
     ctestdir.makefile('.ini', pytest="""
         [pytest]
         automark_dependency = true
+        console_output_style = classic
     """)
     ctestdir.makepyfile("""
         import pytest
