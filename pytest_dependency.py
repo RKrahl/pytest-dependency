@@ -5,6 +5,22 @@ __revision__ = "$REVISION"
 
 import pytest
 
+_automark = False
+
+
+def _get_bool(value):
+    """Evaluate string representation of a boolean value.
+    """
+    if value:
+        if value.lower() in ["0", "no", "n", "false", "f", "off"]:
+            return False
+        elif value.lower() in ["1", "yes", "y", "true", "t", "on"]:
+            return True
+        else:
+            raise ValueError("Invalid truth value '%s'" % value)
+    else:
+        return False
+
 
 class DependencyItemStatus(object):
     """Status of a test item in a dependency manager.
@@ -45,8 +61,7 @@ class DependencyManager(object):
     def __init__(self):
         self.results = {}
 
-    def addResult(self, item, marker, rep):
-        name = marker.kwargs.get('name')
+    def addResult(self, item, name, rep):
         if not name:
             if item.cls:
                 name = "%s::%s" % (item.cls.__name__, item.name)
@@ -83,16 +98,28 @@ def depends(request, other):
     manager.checkDepend(other, item)
 
 
+def pytest_addoption(parser):
+    parser.addini("automark_dependency", 
+                  "Add the dependency marker to all tests automatically", 
+                  default=False)
+
+
+def pytest_configure(config):
+    global _automark
+    _automark = _get_bool(config.getini("automark_dependency"))
+
+
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     """Store the test outcome if this item is marked "dependency".
     """
     outcome = yield
     marker = item.get_marker("dependency")
-    if marker is not None:
+    if marker is not None or _automark:
         rep = outcome.get_result()
+        name = marker.kwargs.get('name') if marker is not None else None
         manager = DependencyManager.getManager(item)
-        manager.addResult(item, marker, rep)
+        manager.addResult(item, name, rep)
 
 
 def pytest_runtest_setup(item):
