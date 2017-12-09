@@ -108,11 +108,15 @@ def pytest_addoption(parser):
     parser.addini("automark_dependency", 
                   "Add the dependency marker to all tests automatically", 
                   default=False)
+    parser.addoption("--ignore-unknown-dependency", 
+                     action="store_true", default=False, 
+                     help="ignore dependencies whose outcome is not known")
 
 
 def pytest_configure(config):
-    global _automark
+    global _automark, _ignore_unknown
     _automark = _get_bool(config.getini("automark_dependency"))
+    _ignore_unknown = config.getoption("--ignore-unknown-dependency")
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
