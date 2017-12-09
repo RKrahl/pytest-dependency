@@ -6,6 +6,7 @@ __revision__ = "$REVISION"
 import pytest
 
 _automark = False
+_ignore_unknown = False
 
 
 def _get_bool(value):
@@ -72,8 +73,13 @@ class DependencyManager(object):
 
     def checkDepend(self, depends, item):
         for i in depends:
-            if not(i in self.results and self.results[i].isSuccess()):
-                pytest.skip("%s depends on %s" % (item.name, i))
+            if i in self.results:
+                if self.results[i].isSuccess():
+                    continue
+            else:
+                if _ignore_unknown:
+                    continue
+            pytest.skip("%s depends on %s" % (item.name, i))
 
 
 def depends(request, other):
