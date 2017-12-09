@@ -3,6 +3,10 @@
 
 * Version 0.3 (not yet released)
 
+** New features
+
+ + Issue #7: Add a configuration switch to implicitly mark all tests.
+
 ** Incompatible changes
 
  + Prepend the class name to the default test name for test class
