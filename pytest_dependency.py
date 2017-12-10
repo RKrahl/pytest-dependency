@@ -6,6 +6,7 @@ __revision__ = "$REVISION"
 import pytest
 
 _automark = False
+_ignore_unknown = False
 
 
 def _get_bool(value):
@@ -72,8 +73,13 @@ class DependencyManager(object):
 
     def checkDepend(self, depends, item):
         for i in depends:
-            if not(i in self.results and self.results[i].isSuccess()):
-                pytest.skip("%s depends on %s" % (item.name, i))
+            if i in self.results:
+                if self.results[i].isSuccess():
+                    continue
+            else:
+                if _ignore_unknown:
+                    continue
+            pytest.skip("%s depends on %s" % (item.name, i))
 
 
 def depends(request, other):
@@ -102,11 +108,15 @@ def pytest_addoption(parser):
     parser.addini("automark_dependency", 
                   "Add the dependency marker to all tests automatically", 
                   default=False)
+    parser.addoption("--ignore-unknown-dependency", 
+                     action="store_true", default=False, 
+                     help="ignore dependencies whose outcome is not known")
 
 
 def pytest_configure(config):
-    global _automark
+    global _automark, _ignore_unknown
     _automark = _get_bool(config.getini("automark_dependency"))
+    _ignore_unknown = config.getoption("--ignore-unknown-dependency")
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
