@@ -23,3 +23,18 @@ Configuration file options can be set in the `ini file`.
       decorated.  If set to `True`, the outcome of all tests will be
       registered.  It has the same effect as if all tests are
       implicitly decorated with :func:`pytest.mark.dependency`.
+
+Command line options
+--------------------
+
+The following command line options are added by pytest.dependency:
+
+   `--ignore-unknown-dependency`
+      By default, a test will be skipped unless all the dependencies
+      have been run successful.  If this option is set, a test will be
+      skipped if any of the dependencies has been skipped or failed.
+      E.g. dependencies that have not been run at all will be ignored.
+
+      This may be useful if you run only a subset of the testsuite and
+      some tests in the selected set are marked to depend on other
+      tests that have not been selected.
