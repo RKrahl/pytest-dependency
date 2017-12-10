@@ -7,6 +7,8 @@
 
  + Issue #7: Add a configuration switch to implicitly mark all tests.
 
+ + Issue #10: Add an option to ignore unknown dependencies.
+
 ** Incompatible changes
 
  + Prepend the class name to the default test name for test class
