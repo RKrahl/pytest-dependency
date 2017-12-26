@@ -8,18 +8,11 @@ build:
 test: build
 	PYTHONPATH=$(BUILDDIR)/lib $(PYTHON) -m pytest tests
 
-sdist: python2_6.patch .gitrevision doc-html
+sdist: python2_6.patch .gitrevision
 	$(PYTHON) setup.py sdist
 
 doc-html:
 	$(MAKE) -C doc html
-
-doc-pdf:
-	$(MAKE) -C doc latexpdf
-
-doc-dist: doc-html
-	mkdir -p dist
-	cd doc/html; zip -r ../../dist/doc.zip *
 
 
 clean:
@@ -45,4 +38,4 @@ python2_6.patch:
 	    -- . ':(exclude).travis.yml' > $@
 
 
-.PHONY: build test sdist doc-html doc-pdf doc-dist clean distclean .gitrevision
+.PHONY: build test sdist doc-html clean distclean .gitrevision
