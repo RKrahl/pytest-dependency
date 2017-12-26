@@ -12,6 +12,8 @@ System requirements
 (Python 3.1 is not supported by pytest 2.8.0 itself.)
 
 
+.. _install-other-packages:
+
 Interaction with other packages
 -------------------------------
 

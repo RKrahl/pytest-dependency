@@ -5,6 +5,15 @@ This section explains configuration options for pytest-dependency, but
 also options for pytest itself or other plugins that are recommended
 for the use with pytest-dependency.
 
+Notes on configuration for other plugins
+----------------------------------------
+
+pytest-xdist
+   Test run parallelization in pytest-xdist is incompatible with
+   pytest-dependency, see :ref:`install-other-packages`.  By default,
+   parallelization is disabled in pytest-xdist (`--dist=no`).  You are
+   advised to leave this default.
+
 Configuration file options
 --------------------------
 
