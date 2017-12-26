@@ -15,12 +15,14 @@ System requirements
 Interaction with other packages
 -------------------------------
 
-   pytest-xdist
-      pytest-xdist features test run parallelization,
-      e.g. distributing tests over separate processes that run in
-      parallel.  This is based on the assumption that the tests can be
-      run independent of each other.  pytest-dependency will only work
-      if you disable parallelization in pytest-xdist.
+pytest-xdist
+   pytest-xdist features test run parallelization, e.g. distributing
+   tests over separate processes that run in parallel.  This is based
+   on the assumption that the tests can be run independent of each
+   other.  Obviously, if you are using pytest-dependency, this
+   assumption is not valid.  Thus, pytest-dependency will only work if
+   you do not enable parallelization in pytest-xdist.
+
 
 Download
 --------
