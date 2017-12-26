@@ -1,6 +1,14 @@
                History of changes to pytest-dependency
                =======================================
 
+* Version 0.3.1 (2017-12-26)
+
+** Bug fixes and minor changes
+
+ + Issue #17: Move the online documentation to Read the Docs
+
+ + Some improvements in the documentation.
+
 * Version 0.3 (2017-12-26)
 
 ** New features
