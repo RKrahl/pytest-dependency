@@ -12,6 +12,20 @@ System requirements
 (Python 3.1 is not supported by pytest 2.8.0 itself.)
 
 
+.. _install-other-packages:
+
+Interaction with other packages
+-------------------------------
+
+pytest-xdist
+   pytest-xdist features test run parallelization, e.g. distributing
+   tests over separate processes that run in parallel.  This is based
+   on the assumption that the tests can be run independent of each
+   other.  Obviously, if you are using pytest-dependency, this
+   assumption is not valid.  Thus, pytest-dependency will only work if
+   you do not enable parallelization in pytest-xdist.
+
+
 Download
 --------
 

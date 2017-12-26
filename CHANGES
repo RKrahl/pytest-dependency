@@ -52,6 +52,9 @@
 
  + Issue #15: tests fail with pytest 3.3.0.
 
+ + Issue #8: document incompatibility with parallelization in
+   pytest-xdist.
+
  + Clarify in the documentation that Python 3.1 is not officially
    supported because pytest 2.8 does not support it.  There is no
    known issue with Python 3.1 though.
