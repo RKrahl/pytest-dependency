@@ -52,7 +52,7 @@ fixture on its own.  Consider:
 In this example, both `test_b[7]` and `test_c[7]` are skipped, because
 `test_a[7]` deliberately fails.
 
-.. __: https://docs.pytest.org/en/latest/fixture.html#automatic-grouping-of-tests-by-fixture-instances
+.. __: https://docs.pytest.org/en/stable/fixture.html#automatic-grouping-of-tests-by-fixture-instances
 
 Depend on all instances of a parametrized test at once
 ------------------------------------------------------

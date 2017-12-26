@@ -13,7 +13,8 @@ Reference
     :param name: the name of the test to be used for referencing by
 	dependent tests.  If not set, it defaults to the node ID
 	defined by pytest, that is the name of the test function,
-	extended by the parameters if applicable.
+	extended by the parameters if applicable.  The name must be
+	unique in the scope, which is currently the test module.
     :type name: :class:`str`
     :param depends: dependencies, a list of names of tests that this
         test depends on.  The test will be skipped unless all of the
