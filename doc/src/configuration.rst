@@ -34,6 +34,8 @@ automark_dependency
    has the same effect as if all tests are implicitly decorated with
    :func:`pytest.mark.dependency`.
 
+   .. versionadded:: 0.3
+
 Command line options
 --------------------
 
@@ -48,3 +50,5 @@ The following command line options are added by pytest.dependency:
    This may be useful if you run only a subset of the testsuite and
    some tests in the selected set are marked to depend on other tests
    that have not been selected.
+
+   .. versionadded:: 0.3
