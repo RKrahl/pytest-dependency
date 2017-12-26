@@ -46,8 +46,10 @@ default for this name is the node ID defined by pytest, that is the
 name of the test function, extended by the parameters if applicable.
 In some cases, it's not easy to predict the names of the node IDs.
 For this reason, the name of the tests can be overridden by an
-explicit `name` argument to the marker.  The following example works
-exactly as the last one, only the test names are explicitely set:
+explicit `name` argument to the marker.  The names must be unique in
+the scope, which is currently the test module.  The following example
+works exactly as the last one, only the test names are explicitely
+set:
 
 .. literalinclude:: ../examples/named.py
 
