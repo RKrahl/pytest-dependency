@@ -1,6 +1,14 @@
                History of changes to pytest-dependency
                =======================================
 
+* Version 0.4 (not yet released)
+
+** Bug fixes and minor changes
+
+ + Issue #5: properly register the dependency marker.
+
+ + Do not add the documentation to the source distribution.
+
 * Version 0.3.1 (2017-12-26)
 
 ** Bug fixes and minor changes

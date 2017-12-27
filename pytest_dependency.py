@@ -117,6 +117,10 @@ def pytest_configure(config):
     global _automark, _ignore_unknown
     _automark = _get_bool(config.getini("automark_dependency"))
     _ignore_unknown = config.getoption("--ignore-unknown-dependency")
+    config.addinivalue_line("markers", 
+                            "dependency(name=None, depends=[]): "
+                            "mark a test to be used as a dependency for "
+                            "other tests or to depend on other tests.")
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
