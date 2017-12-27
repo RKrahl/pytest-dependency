@@ -4,6 +4,13 @@
 import pytest
 
 
+def test_marker_registered(ctestdir):
+    result = ctestdir.runpytest("--markers")
+    result.stdout.fnmatch_lines("""
+        @pytest.mark.dependency*
+    """)
+
+
 def test_marker(ctestdir):
     ctestdir.makepyfile("""
         import pytest
