@@ -8,11 +8,6 @@ skipped if any of the dependencies did fail or has been skipped.
 
 __version__ = "0.3.1"
 
-import sys
-if sys.version_info < (2, 7):
-    raise RuntimeError("You are using Python %s.\n"
-                       "Please apply python2_6.patch first." 
-                       % sys.version.split()[0])
 import os
 import os.path
 import re
@@ -60,16 +55,19 @@ setup(
     url='https://github.com/RKrahl/pytest-dependency',
     license='Apache Software License 2.0',
     long_description=__doc__,
+    project_urls={
+        'Documentation': 'https://pytest-dependency.readthedocs.io/',
+        'Source Code': 'https://github.com/RKrahl/pytest-dependency',
+    },
     py_modules=['pytest_dependency'],
     install_requires=['pytest >= 2.8.0'],
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Framework :: Pytest',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Testing',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.2',
