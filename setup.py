@@ -60,6 +60,10 @@ setup(
     url='https://github.com/RKrahl/pytest-dependency',
     license='Apache Software License 2.0',
     long_description=__doc__,
+    project_urls={
+        'Documentation': 'https://pytest-dependency.readthedocs.io/',
+        'Source Code': 'https://github.com/RKrahl/pytest-dependency',
+    },
     py_modules=['pytest_dependency'],
     install_requires=['pytest >= 2.8.0'],
     classifiers=[
