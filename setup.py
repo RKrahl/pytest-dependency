@@ -8,11 +8,6 @@ skipped if any of the dependencies did fail or has been skipped.
 
 __version__ = "0.3.1"
 
-import sys
-if sys.version_info < (2, 7):
-    raise RuntimeError("You are using Python %s.\n"
-                       "Please apply python2_6.patch first." 
-                       % sys.version.split()[0])
 import os
 import os.path
 import re
