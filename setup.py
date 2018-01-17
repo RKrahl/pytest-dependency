@@ -63,7 +63,7 @@ setup(
     py_modules=['pytest_dependency'],
     install_requires=['pytest >= 2.8.0'],
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Framework :: Pytest',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Testing',
