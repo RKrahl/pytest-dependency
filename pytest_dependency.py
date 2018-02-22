@@ -72,14 +72,19 @@ class DependencyManager(object):
         status.addResult(rep)
 
     def checkDepend(self, depends, item):
-        for i in depends:
-            if i in self.results:
-                if self.results[i].isSuccess():
-                    continue
-            else:
-                if _ignore_unknown:
-                    continue
-            pytest.skip("%s depends on %s" % (item.name, i))
+        if depends == "all":
+            for key in self.results:
+                if not self.results[key].isSuccess():
+                    pytest.skip("%s depends on all previous tests passing (%s failed)" % (item.name, key))
+        else:
+            for i in depends:
+                if i in self.results:
+                    if self.results[i].isSuccess():
+                        continue
+                else:
+                    if _ignore_unknown:
+                        continue
+                pytest.skip("%s depends on %s" % (item.name, i))
 
 
 def depends(request, other):
