@@ -60,7 +60,7 @@ setup(
         'Source Code': 'https://github.com/RKrahl/pytest-dependency',
     },
     py_modules=['pytest_dependency'],
-    install_requires=['pytest >= 2.8.0'],
+    install_requires=['pytest >= 3.6.0'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Pytest',

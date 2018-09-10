@@ -128,7 +128,7 @@ def pytest_runtest_makereport(item, call):
     """Store the test outcome if this item is marked "dependency".
     """
     outcome = yield
-    marker = item.get_marker("dependency")
+    marker = item.get_closest_marker("dependency")
     if marker is not None or _automark:
         rep = outcome.get_result()
         name = marker.kwargs.get('name') if marker is not None else None
@@ -140,7 +140,7 @@ def pytest_runtest_setup(item):
     """Check dependencies if this item is marked "dependency".
     Skip if any of the dependencies has not been run successfully.
     """
-    marker = item.get_marker("dependency")
+    marker = item.get_closest_marker("dependency")
     if marker is not None:
         depends = marker.kwargs.get('depends')
         if depends:
