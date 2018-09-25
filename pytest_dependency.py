@@ -30,11 +30,11 @@ class DependencyItemStatus(object):
     Phases = ('setup', 'call', 'teardown')
 
     def __init__(self):
-        self.results = { w:None for w in self.Phases }
+        self.results = {w: None for w in self.Phases}
 
     def __str__(self):
-        l = ["%s: %s" % (w, self.results[w]) for w in self.Phases]
-        return "Status(%s)" % ", ".join(l)
+        statuses = ["%s: %s" % (w, self.results[w]) for w in self.Phases]
+        return "Status(%s)" % ", ".join(statuses)
 
     def addResult(self, rep):
         self.results[rep.when] = rep.outcome
@@ -47,7 +47,8 @@ class DependencyManager(object):
     """Dependency manager, stores the results of tests.
     """
 
-    ScopeCls = {'module':pytest.Module, 'session':pytest.Session}
+    ScopeCls = {'class': pytest.Class,
+                'module': pytest.Module, 'session': pytest.Session}
 
     @classmethod
     def getManager(cls, item, scope='module'):
@@ -55,16 +56,21 @@ class DependencyManager(object):
         Create it, if not yet present.
         """
         node = item.getparent(cls.ScopeCls[scope])
+        if not node:
+            return None
         if not hasattr(node, 'dependencyManager'):
-            node.dependencyManager = cls()
+            node.dependencyManager = cls(scope)
         return node.dependencyManager
 
-    def __init__(self):
+    def __init__(self, scope):
         self.results = {}
+        self.scope = scope
 
     def addResult(self, item, name, rep):
         if not name:
-            if item.cls:
+            if self.scope == "session":
+                name = item.nodeid.replace("::()::", "::")
+            elif item.cls and self.scope == "module":
                 name = "%s::%s" % (item.cls.__name__, item.name)
             else:
                 name = item.name
@@ -105,11 +111,11 @@ def depends(request, other):
 
 
 def pytest_addoption(parser):
-    parser.addini("automark_dependency", 
-                  "Add the dependency marker to all tests automatically", 
+    parser.addini("automark_dependency",
+                  "Add the dependency marker to all tests automatically",
                   default=False)
-    parser.addoption("--ignore-unknown-dependency", 
-                     action="store_true", default=False, 
+    parser.addoption("--ignore-unknown-dependency",
+                     action="store_true", default=False,
                      help="ignore dependencies whose outcome is not known")
 
 
@@ -117,7 +123,7 @@ def pytest_configure(config):
     global _automark, _ignore_unknown
     _automark = _get_bool(config.getini("automark_dependency"))
     _ignore_unknown = config.getoption("--ignore-unknown-dependency")
-    config.addinivalue_line("markers", 
+    config.addinivalue_line("markers",
                             "dependency(name=None, depends=[]): "
                             "mark a test to be used as a dependency for "
                             "other tests or to depend on other tests.")
@@ -128,21 +134,26 @@ def pytest_runtest_makereport(item, call):
     """Store the test outcome if this item is marked "dependency".
     """
     outcome = yield
-    marker = item.get_marker("dependency")
+    marker = item.get_closest_marker("dependency")
     if marker is not None or _automark:
         rep = outcome.get_result()
         name = marker.kwargs.get('name') if marker is not None else None
-        manager = DependencyManager.getManager(item)
-        manager.addResult(item, name, rep)
+        """ Store the test outcome for each scope if it exists"""
+        for scope in DependencyManager.ScopeCls:
+            manager = DependencyManager.getManager(item, scope=scope)
+            if(manager):
+                manager.addResult(item, name, rep)
 
 
 def pytest_runtest_setup(item):
     """Check dependencies if this item is marked "dependency".
     Skip if any of the dependencies has not been run successfully.
     """
-    marker = item.get_marker("dependency")
+    marker = item.get_closest_marker("dependency")
     if marker is not None:
         depends = marker.kwargs.get('depends')
         if depends:
-            manager = DependencyManager.getManager(item)
+            scope = marker.kwargs.get(
+                'scope', 'module') if marker is not None else 'module'
+            manager = DependencyManager.getManager(item, scope=scope)
             manager.checkDepend(depends, item)
