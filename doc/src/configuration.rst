@@ -31,7 +31,7 @@ automark_dependency
    the :func:`pytest.mark.dependency` marker.  As a results, all
    tests, the dependencies and the dependent tests must be decorated.
    If set to `True`, the outcome of all tests will be registered.  It
-   has the same effect as if all tests are implicitly decorated with
+   has the same effect as implicitly decorating all tests with
    :func:`pytest.mark.dependency`.
 
    .. versionadded:: 0.3
