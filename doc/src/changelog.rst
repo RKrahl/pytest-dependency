@@ -1,6 +1,17 @@
 History of changes to pytest-dependency
 =======================================
 
+0.4 (2018-12-02)
+    Incompatible changes
+      + Require pytest version 3.6.0 or newer.  This implicitly drops
+	support for Python 2.6 and for Python 3.3 and older.
+
+    Bug fixes and minor changes
+      + Issue #24: get_marker no longer available in pytest 4.0.0.
+	(Thanks to Rogdham for the PR.)
+      + Issue #28: Applying markers directly in parametrize is no
+	longer available in 4.0.
+
 0.3.2 (2018-01-17)
     Bug fixes and minor changes
       + Issue #5: properly register the dependency marker.
