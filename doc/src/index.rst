@@ -16,4 +16,5 @@ Content of the documentation
    usage
    advanced
    configuration
+   changelog
    reference
