@@ -20,12 +20,9 @@ The latest release version can be found at PyPI, see
 System requirements
 -------------------
 
-+ Python 2.6, 2.7, or 3.3 and newer.
-  Python 2.6 requires patching the sources, see below.
++ Python 2.7 or 3.4 and newer.
 + `setuptools`_.
 + `pytest`_ 3.6.0 or newer.
-
-(Python 3.2 is not supported by pytest 3.6.0 itself.)
 
 
 Installation
@@ -47,16 +44,6 @@ Installation
 
 The last step might require admin privileges in order to write into
 the site-packages directory of your Python installation.
-
-If you are using Python 2.6, apply python2_6.patch after the first
-step:
-
-1a. Patch::
-
-     $ patch -p1 < python2_6.patch
-
-It removes the use of certain language features (dict comprehensions)
-that were introduced in Python 2.7.
 
 
 Documentation
