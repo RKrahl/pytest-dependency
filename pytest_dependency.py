@@ -73,9 +73,9 @@ class DependencyManager(object):
             names = set([original, name])
             for name in names:
                 try:
-                    check = self.results[name].isSuccess()
-                    if not check and len(names) == 2:
-                        continue
+                    check = not self.results[name].isSuccess() and None not in self.results.values()
+                    if check and len(names) == 2:
+                        return 1
                 except KeyError:
                     pass
         status = self.results.setdefault(name, DependencyItemStatus())
