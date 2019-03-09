@@ -70,14 +70,12 @@ class DependencyManager(object):
                 original = "%s::%s" % (item.cls.__name__, original)
             else:
                 name = item.name
-            names = set([original, name])
-            for name in names:
-                try:
-                    check = not self.results[name].isSuccess() and None not in self.results.values()
-                    if check and len(names) == 2:
-                        return 1
-                except KeyError:
-                    pass
+            try:
+                check = not self.results[original].isSuccess() and None not in self.results.values()
+                if check and original != name:
+                    return 1
+            except KeyError:
+                pass
         status = self.results.setdefault(name, DependencyItemStatus())
         status.addResult(rep)
 
