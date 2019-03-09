@@ -62,23 +62,24 @@ class DependencyManager(object):
         self.results = {}
 
     def addResult(self, item, name, rep):
-        original = item.originalname
+
         if not name:
+            original = item.originalname if item.originalname is not None else item.name
             if item.cls:
                 name = "%s::%s" % (item.cls.__name__, item.name)
-                original = "%s::%s" % (item.cls.__name__, item.originalname)
+                original = "%s::%s" % (item.cls.__name__, original)
             else:
                 name = item.name
-        names = set([original, name])
-        for name in names:
-            try:
-                check = self.results[name].isSuccess()
-                if not check and len(names) == 2:
-                    continue
-            except KeyError:
-                pass
-            status = self.results.setdefault(name, DependencyItemStatus())
-            status.addResult(rep)
+            names = set([original, name])
+            for name in names:
+                try:
+                    check = self.results[name].isSuccess()
+                    if not check and len(names) == 2:
+                        continue
+                except KeyError:
+                    pass
+        status = self.results.setdefault(name, DependencyItemStatus())
+        status.addResult(rep)
 
     def checkDepend(self, depends, item):
         for i in depends:
@@ -91,7 +92,7 @@ class DependencyManager(object):
             pytest.skip("%s depends on %s" % (item.name, i))
 
 
-def depends(request, other):
+def depends(request, other,):
     """Add dependency on other test.
 
     Call pytest.skip() unless a successful outcome of all of the tests in
