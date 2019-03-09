@@ -1,6 +1,10 @@
 History of changes to pytest-dependency
 =======================================
 
+dev (not yet released)
+    Bug fixes and minor changes
+      + Issue #34: failing test with pytest 4.2.0 and newer.
+
 0.4 (2018-12-02)
     Incompatible changes
       + Require pytest version 3.6.0 or newer.  This implicitly drops
