@@ -46,11 +46,10 @@ class DependencyItemStatus(object):
 class DependencyManager(object):
     """Dependency manager, stores the results of tests.
     """
-
-    ScopeCls = {'module':pytest.Module, 'session':pytest.Session}
+    ScopeCls = {'module': pytest.Module, 'session': pytest.Session}
 
     @classmethod
-    def getManager(cls, item, scope='module'):
+    def getManager(cls, item, scope='module'):  # change to session??
         """Get the DependencyManager object from the node at scope level.
         Create it, if not yet present.
         """
@@ -63,13 +62,23 @@ class DependencyManager(object):
         self.results = {}
 
     def addResult(self, item, name, rep):
+        original = item.originalname
         if not name:
             if item.cls:
                 name = "%s::%s" % (item.cls.__name__, item.name)
+                original = "%s::%s" % (item.cls.__name__, item.originalname)
             else:
                 name = item.name
-        status = self.results.setdefault(name, DependencyItemStatus())
-        status.addResult(rep)
+        names = set([original, name])
+        for name in names:
+            try:
+                check = self.results[name].isSuccess()
+                if not check and len(names) == 2:
+                    continue
+            except KeyError:
+                pass
+            status = self.results.setdefault(name, DependencyItemStatus())
+            status.addResult(rep)
 
     def checkDepend(self, depends, item):
         for i in depends:
@@ -82,7 +91,7 @@ class DependencyManager(object):
             pytest.skip("%s depends on %s" % (item.name, i))
 
 
-def depends(request, other):
+def depends(request, other,):
     """Add dependency on other test.
 
     Call pytest.skip() unless a successful outcome of all of the tests in
@@ -105,11 +114,11 @@ def depends(request, other):
 
 
 def pytest_addoption(parser):
-    parser.addini("automark_dependency", 
-                  "Add the dependency marker to all tests automatically", 
+    parser.addini("automark_dependency",
+                  "Add the dependency marker to all tests automatically",
                   default=False)
-    parser.addoption("--ignore-unknown-dependency", 
-                     action="store_true", default=False, 
+    parser.addoption("--ignore-unknown-dependency",
+                     action="store_true", default=False,
                      help="ignore dependencies whose outcome is not known")
 
 
@@ -117,7 +126,7 @@ def pytest_configure(config):
     global _automark, _ignore_unknown
     _automark = _get_bool(config.getini("automark_dependency"))
     _ignore_unknown = config.getoption("--ignore-unknown-dependency")
-    config.addinivalue_line("markers", 
+    config.addinivalue_line("markers",
                             "dependency(name=None, depends=[]): "
                             "mark a test to be used as a dependency for "
                             "other tests or to depend on other tests.")
@@ -126,6 +135,7 @@ def pytest_configure(config):
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     """Store the test outcome if this item is marked "dependency".
+
     """
     outcome = yield
     marker = item.get_closest_marker("dependency")
