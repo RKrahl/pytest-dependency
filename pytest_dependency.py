@@ -91,7 +91,7 @@ class DependencyManager(object):
             pytest.skip("%s depends on %s" % (item.name, i))
 
 
-def depends(request, other,):
+def depends(request, other):
     """Add dependency on other test.
 
     Call pytest.skip() unless a successful outcome of all of the tests in
