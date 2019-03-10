@@ -73,10 +73,12 @@ class DependencyManager(object):
             else:
                 name = item.name
 
-        status = self.results.setdefault(name, DependencyItemStatus())
-        status.addResult(rep)
+            status = self.results.setdefault(name, DependencyItemStatus())
+            status.addResult(rep)
+        else:
+            original = name
 
-        if original != (name or item.name):
+        if original != item.name:
             try:
                 check = not self.results[original].isSuccess() and self.results[original].isDone()
                 if check:
