@@ -42,6 +42,9 @@ class DependencyItemStatus(object):
     def isSuccess(self):
         return list(self.results.values()) == ['passed', 'passed', 'passed']
 
+    def isDone(self):
+        return None not in list(self.results.values())
+
 
 class DependencyManager(object):
     """Dependency manager, stores the results of tests.
@@ -62,22 +65,26 @@ class DependencyManager(object):
         self.results = {}
 
     def addResult(self, item, name, rep):
-
+        original = item.originalname if item.originalname is not None else item.name
         if not name:
-            original = item.originalname if item.originalname is not None else item.name
             if item.cls:
                 name = "%s::%s" % (item.cls.__name__, item.name)
                 original = "%s::%s" % (item.cls.__name__, original)
             else:
                 name = item.name
+
+        status = self.results.setdefault(name, DependencyItemStatus())
+        status.addResult(rep)
+
+        if original != (name or item.name):
             try:
-                check = not self.results[original].isSuccess() and None not in self.results.values()
-                if check and original != name:
+                check = not self.results[original].isSuccess() and self.results[original].isDone()
+                if check:
                     return 1
             except KeyError:
                 pass
-        status = self.results.setdefault(name, DependencyItemStatus())
-        status.addResult(rep)
+            status = self.results.setdefault(original, DependencyItemStatus())
+            status.addResult(rep)
 
     def checkDepend(self, depends, item):
         for i in depends:
