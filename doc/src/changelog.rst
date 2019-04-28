@@ -70,18 +70,13 @@ dev (not yet released)
         marker, nothing need to be changed.
 
     Bug fixes and minor changes
-
       + PR #11: show the name of the skipped test (thanks
         asteriogonzalez).
-
       + Issue #13: Do not import pytest in setup.py to make it
         compatible with pipenv.
-
       + Issue #15: tests fail with pytest 3.3.0.
-
       + Issue #8: document incompatibility with parallelization in
         pytest-xdist.
-
       + Clarify in the documentation that Python 3.1 is not officially
 	supported because pytest 2.8 does not support it.  There is no
 	known issue with Python 3.1 though.
