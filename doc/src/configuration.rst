@@ -21,8 +21,8 @@ Configuration file options can be set in the `ini file`.
 
 minversion
    This is a builtin configuration option of pytest itself.  Since
-   pytest-dependency requires pytest 2.8.0 or newer, it is recommended
-   to set this option accordingly, either to 2.8.0 or to a newer
+   pytest-dependency requires pytest 3.6.0 or newer, it is recommended
+   to set this option accordingly, either to 3.6.0 or to a newer
    version, if required by your test code.
 
 automark_dependency
@@ -31,7 +31,7 @@ automark_dependency
    the :func:`pytest.mark.dependency` marker.  As a results, all
    tests, the dependencies and the dependent tests must be decorated.
    If set to `True`, the outcome of all tests will be registered.  It
-   has the same effect as if all tests are implicitly decorated with
+   has the same effect as implicitly decorating all tests with
    :func:`pytest.mark.dependency`.
 
    .. versionadded:: 0.3
