@@ -22,7 +22,7 @@ The first test has deliberately been set to fail to illustrate the
 effect.  We will get the following resuts:
 
 `test_a`
-  deliberatly fails.
+  deliberately fails.
 
 `test_b`
   succeeds.

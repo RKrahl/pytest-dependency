@@ -24,7 +24,7 @@ def test_a(x):
 def test_b():
     pass
 
-params_c = zip(range(0,8,2), range(2,6))
+params_c = list(zip(range(0,8,2), range(2,6)))
 
 @pytest.mark.parametrize("x,y", params_c)
 @pytest.mark.dependency()

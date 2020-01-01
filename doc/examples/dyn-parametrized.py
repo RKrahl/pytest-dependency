@@ -26,13 +26,14 @@ childs =  [ Node("e", "a"), Node("f", "a"), Node("g", "a"),
 # Create enriched parameter lists, decorated with the dependency marker.
 
 childparam = [ 
-    pytest.mark.dependency(name="test_child[%s]" % c)(c) for c in childs
+    pytest.param(c, marks=pytest.mark.dependency(name="test_child[%s]" % c)) 
+    for c in childs
 ]
 parentparam = [
-    pytest.mark.dependency(
+    pytest.param(p, marks=pytest.mark.dependency(
         name="test_parent[%s]" % p, 
         depends=["test_child[%s]" % c for c in p.children]
-    )(p) for p in parents
+    )) for p in parents
 ]
 
 @pytest.mark.parametrize("c", childparam)
