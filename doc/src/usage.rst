@@ -66,10 +66,10 @@ works in the same manner as the previous examples respectively:
 In `TestClass` the default names for the tests are used, which is
 build from the name of the class and the respective method in this
 case, while in `TestClassNamed` these names are overridden by an
-explicit name argument to the :func:`pytest.mark.dependency` marker.
+explicit `name` argument to the :func:`pytest.mark.dependency` marker.
 
 .. versionchanged:: 0.3
-   The name of the class is prepended to method name to form the
+   The name of the class is prepended to the method name to form the
    default name for the test.
 
 .. _usage-parametrized:
