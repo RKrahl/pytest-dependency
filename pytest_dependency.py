@@ -87,7 +87,7 @@ class DependencyManager(object):
             pytest.skip("%s depends on %s" % (item.name, i))
 
 
-def depends(request, other):
+def depends(request, other, scope="module"):
     """Add dependency on other test.
 
     Call pytest.skip() unless a successful outcome of all of the tests in
@@ -99,10 +99,17 @@ def depends(request, other):
     :param request: the value of the `request` pytest fixture related
         to the current test.
     :param other: dependencies, a list of names of tests that this
-        test depends on.
+        test depends on.  The names of the dependencies must be
+        adapted to the scope.
     :type other: iterable of :class:`str`
+    :param scope: the scope to search for the dependencies.  Must be
+        either `session`, `package`, `module`, or `class`.
+    :type scope: :class:`str`
 
     .. versionadded:: 0.2
+
+    .. versionchanged:: 0.5.0
+        the scope parameter has been added.
     """
     item = request.node
     manager = DependencyManager.getManager(item)
