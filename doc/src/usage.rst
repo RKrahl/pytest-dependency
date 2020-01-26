@@ -42,9 +42,9 @@ Naming tests
 ------------
 
 Tests are referenced by their name in the `depends` argument.  The
-default for this name is the node ID defined by pytest, that is the
+default for this name is the node id defined by pytest, that is the
 name of the test function, extended by the parameters if applicable.
-In some cases, it's not easy to predict the names of the node IDs.
+In some cases, it's not easy to predict the names of the node ids.
 For this reason, the name of the tests can be overridden by an
 explicit `name` argument to the marker.  The names must be unique in
 the scope, which is currently the test module.  The following example

@@ -15,6 +15,7 @@ Content of the documentation
    install
    usage
    advanced
+   names
    configuration
    changelog
    reference
