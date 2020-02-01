@@ -23,7 +23,7 @@ Reference
         dependencies must be adapted to the scope.
     :type depends: iterable of :class:`str`
     :param scope: the scope to search for the dependencies.  Must be
-        either `session`, `package`, `module`, or `class`.
+        either `'session'`, `'package'`, `'module'`, or `'class'`.
     :type scope: :class:`str`
 
     .. versionchanged:: 0.5.0

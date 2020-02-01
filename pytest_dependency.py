@@ -103,7 +103,7 @@ def depends(request, other, scope="module"):
         adapted to the scope.
     :type other: iterable of :class:`str`
     :param scope: the scope to search for the dependencies.  Must be
-        either `session`, `package`, `module`, or `class`.
+        either `'session'`, `'package'`, `'module'`, or `'class'`.
     :type scope: :class:`str`
 
     .. versionadded:: 0.2
