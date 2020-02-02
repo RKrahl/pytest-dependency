@@ -3,6 +3,8 @@ Using pytest-dependency
 
 The plugin defines a new marker :func:`pytest.mark.dependency`.
 
+.. _usage-basic:
+
 Basic usage
 -----------
 
