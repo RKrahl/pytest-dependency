@@ -32,15 +32,15 @@ class TestClassNamed(object):
     def test_a(self):
         assert False
 
-    @pytest.mark.dependency(name="b", depends=["a"])
+    @pytest.mark.dependency(name="b")
     def test_b(self):
         pass
 
-    @pytest.mark.dependency(name="c")
+    @pytest.mark.dependency(name="c", depends=["a"])
     def test_c(self):
         pass
 
-    @pytest.mark.dependency(name="d", depends=["c"])
+    @pytest.mark.dependency(name="d", depends=["b"])
     def test_d(self):
         pass
 
