@@ -53,6 +53,12 @@ turn will be run and succeed.  It depends on the test method `test_b`
 of class `TestClass` in `tests/test_mod_01.py`, not on the test
 function of the same name.
 
+The `scope` argument only affects the references in the `depends`
+argument of the marker.  It does not matter which scope is set for the
+dependencies: the dependency of `test_e` in `tests/test_mod_02.py` on
+`test_a` in `tests/test_mod_01.py` is in session scope.  It is not
+needed to set the scope also for `test_a`.
+
 Note that the references in session scope must use the full node id of
 the dependencies.  This node id is composed of the module path, the
 name of the test class if applicable, and the name of the test,
