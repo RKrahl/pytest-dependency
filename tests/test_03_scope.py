@@ -482,3 +482,119 @@ def test_scope_named(ctestdir):
         test_scope_named.py::TestClass::test_k PASSED
         test_scope_named.py::TestClass::test_l SKIPPED
     """)
+
+@pytest.mark.xfail(reason="scope arg to depends() not yet implemented")
+def test_scope_dependsfunc(ctestdir):
+    """Test the scope argument to the depends() function.
+    """
+    ctestdir.makepyfile(test_scope_dependsfunc_01="""
+        import pytest
+
+        @pytest.mark.dependency()
+        def test_a():
+            pass
+
+        @pytest.mark.dependency()
+        def test_b():
+            assert False
+
+        @pytest.mark.dependency(depends=["test_a"])
+        def test_c():
+            pass
+
+        class TestClass(object):
+
+            @pytest.mark.dependency()
+            def test_b(self):
+                pass
+    """, test_scope_dependsfunc_02="""
+        import pytest
+        from pytest_dependency import depends
+
+        @pytest.mark.dependency()
+        def test_a():
+            assert False
+
+        @pytest.mark.dependency()
+        def test_b():
+            pass
+
+        @pytest.mark.dependency()
+        def test_e(request):
+            depends(request,
+                    ["test_scope_dependsfunc_01.py::test_a",
+                     "test_scope_dependsfunc_01.py::test_c"],
+                    scope='session')
+            pass
+
+        @pytest.mark.dependency()
+        def test_f(request):
+            depends(request,
+                    ["test_scope_dependsfunc_01.py::test_b"],
+                    scope='session')
+            pass
+
+        @pytest.mark.dependency()
+        def test_g(request):
+            depends(request,
+                    ["test_scope_dependsfunc_02.py::test_e"],
+                    scope='session')
+            pass
+
+        @pytest.mark.dependency()
+        def test_h(request):
+            depends(request,
+                    ["test_scope_dependsfunc_01.py::TestClass::test_b"],
+                    scope='session')
+            pass
+
+        @pytest.mark.dependency()
+        def test_i(request):
+            depends(request, ["test_a"], scope='module')
+            pass
+
+        @pytest.mark.dependency()
+        def test_j(request):
+            depends(request, ["test_b"], scope='module')
+            pass
+
+        class TestClass(object):
+
+            @pytest.mark.dependency()
+            def test_a(self):
+                pass
+
+            @pytest.mark.dependency()
+            def test_b(self):
+                assert False
+
+            @pytest.mark.dependency()
+            def test_c(self, request):
+                depends(request, ["test_a"], scope='class')
+                pass
+
+            @pytest.mark.dependency()
+            def test_d(self, request):
+                depends(request, ["test_b"], scope='class')
+                pass
+    """)
+    result = ctestdir.runpytest("--verbose")
+    result.assert_outcomes(passed=10, skipped=3, failed=3)
+    result.stdout.fnmatch_lines("""
+        test_scope_dependsfunc_01.py::test_a PASSED
+        test_scope_dependsfunc_01.py::test_b FAILED
+        test_scope_dependsfunc_01.py::test_c PASSED
+        test_scope_dependsfunc_01.py::TestClass::test_b PASSED
+        test_scope_dependsfunc_02.py::test_a FAILED
+        test_scope_dependsfunc_02.py::test_b PASSED
+        test_scope_dependsfunc_02.py::test_e PASSED
+        test_scope_dependsfunc_02.py::test_f SKIPPED
+        test_scope_dependsfunc_02.py::test_g PASSED
+        test_scope_dependsfunc_02.py::test_h PASSED
+        test_scope_dependsfunc_02.py::test_i SKIPPED
+        test_scope_dependsfunc_02.py::test_j PASSED
+        test_scope_dependsfunc_02.py::TestClass::test_a PASSED
+        test_scope_dependsfunc_02.py::TestClass::test_b FAILED
+        test_scope_dependsfunc_02.py::TestClass::test_c PASSED
+        test_scope_dependsfunc_02.py::TestClass::test_d SKIPPED
+    """)
