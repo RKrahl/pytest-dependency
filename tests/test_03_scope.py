@@ -55,9 +55,15 @@ def test_scope_session(ctestdir):
         def test_b():
             assert False
 
-        @pytest.mark.dependency(depends=["test_a"], scope='module')
+        @pytest.mark.dependency(depends=["test_a"])
         def test_c():
             pass
+
+        class TestClass(object):
+
+            @pytest.mark.dependency()
+            def test_b(self):
+                pass
     """, test_scope_session_02="""
         import pytest
 
@@ -86,17 +92,26 @@ def test_scope_session(ctestdir):
         )
         def test_g():
             pass
+
+        @pytest.mark.dependency(
+            depends=["test_scope_session_01.py::TestClass::test_b"],
+            scope='session'
+        )
+        def test_h():
+            pass
     """)
     result = ctestdir.runpytest("--verbose")
-    result.assert_outcomes(passed=4, skipped=1, failed=2)
+    result.assert_outcomes(passed=6, skipped=1, failed=2)
     result.stdout.fnmatch_lines("""
         test_scope_session_01.py::test_a PASSED
         test_scope_session_01.py::test_b FAILED
         test_scope_session_01.py::test_c PASSED
+        test_scope_session_01.py::TestClass::test_b PASSED
         test_scope_session_02.py::test_a FAILED
         test_scope_session_02.py::test_e PASSED
         test_scope_session_02.py::test_f SKIPPED
         test_scope_session_02.py::test_g PASSED
+        test_scope_session_02.py::test_h PASSED
     """)
 
 @pytest.mark.xfail(reason="package scope not yet implemented")
