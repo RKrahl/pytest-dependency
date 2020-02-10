@@ -47,7 +47,11 @@ class DependencyManager(object):
     """Dependency manager, stores the results of tests.
     """
 
-    ScopeCls = {'class':pytest.Class, 'module':pytest.Module, 'session':pytest.Session}
+    ScopeCls = {
+        'session': pytest.Session,
+        'module': pytest.Module,
+        'class': pytest.Class,
+    }
 
     @classmethod
     def getManager(cls, item, scope='module'):
@@ -67,12 +71,16 @@ class DependencyManager(object):
 
     def addResult(self, item, name, rep):
         if not name:
-            if self.scope == "session":
-                name = item.nodeid.replace("::()::", "::")
-            elif item.cls and self.scope == "module":
-                name = "%s::%s" % (item.cls.__name__, item.name)
+            nodeid = item.nodeid.replace("::()::", "::")
+            if self.scope == 'session' or self.scope == 'package':
+                name = nodeid
+            elif self.scope == 'module':
+                name = nodeid.split("::", maxsplit=1)[1]
+            elif self.scope == 'class':
+                name = nodeid.split("::", maxsplit=2)[2]
             else:
-                name = item.name
+                raise RuntimeError("Internal error: invalid scope '%s'"
+                                   % self.scope)
         status = self.results.setdefault(name, DependencyItemStatus())
         status.addResult(rep)
 
@@ -144,10 +152,9 @@ def pytest_runtest_makereport(item, call):
     if marker is not None or _automark:
         rep = outcome.get_result()
         name = marker.kwargs.get('name') if marker is not None else None
-        """ Store the test outcome for each scope if it exists"""
         for scope in DependencyManager.ScopeCls:
             manager = DependencyManager.getManager(item, scope=scope)
-            if(manager):
+            if (manager):
                 manager.addResult(item, name, rep)
 
 
@@ -159,6 +166,6 @@ def pytest_runtest_setup(item):
     if marker is not None:
         depends = marker.kwargs.get('depends')
         if depends:
-            scope = marker.kwargs.get('scope', 'module') if marker is not None else 'module'
+            scope = marker.kwargs.get('scope', 'module')
             manager = DependencyManager.getManager(item, scope=scope)
             manager.checkDepend(depends, item)
