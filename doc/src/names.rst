@@ -39,6 +39,16 @@ look like:
 
 .. literalinclude:: ../examples/nodeid.out
 
+.. note::
+    Old versions of pytest used to include an extra "()" component to
+    the node ids of methods of test classes.  This has been
+    `removed in pytest 4.0.0`__.  pytest-dependency strips this
+    if present.  Thus, when referencing dependencies, the new style
+    node ids as described above may (and must) be used, regardless of
+    the pytest version.
+
+.. __: https://docs.pytest.org/en/latest/changelog.html#pytest-4-0-0-2018-11-13
+
 References and scope
 --------------------
 

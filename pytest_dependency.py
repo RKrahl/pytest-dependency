@@ -72,6 +72,9 @@ class DependencyManager(object):
 
     def addResult(self, item, name, rep):
         if not name:
+            # Old versions of pytest used to add an extra "::()" to
+            # the node ids of class methods to denote the class
+            # instance.  This has been removed in pytest 4.0.0.
             nodeid = item.nodeid.replace("::()::", "::")
             if self.scope == 'session' or self.scope == 'package':
                 name = nodeid
