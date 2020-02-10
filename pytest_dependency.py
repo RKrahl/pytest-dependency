@@ -96,7 +96,7 @@ class DependencyManager(object):
             pytest.skip("%s depends on %s" % (item.name, i))
 
 
-def depends(request, other, scope="module"):
+def depends(request, other, scope='module'):
     """Add dependency on other test.
 
     Call pytest.skip() unless a successful outcome of all of the tests in
@@ -121,7 +121,7 @@ def depends(request, other, scope="module"):
         the scope parameter has been added.
     """
     item = request.node
-    manager = DependencyManager.getManager(item)
+    manager = DependencyManager.getManager(item, scope=scope)
     manager.checkDepend(other, item)
 
 

@@ -482,7 +482,6 @@ def test_scope_named(ctestdir):
         test_scope_named.py::TestClass::test_l SKIPPED
     """)
 
-@pytest.mark.xfail(reason="scope arg to depends() not yet implemented")
 def test_scope_dependsfunc(ctestdir):
     """Test the scope argument to the depends() function.
     """
