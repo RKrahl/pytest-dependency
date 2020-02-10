@@ -20,13 +20,12 @@ clean:
 	$(MAKE) -C doc clean
 
 distclean: clean
-	rm -rf .cache tests/.cache
-	rm -f MANIFEST
+	rm -rf .cache tests/.cache .pytest_cache tests/.pytest_cache
 	rm -f *.pyc tests/*.pyc
 	rm -rf __pycache__ tests/__pycache__
+	rm -f MANIFEST
 	rm -rf dist
 	rm -rf pytest_dependency.egg-info
-	rm -rf .pytest_cache
 	$(MAKE) -C doc distclean
 
 .gitrevision:
