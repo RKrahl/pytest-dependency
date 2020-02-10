@@ -76,9 +76,9 @@ class DependencyManager(object):
             if self.scope == 'session' or self.scope == 'package':
                 name = nodeid
             elif self.scope == 'module':
-                name = nodeid.split("::", maxsplit=1)[1]
+                name = nodeid.split("::", 1)[1]
             elif self.scope == 'class':
-                name = nodeid.split("::", maxsplit=2)[2]
+                name = nodeid.split("::", 2)[2]
             else:
                 raise RuntimeError("Internal error: invalid scope '%s'"
                                    % self.scope)
