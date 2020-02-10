@@ -2,6 +2,9 @@ History of changes to pytest-dependency
 =======================================
 
 dev (not yet released)
+    New features
+      + Issue #3, PR #35: add a scope to dependencies.
+
     Bug fixes and minor changes
       + Issue #34: failing test with pytest 4.2.0 and newer.
 
