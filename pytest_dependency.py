@@ -55,7 +55,7 @@ class DependencyManager(object):
     }
 
     @classmethod
-    def getManager(cls, item, scope='module'):
+    def getManager(cls, item, scope):
         """Get the DependencyManager object from the node at scope level.
         Create it, if not yet present.
         """
