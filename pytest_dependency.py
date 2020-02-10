@@ -49,6 +49,7 @@ class DependencyManager(object):
 
     ScopeCls = {
         'session': pytest.Session,
+        'package': pytest.Package,
         'module': pytest.Module,
         'class': pytest.Class,
     }

@@ -114,7 +114,6 @@ def test_scope_session(ctestdir):
         test_scope_session_02.py::test_h PASSED
     """)
 
-@pytest.mark.xfail(reason="package scope not yet implemented")
 def test_scope_package(ctestdir):
     """Two packages, some cross module dependencies within the package and
     across package boundaries.
