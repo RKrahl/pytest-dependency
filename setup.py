@@ -6,27 +6,26 @@ some tests as dependent from other tests.  These tests will then be
 skipped if any of the dependencies did fail or has been skipped.
 """
 
-__version__ = "0.4.0"
-
+import distutils.log
 import os
 import os.path
 import re
+import string
 from setuptools import setup
 import setuptools.command.sdist as st_sdist
+try:
+    import setuptools_scm
+    version = setuptools_scm.get_version()
+    with open(".version", "wt") as f:
+        f.write(version)
+except (ImportError, LookupError):
+    try:
+        with open(".version", "rt") as f:
+            version = f.read()
+    except (OSError, IOError):
+        distutils.log.warn("warning: cannot determine version number")
+        version = "UNKNOWN"
 
-
-def _filter_file(src, dest, subst):
-    """Copy src to dest doing substitutions on the fly.
-    """
-    substre = re.compile(r'\$(%s)' % '|'.join(subst.keys()))
-    def repl(m):
-        return subst[m.group(1)]
-    with open(src, "rt") as sf, open(dest, "wt") as df:
-        while True:
-            l = sf.readline()
-            if not l:
-                break
-            df.write(re.sub(substre, repl, l))
 
 class sdist(st_sdist.sdist):
     def make_release_tree(self, base_dir, files):
@@ -34,19 +33,16 @@ class sdist(st_sdist.sdist):
         if not self.dry_run:
             src = "pytest_dependency.py"
             dest = os.path.join(base_dir, src)
-            gitrevfile = ".gitrevision"
             if hasattr(os, 'link') and os.path.exists(dest):
                 os.unlink(dest)
-            subst = {'DOC': __doc__, 'VERSION': __version__}
-            if os.path.exists(gitrevfile):
-                with open(gitrevfile, "rt") as f:
-                    subst['REVISION'] = f.readline().strip()
-            _filter_file(src, dest, subst)
+            subst = {'DOC': __doc__, 'VERSION': version}
+            with open(src, "rt") as sf, open(dest, "wt") as df:
+                df.write(string.Template(sf.read()).substitute(subst))
 
 
 setup(
     name='pytest-dependency',
-    version=__version__,
+    version=version,
     description='Manage dependencies of tests',
     author='Rolf Krahl',
     author_email='rolf@rotkraut.de',

@@ -7,6 +7,7 @@ dev (not yet released)
 
     Bug fixes and minor changes
       + Issue #34: failing test with pytest 4.2.0 and newer.
+      + Use setuptools_scm to manage the version number.
 
 0.4 (2018-12-02)
     Incompatible changes
