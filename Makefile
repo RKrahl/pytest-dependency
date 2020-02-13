@@ -11,7 +11,7 @@ test: build
 sdist:
 	$(PYTHON) setup.py sdist
 
-doc-html:
+doc-html: .version
 	$(MAKE) -C doc html
 
 clean:
@@ -28,5 +28,7 @@ distclean: clean
 	rm -rf pytest_dependency.egg-info
 	$(MAKE) -C doc distclean
 
+.version:
+	$(PYTHON) setup.py check
 
 .PHONY: build test sdist doc-html clean distclean
