@@ -8,7 +8,7 @@ build:
 test: build
 	PYTHONPATH=$(BUILDDIR)/lib $(PYTHON) -m pytest tests
 
-sdist: .gitrevision
+sdist:
 	$(PYTHON) setup.py sdist
 
 doc-html:
@@ -23,13 +23,10 @@ distclean: clean
 	rm -rf .cache tests/.cache .pytest_cache tests/.pytest_cache
 	rm -f *.pyc tests/*.pyc
 	rm -rf __pycache__ tests/__pycache__
-	rm -f MANIFEST
+	rm -f MANIFEST .version
 	rm -rf dist
 	rm -rf pytest_dependency.egg-info
 	$(MAKE) -C doc distclean
 
-.gitrevision:
-	git describe --always --dirty > .gitrevision
 
-
-.PHONY: build test sdist doc-html clean distclean .gitrevision
+.PHONY: build test sdist doc-html clean distclean

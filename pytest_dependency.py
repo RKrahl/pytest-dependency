@@ -1,7 +1,6 @@
 """$DOC"""
 
 __version__ = "$VERSION"
-__revision__ = "$REVISION"
 
 import pytest
 
