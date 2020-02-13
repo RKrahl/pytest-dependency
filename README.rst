@@ -24,6 +24,16 @@ System requirements
 + `setuptools`_.
 + `pytest`_ 3.6.0 or newer.
 
+Optional library packages:
+
++ `setuptools_scm`_
+
+  The version number is managed using this package.  All source
+  distributions add a static text file with the version number and
+  fall back using that if `setuptools_scm` is not available.  So this
+  package is only needed to build out of the plain development source
+  tree as cloned from GitHub.
+
 
 Installation
 ------------
@@ -79,3 +89,4 @@ permissions and limitations under the License.
 
 .. _setuptools: http://pypi.python.org/pypi/setuptools/
 .. _pytest: http://pytest.org/
+.. _setuptools_scm: https://github.com/pypa/setuptools_scm/
