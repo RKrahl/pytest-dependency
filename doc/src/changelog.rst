@@ -1,6 +1,11 @@
 History of changes to pytest-dependency
 =======================================
 
+0.5.1 (2020-02-14)
+
+    Bug fixes and minor changes
+      + Fix failing documentation build.
+
 0.5.0 (2020-02-14)
     New features
       + `#3`_, `#35`_: add a scope to dependencies.
