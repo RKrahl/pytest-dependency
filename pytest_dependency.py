@@ -1,7 +1,6 @@
 """$DOC"""
 
 __version__ = "$VERSION"
-__revision__ = "$REVISION"
 
 import pytest
 
@@ -47,27 +46,44 @@ class DependencyManager(object):
     """Dependency manager, stores the results of tests.
     """
 
-    ScopeCls = {'module':pytest.Module, 'session':pytest.Session}
+    ScopeCls = {
+        'session': pytest.Session,
+        'package': pytest.Package,
+        'module': pytest.Module,
+        'class': pytest.Class,
+    }
 
     @classmethod
-    def getManager(cls, item, scope='module'):
+    def getManager(cls, item, scope):
         """Get the DependencyManager object from the node at scope level.
         Create it, if not yet present.
         """
         node = item.getparent(cls.ScopeCls[scope])
+        if not node:
+            return None
         if not hasattr(node, 'dependencyManager'):
-            node.dependencyManager = cls()
+            node.dependencyManager = cls(scope)
         return node.dependencyManager
 
-    def __init__(self):
+    def __init__(self, scope):
         self.results = {}
+        self.scope = scope
 
     def addResult(self, item, name, rep):
         if not name:
-            if item.cls:
-                name = "%s::%s" % (item.cls.__name__, item.name)
+            # Old versions of pytest used to add an extra "::()" to
+            # the node ids of class methods to denote the class
+            # instance.  This has been removed in pytest 4.0.0.
+            nodeid = item.nodeid.replace("::()::", "::")
+            if self.scope == 'session' or self.scope == 'package':
+                name = nodeid
+            elif self.scope == 'module':
+                name = nodeid.split("::", 1)[1]
+            elif self.scope == 'class':
+                name = nodeid.split("::", 2)[2]
             else:
-                name = item.name
+                raise RuntimeError("Internal error: invalid scope '%s'"
+                                   % self.scope)
         status = self.results.setdefault(name, DependencyItemStatus())
         status.addResult(rep)
 
@@ -82,7 +98,7 @@ class DependencyManager(object):
             pytest.skip("%s depends on %s" % (item.name, i))
 
 
-def depends(request, other):
+def depends(request, other, scope='module'):
     """Add dependency on other test.
 
     Call pytest.skip() unless a successful outcome of all of the tests in
@@ -94,13 +110,20 @@ def depends(request, other):
     :param request: the value of the `request` pytest fixture related
         to the current test.
     :param other: dependencies, a list of names of tests that this
-        test depends on.
+        test depends on.  The names of the dependencies must be
+        adapted to the scope.
     :type other: iterable of :class:`str`
+    :param scope: the scope to search for the dependencies.  Must be
+        either `'session'`, `'package'`, `'module'`, or `'class'`.
+    :type scope: :class:`str`
 
     .. versionadded:: 0.2
+
+    .. versionchanged:: 0.5.0
+        the scope parameter has been added.
     """
     item = request.node
-    manager = DependencyManager.getManager(item)
+    manager = DependencyManager.getManager(item, scope=scope)
     manager.checkDepend(other, item)
 
 
@@ -132,8 +155,10 @@ def pytest_runtest_makereport(item, call):
     if marker is not None or _automark:
         rep = outcome.get_result()
         name = marker.kwargs.get('name') if marker is not None else None
-        manager = DependencyManager.getManager(item)
-        manager.addResult(item, name, rep)
+        for scope in DependencyManager.ScopeCls:
+            manager = DependencyManager.getManager(item, scope=scope)
+            if (manager):
+                manager.addResult(item, name, rep)
 
 
 def pytest_runtest_setup(item):
@@ -144,5 +169,6 @@ def pytest_runtest_setup(item):
     if marker is not None:
         depends = marker.kwargs.get('depends')
         if depends:
-            manager = DependencyManager.getManager(item)
+            scope = marker.kwargs.get('scope', 'module')
+            manager = DependencyManager.getManager(item, scope=scope)
             manager.checkDepend(depends, item)

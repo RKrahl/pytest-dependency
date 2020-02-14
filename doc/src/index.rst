@@ -14,7 +14,9 @@ Content of the documentation
    about
    install
    usage
+   scope
    advanced
+   names
    configuration
    changelog
    reference

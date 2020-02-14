@@ -1,0 +1,17 @@
+$ pytest --verbose
+============================= test session starts ==============================
+platform linux -- Python 3.8.1, pytest-5.3.4, py-1.8.1, pluggy-0.13.1 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/user
+plugins: dependency-0.4.0
+collected 7 items                                                              
+
+tests/test_nodeid.py::test_a PASSED                                      [ 14%]
+tests/test_nodeid.py::test_b[7-True] PASSED                              [ 28%]
+tests/test_nodeid.py::test_b[0-False] PASSED                             [ 42%]
+tests/test_nodeid.py::test_b[-1-False] XFAIL                             [ 57%]
+tests/test_nodeid.py::TestClass::test_c PASSED                           [ 71%]
+tests/test_nodeid.py::TestClass::test_d[order] PASSED                    [ 85%]
+tests/test_nodeid.py::TestClass::test_d[disorder] PASSED                 [100%]
+
+========================= 6 passed, 1 xfailed in 0.08s =========================
