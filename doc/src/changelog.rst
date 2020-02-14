@@ -1,7 +1,7 @@
 History of changes to pytest-dependency
 =======================================
 
-dev (not yet released)
+0.5.0 (2020-02-14)
     New features
       + `#3`_, `#35`_: add a scope to dependencies.
         (Thanks to JoeSc and selenareneephillips!)
@@ -14,7 +14,7 @@ dev (not yet released)
 .. _#34: https://github.com/RKrahl/pytest-dependency/issues/34
 .. _#35: https://github.com/RKrahl/pytest-dependency/pull/35
 
-0.4 (2018-12-02)
+0.4.0 (2018-12-02)
     Incompatible changes
       + Require pytest version 3.6.0 or newer.  This implicitly drops
         support for Python 2.6 and for Python 3.3 and older.
