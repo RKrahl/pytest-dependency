@@ -1,5 +1,16 @@
-.. image:: https://travis-ci.org/RKrahl/pytest-dependency.svg?branch=master
-   :target: https://travis-ci.org/RKrahl/pytest-dependency
+|travis| |rtd| |pypi|
+
+.. |travis| image:: https://img.shields.io/travis/com/RKrahl/pytest-dependency
+   :target: https://travis-ci.com/RKrahl/pytest-dependency
+   :alt: Travis build status
+
+.. |rtd| image:: https://img.shields.io/readthedocs/pytest-dependency/latest
+   :target: https://pytest-dependency.readthedocs.io/en/latest/
+   :alt: Documentation build status
+
+.. |pypi| image:: https://img.shields.io/pypi/v/pytest-dependency
+   :target: https://pypi.org/project/pytest-dependency/
+   :alt: PyPI version
 
 pytest-dependency - Manage dependencies of tests
 ================================================
@@ -14,7 +25,7 @@ Download
 
 The latest release version can be found at PyPI, see
 
-    https://pypi.python.org/pypi/pytest_dependency
+    https://pypi.org/project/pytest-dependency/
 
 
 System requirements
