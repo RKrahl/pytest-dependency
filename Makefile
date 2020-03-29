@@ -17,7 +17,6 @@ doc-html: .version
 clean:
 	rm -f *~ tests/*~
 	rm -rf build
-	$(MAKE) -C doc clean
 
 distclean: clean
 	rm -rf .cache tests/.cache .pytest_cache tests/.pytest_cache
