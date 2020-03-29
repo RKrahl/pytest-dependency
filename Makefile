@@ -1,4 +1,4 @@
-PYTHON   = python
+PYTHON   = python3
 BUILDDIR = $(CURDIR)/build
 
 
