@@ -12,7 +12,7 @@
    :target: https://pypi.org/project/pytest-dependency/
    :alt: PyPI version
 
-pytest-dependency - Manage dependencies of tests
+pytest-dependency – Manage dependencies of tests
 ================================================
 
 This pytest plugin manages dependencies of tests.  It allows to mark
@@ -23,9 +23,9 @@ skipped if any of the dependencies did fail or has been skipped.
 Download
 --------
 
-The latest release version can be found at PyPI, see
+The latest release version can be found `at PyPI`__.
 
-    https://pypi.org/project/pytest-dependency/
+.. __: `PyPI site`_
 
 
 System requirements
@@ -70,20 +70,20 @@ the site-packages directory of your Python installation.
 Documentation
 -------------
 
-The documentation can be found at
-
-    https://pytest-dependency.readthedocs.io/
+See the `online documentation`__.
 
 The example test modules used in the documentation can be found in
 doc/examples in the source distribution.
+
+.. __: `Read the Docs site`_
 
 
 Copyright and License
 ---------------------
 
-- Copyright 2013-2015
+- Copyright 2013–2015
   Helmholtz-Zentrum Berlin für Materialien und Energie GmbH
-- Copyright 2016-2020 Rolf Krahl
+- Copyright 2016–2020 Rolf Krahl
 
 Licensed under the Apache License, Version 2.0 (the "License"); you
 may not use this file except in compliance with the License.  You may
@@ -98,6 +98,8 @@ implied.  See the License for the specific language governing
 permissions and limitations under the License.
 
 
+.. _PyPI site: https://pypi.org/project/pytest-dependency/
 .. _setuptools: http://pypi.python.org/pypi/setuptools/
 .. _pytest: http://pytest.org/
 .. _setuptools_scm: https://github.com/pypa/setuptools_scm/
+.. _Read the Docs site: https://pytest-dependency.readthedocs.io/
