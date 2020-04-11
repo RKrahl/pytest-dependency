@@ -7,6 +7,7 @@ skipped if any of the dependencies did fail or has been skipped.
 """
 
 from distutils.cmd import Command as du_cmd
+import distutils.command.sdist
 import distutils.log
 import os
 import os.path
@@ -15,7 +16,6 @@ import stat
 import string
 from setuptools import setup
 import setuptools.command.build_py
-import setuptools.command.sdist
 try:
     import setuptools_scm
     version = setuptools_scm.get_version()
@@ -68,7 +68,10 @@ class copy_file_mixin:
 class build_py(copy_file_mixin, setuptools.command.build_py.build_py):
     pass
 
-class sdist(copy_file_mixin, setuptools.command.sdist.sdist):
+# Note: Do not use setuptools for making the source distribution,
+# rather use the good old distutils instead.
+# Rationale: https://rhodesmill.org/brandon/2009/eby-magic/
+class sdist(copy_file_mixin, distutils.command.sdist.sdist):
     pass
 
 setup(
