@@ -1,18 +1,18 @@
 PYTHON   = python3
-BUILDDIR = $(CURDIR)/build
+BUILDLIB = $(CURDIR)/build/lib
 
 
 build:
 	$(PYTHON) setup.py build
 
 test: build
-	PYTHONPATH=$(BUILDDIR)/lib $(PYTHON) -m pytest tests
+	PYTHONPATH=$(BUILDLIB) $(PYTHON) -m pytest tests
 
 sdist:
 	$(PYTHON) setup.py sdist
 
-doc-html: .version
-	$(MAKE) -C doc html
+doc-html: build
+	$(MAKE) -C doc html PYTHONPATH=$(BUILDLIB)
 
 clean:
 	rm -f *~ tests/*~
@@ -26,8 +26,5 @@ distclean: clean
 	rm -rf dist
 	rm -rf pytest_dependency.egg-info
 	$(MAKE) -C doc distclean
-
-.version:
-	$(PYTHON) setup.py check
 
 .PHONY: build test sdist doc-html clean distclean

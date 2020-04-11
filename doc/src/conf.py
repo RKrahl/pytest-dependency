@@ -6,13 +6,7 @@
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
 
-# -- Path setup --------------------------------------------------------------
-
-from pathlib import Path
-import sys
-topdir = Path("../..").resolve()
-sys.path.insert(0, str(topdir))
-
+import pytest_dependency
 
 # -- Project information -----------------------------------------------------
 
@@ -21,8 +15,7 @@ copyright = '2016–2020, Rolf Krahl'
 author = 'Rolf Krahl'
 
 # The full version, including alpha/beta/rc tags
-with (topdir / ".version").open("rt") as f:
-    release = f.read()
+release = pytest_dependency.__version__
 # The short X.Y version
 version = ".".join(release.split(".")[0:2])
 
