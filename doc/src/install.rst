@@ -26,10 +26,10 @@ pytest-xdist
 Download
 --------
 
-The latest release version of pytest-dependency source can be found at
-PyPI, see
+The latest release version of pytest-dependency is available on the
+`Python Package Index (PyPI)`__.
 
-    https://pypi.python.org/pypi/pytest_dependency
+.. __: https://pypi.python.org/pypi/pytest_dependency/
 
 
 Installation
