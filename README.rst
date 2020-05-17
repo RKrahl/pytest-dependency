@@ -57,7 +57,7 @@ Installation
 
 3. Test (optional)::
 
-     $ python -m pytest
+     $ PYTHONPATH=build/lib python -m pytest
 
 4. Install::
 
