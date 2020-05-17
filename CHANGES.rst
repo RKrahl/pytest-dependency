@@ -1,6 +1,16 @@
 Changelog
 =========
 
+dev (not yet released)
+~~~~~~~~~~~~~~~~~~~~~~
+
+Bug fixes and minor changes
+---------------------------
+
++ `#40`_: add logging.
+
+.. _#40: https://github.com/RKrahl/pytest-dependency/issues/40
+
 0.5.1 (2020-02-14)
 ~~~~~~~~~~~~~~~~~~
 
