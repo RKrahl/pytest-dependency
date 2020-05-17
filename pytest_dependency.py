@@ -2,7 +2,10 @@
 
 __version__ = "$VERSION"
 
+import logging
 import pytest
+
+logger = logging.getLogger(__name__)
 
 _automark = False
 _ignore_unknown = False
@@ -85,16 +88,25 @@ class DependencyManager(object):
                 raise RuntimeError("Internal error: invalid scope '%s'"
                                    % self.scope)
         status = self.results.setdefault(name, DependencyItemStatus())
+        logger.debug("register %s %s %s in %s scope",
+                     rep.when, name, rep.outcome, self.scope)
         status.addResult(rep)
 
     def checkDepend(self, depends, item):
+        logger.debug("check dependencies of %s in %s scope ...",
+                     item.name, self.scope)
         for i in depends:
             if i in self.results:
                 if self.results[i].isSuccess():
+                    logger.debug("... %s succeeded", i)
                     continue
+                else:
+                    logger.debug("... %s has not succeeded", i)
             else:
+                logger.debug("... %s is unknown", i)
                 if _ignore_unknown:
                     continue
+            logger.info("skip %s because it depends on %s", item.name, i)
             pytest.skip("%s depends on %s" % (item.name, i))
 
 
