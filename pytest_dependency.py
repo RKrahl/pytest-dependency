@@ -1,9 +1,11 @@
 """$DOC"""
 
-__version__ = "$VERSION"
-
 import logging
+
 import pytest
+
+
+__version__ = "$VERSION"
 
 logger = logging.getLogger(__name__)
 
