@@ -117,6 +117,13 @@ class DependencyManager(object):
         )
         status.add_result(rep)
 
+    @classmethod
+    def add_all_scopes(cls, item, name, rep):
+        for scope in cls.scope_cls:
+            manager = cls.get_manager(item, scope=scope)
+            if manager is not None:
+                manager.add_result(item, name, rep)
+
     def check_depend(self, depends, item):
         logger.debug(
             "check dependencies of %s in %s scope ...",
@@ -202,10 +209,7 @@ def pytest_runtest_makereport(item, call):
     if marker is not None or _automark:
         rep = outcome.get_result()
         name = marker.kwargs.get("name") if marker is not None else None
-        for scope in DependencyManager.scope_cls:
-            manager = DependencyManager.get_manager(item, scope=scope)
-            if manager is not None:
-                manager.add_result(item, name, rep)
+        DependencyManager.add_all_scopes(item, name, rep)
 
 
 def pytest_runtest_setup(item):
