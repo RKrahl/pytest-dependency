@@ -5,7 +5,8 @@ import pytest
 
 
 def test_scope_module(ctestdir):
-    """One single module, module scope is explicitely set in the
+    """
+    One single module, module scope is explicitely set in the
     pytest.mark.dependency() marker.
     """
     ctestdir.makepyfile("""
@@ -42,7 +43,8 @@ def test_scope_module(ctestdir):
     """)
 
 def test_scope_session(ctestdir):
-    """Two modules, some cross module dependencies in session scope.
+    """
+    Two modules, some cross module dependencies in session scope.
     """
     ctestdir.makepyfile(test_scope_session_01="""
         import pytest
@@ -115,7 +117,8 @@ def test_scope_session(ctestdir):
     """)
 
 def test_scope_package(ctestdir):
-    """Two packages, some cross module dependencies within the package and
+    """
+    Two packages, some cross module dependencies within the package and
     across package boundaries.
     """
     ctestdir.mkpydir("test_scope_package_a")
@@ -185,7 +188,8 @@ def test_scope_package(ctestdir):
     """)
 
 def test_scope_class(ctestdir):
-    """Dependencies in class scope.
+    """
+    Dependencies in class scope.
     """
     ctestdir.makepyfile("""
         import pytest
@@ -250,7 +254,8 @@ def test_scope_class(ctestdir):
     """)
 
 def test_scope_nodeid(ctestdir):
-    """The default name of a test is the node id.
+    """
+    The default name of a test is the node id.
     The references to the default names must be adapted according to
     the scope.
     """
@@ -363,23 +368,24 @@ def test_scope_nodeid(ctestdir):
     result.stdout.fnmatch_lines("""
         test_scope_nodeid.py::test_a PASSED
         test_scope_nodeid.py::test_b PASSED
-        test_scope_nodeid.py::test_c SKIPPED
-        test_scope_nodeid.py::test_d SKIPPED
-        test_scope_nodeid.py::test_e PASSED
         test_scope_nodeid.py::TestClass::test_f PASSED
-        test_scope_nodeid.py::TestClass::test_g PASSED
-        test_scope_nodeid.py::TestClass::test_h SKIPPED
-        test_scope_nodeid.py::TestClass::test_i SKIPPED
-        test_scope_nodeid.py::TestClass::test_j SKIPPED
         test_scope_nodeid.py::TestClass::test_k PASSED
         test_scope_nodeid.py::TestClass::test_l SKIPPED
         test_scope_nodeid.py::TestClass::test_m SKIPPED
         test_scope_nodeid.py::TestClass::test_n SKIPPED
         test_scope_nodeid.py::TestClass::test_o PASSED
+        test_scope_nodeid.py::test_c SKIPPED
+        test_scope_nodeid.py::test_d SKIPPED
+        test_scope_nodeid.py::test_e PASSED
+        test_scope_nodeid.py::TestClass::test_g PASSED
+        test_scope_nodeid.py::TestClass::test_h SKIPPED
+        test_scope_nodeid.py::TestClass::test_i SKIPPED
+        test_scope_nodeid.py::TestClass::test_j SKIPPED
     """)
 
 def test_scope_named(ctestdir):
-    """Explicitely named tests are always referenced by that name,
+    """
+    Explicitely named tests are always referenced by that name,
     regardless of the scope.
     """
     ctestdir.makepyfile("""
@@ -470,20 +476,21 @@ def test_scope_named(ctestdir):
     result.stdout.fnmatch_lines("""
         test_scope_named.py::test_a PASSED
         test_scope_named.py::test_b PASSED
-        test_scope_named.py::test_c SKIPPED
-        test_scope_named.py::test_d PASSED
-        test_scope_named.py::test_e SKIPPED
         test_scope_named.py::TestClass::test_f PASSED
-        test_scope_named.py::TestClass::test_g PASSED
-        test_scope_named.py::TestClass::test_h SKIPPED
         test_scope_named.py::TestClass::test_i PASSED
         test_scope_named.py::TestClass::test_j SKIPPED
         test_scope_named.py::TestClass::test_k PASSED
         test_scope_named.py::TestClass::test_l SKIPPED
+        test_scope_named.py::test_c SKIPPED
+        test_scope_named.py::test_d PASSED
+        test_scope_named.py::test_e SKIPPED
+        test_scope_named.py::TestClass::test_g PASSED
+        test_scope_named.py::TestClass::test_h SKIPPED
     """)
 
 def test_scope_dependsfunc(ctestdir):
-    """Test the scope argument to the depends() function.
+    """
+    Test the scope argument to the depends() function.
     """
     ctestdir.makepyfile(test_scope_dependsfunc_01="""
         import pytest
