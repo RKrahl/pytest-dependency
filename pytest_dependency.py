@@ -1,6 +1,7 @@
 """$DOC"""
 
 import logging
+from collections import deque
 
 import pytest
 
@@ -26,6 +27,30 @@ def _get_bool(value):
             raise ValueError("Invalid truth value '%s'" % value)
     else:
         return False
+
+
+def _remove_parametrization(item, scope):
+    # Old versions of pytest used to add an extra "::()" to
+    # the node ids of class methods to denote the class
+    # instance.  This has been removed in pytest 4.0.0.
+    nodeid = item.nodeid.replace("::()::", "::")
+    if scope == "session" or scope == "package":
+        name = nodeid
+    elif scope == "module":
+        name = nodeid.split("::", 1)[1]
+    elif scope == "class":
+        name = nodeid.split("::", 2)[2]
+    else:
+        raise RuntimeError(
+            "Internal error: invalid scope '%s'" % self.scope
+        )
+
+    original = item.originalname if item.originalname is not None else item.name
+    # remove the parametrization part at the end
+    if not name.endswith(original):
+        index = name.rindex(original) + len(original)
+        name = name[:index]
+    return name
 
 
 class DependencyItemStatus(object):
@@ -79,31 +104,20 @@ class DependencyManager(object):
         return node.dependency_manager
 
     def __init__(self, scope):
-        self.results = {}
         self.scope = scope
+        self.results = {}
+        self.names = set()
+        self.dependencies = {}
+
+    def register_name(self, name):
+        self.names.add(name)
+
+    def register_dependency(self, item, name):
+        self.dependencies[name] = item
 
     def add_result(self, item, name, rep):
         if not name:
-            # Old versions of pytest used to add an extra "::()" to
-            # the node ids of class methods to denote the class
-            # instance.  This has been removed in pytest 4.0.0.
-            nodeid = item.nodeid.replace("::()::", "::")
-            if self.scope == "session" or self.scope == "package":
-                name = nodeid
-            elif self.scope == "module":
-                name = nodeid.split("::", 1)[1]
-            elif self.scope == "class":
-                name = nodeid.split("::", 2)[2]
-            else:
-                raise RuntimeError(
-                    "Internal error: invalid scope '%s'" % self.scope
-                )
-
-            original = item.originalname if item.originalname is not None else item.name
-            # remove the parametrization part at the end
-            if not name.endswith(original):
-                index = name.rindex(original) + len(original)
-                name = name[:index]
+            name = _remove_parametrization(item, self.scope)
 
         # check if we failed - if so, return without adding the result
         if name not in self.results:
@@ -126,7 +140,7 @@ class DependencyManager(object):
             if manager is not None:
                 manager.add_result(item, name, rep)
 
-    def check_depend(self, depends, item):
+    def check_depends(self, depends, item):
         logger.debug(
             "check dependencies of %s in %s scope ...",
             item.name, self.scope
@@ -144,6 +158,18 @@ class DependencyManager(object):
                     continue
             logger.info("skip %s because it depends on %s", item.name, i)
             pytest.skip("%s depends on %s" % (item.name, i))
+
+    def check_order(self, depends, item, name):
+        if not all(d in self.dependencies for d in depends):
+            # check to see if we're ever gonna see a dep like that
+            for d in depends:
+                if d not in self.names:
+                    item.warn(pytest.PytestWarning(
+                        "Dependency '%s' of '%s' doesn't exist, "
+                        "or has incorrect scope!" % (d, name)
+                    ))
+            return False
+        return True
 
 
 def depends(request, other, scope="module"):
@@ -173,7 +199,7 @@ def depends(request, other, scope="module"):
     """
     item = request.node
     manager = DependencyManager.get_manager(item, scope=scope)
-    manager.check_depend(other, item)
+    manager.check_depends(other, item)
 
 
 def pytest_addoption(parser):
@@ -225,4 +251,52 @@ def pytest_runtest_setup(item):
         if depends:
             scope = marker.kwargs.get("scope", "module")
             manager = DependencyManager.get_manager(item, scope=scope)
-            manager.check_depend(depends, item)
+            manager.check_depends(depends, item)
+
+
+# special hook to make pytest-dependency support reordering based on deps
+def pytest_collection_modifyitems(items):
+    # gather dependency names
+    for item in items:
+        for marker in item.iter_markers("dependency"):
+            scope = marker.kwargs.get("scope", "module")
+            name = marker.kwargs.get("name")
+            if not name:
+                name = _remove_parametrization(item, scope)
+
+            manager = DependencyManager.get_manager(item, scope)
+            manager.register_name(name)
+
+    final_items = []
+
+    # group the dependencies by their scopes
+    cycles = 0
+    deque_items = deque(items)
+    while deque_items:
+        if cycles > len(deque_items):
+            # seems like we're stuck in a loop now
+            # just add the remaining items and finish up
+            final_items.extend(deque_items)
+            break
+        item = deque_items.popleft()
+        for marker in item.iter_markers("dependency"):
+            depends = marker.kwargs.get("depends", [])
+            scope = marker.kwargs.get("scope", "module")
+            name = marker.kwargs.get("name")
+            if not name:
+                name = _remove_parametrization(item, scope)
+
+            manager = DependencyManager.get_manager(item, scope)
+            if manager.check_order(depends, item, name):
+                manager.register_dependency(item, name)
+            else:
+                deque_items.append(item)
+                cycles += 1
+                break
+        else:
+            # runs only when the for loop wasn't broken out of
+            final_items.append(item)
+            cycles = 0
+
+    assert len(items) == len(final_items) and all(i in items for i in final_items)
+    items[:] = final_items
