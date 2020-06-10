@@ -273,7 +273,7 @@ def pytest_collection_modifyitems(items):
     cycles = 0
     deque_items = deque(items)
     while deque_items:
-        if cycles > len(deque_items):
+        if cycles >= len(deque_items):
             # seems like we're stuck in a loop now
             # just add the remaining items and finish up
             final_items.extend(deque_items)
