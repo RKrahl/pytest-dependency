@@ -72,9 +72,9 @@ class DependencyManager(object):
         node = item.getparent(cls.scope_cls[scope])
         if not node:
             return None
-        if not hasattr(node, "dependencyManager"):
-            node.dependencyManager = cls(scope)
-        return node.dependencyManager
+        if not hasattr(node, "dependency_manager"):
+            node.dependency_manager = cls(scope)
+        return node.dependency_manager
 
     def __init__(self, scope):
         self.results = {}
