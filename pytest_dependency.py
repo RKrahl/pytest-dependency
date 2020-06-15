@@ -42,7 +42,7 @@ def _remove_parametrization(item, scope):
         name = nodeid.split("::", 2)[2]
     else:
         raise RuntimeError(
-            "Internal error: invalid scope '%s'" % self.scope
+            "Internal error: invalid scope '%s'" % scope
         )
 
     original = item.originalname if item.originalname is not None else item.name
