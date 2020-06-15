@@ -157,15 +157,17 @@ class DependencyManager(object):
 
     def reorder(self, depends, item, name, index):
         for dep in depends:
-            dv = self.dependencies.get(dep)
-            if dv is None:
+            di = self.dependencies.get(dep)
+            if di is None:
                 item.warn(pytest.PytestWarning(
                     "Dependency '%s' of '%s' doesn't exist, "
                     "or has incorrect scope!" % (dep, name)
                 ))
                 continue
-            if dv > index:
-                self.dependencies[name] = index = dv + 1
+            # change the index for the current item so that it'll execute
+            # after the dependency
+            if di > index:
+                self.dependencies[name] = index = di + 1
         return self.dependencies[name]
 
 
@@ -270,6 +272,7 @@ def pytest_collection_modifyitems(items):
     # change stored indexes so that they point at
     # 'index + 1' of the furthest / latest dependency
     for i, item in enumerate(items):
+        # this keeps track of the highest index between different markers
         highest_index = i
         for marker in item.iter_markers("dependency"):
             depends = marker.kwargs.get("depends", [])
