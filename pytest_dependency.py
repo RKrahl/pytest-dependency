@@ -106,14 +106,10 @@ class DependencyManager(object):
     def __init__(self, scope):
         self.scope = scope
         self.results = {}
-        self.names = set()
         self.dependencies = {}
 
-    def register_name(self, name):
-        self.names.add(name)
-
-    def register_dependency(self, item, name):
-        self.dependencies[name] = item
+    def register_dependency(self, name, index):
+        self.dependencies[name] = index
 
     def add_result(self, item, name, rep):
         if not name:
@@ -159,17 +155,18 @@ class DependencyManager(object):
             logger.info("skip %s because it depends on %s", item.name, i)
             pytest.skip("%s depends on %s" % (item.name, i))
 
-    def check_order(self, depends, item, name):
-        if not all(d in self.dependencies for d in depends):
-            # check to see if we're ever gonna see a dep like that
-            for d in depends:
-                if d not in self.names:
-                    item.warn(pytest.PytestWarning(
-                        "Dependency '%s' of '%s' doesn't exist, "
-                        "or has incorrect scope!" % (d, name)
-                    ))
-            return False
-        return True
+    def reorder(self, depends, item, name, index):
+        for dep in depends:
+            dv = self.dependencies.get(dep)
+            if dv is None:
+                item.warn(pytest.PytestWarning(
+                    "Dependency '%s' of '%s' doesn't exist, "
+                    "or has incorrect scope!" % (dep, name)
+                ))
+                continue
+            if dv > index:
+                self.dependencies[name] = index = dv + 1
+        return self.dependencies[name]
 
 
 def depends(request, other, scope="module"):
@@ -256,47 +253,36 @@ def pytest_runtest_setup(item):
 
 # special hook to make pytest-dependency support reordering based on deps
 def pytest_collection_modifyitems(items):
-    # gather dependency names
-    for item in items:
-        for marker in item.iter_markers("dependency"):
-            scope = marker.kwargs.get("scope", "module")
-            name = marker.kwargs.get("name")
-            if not name:
-                name = _remove_parametrization(item, scope)
-
-            manager = DependencyManager.get_manager(item, scope)
-            manager.register_name(name)
-
-    final_items = []
-
-    # group the dependencies by their scopes
-    cycles = 0
-    deque_items = deque(items)
-    while deque_items:
-        if cycles >= len(deque_items):
-            # seems like we're stuck in a loop now
-            # just add the remaining items and finish up
-            final_items.extend(deque_items)
-            break
-        item = deque_items.popleft()
+    # register items and their names, according to scopes
+    for i, item in enumerate(items):
         for marker in item.iter_markers("dependency"):
             depends = marker.kwargs.get("depends", [])
             scope = marker.kwargs.get("scope", "module")
             name = marker.kwargs.get("name")
             if not name:
                 name = _remove_parametrization(item, scope)
-
             manager = DependencyManager.get_manager(item, scope)
-            if manager.check_order(depends, item, name):
-                manager.register_dependency(item, name)
-            else:
-                deque_items.append(item)
-                cycles += 1
-                break
-        else:
-            # runs only when the for loop wasn't broken out of
-            final_items.append(item)
-            cycles = 0
-
-    assert len(items) == len(final_items) and all(i in items for i in final_items)
-    items[:] = final_items
+            if manager is None:
+                continue
+            manager.register_dependency(name, i)
+    # prepare a dictionary of final, highest indexes
+    highest_indexes = {}
+    # change stored indexes so that they point at
+    # 'index + 1' of the furthest / latest dependency
+    for i, item in enumerate(items):
+        highest_index = i
+        for marker in item.iter_markers("dependency"):
+            depends = marker.kwargs.get("depends", [])
+            scope = marker.kwargs.get("scope", "module")
+            name = marker.kwargs.get("name")
+            if not name:
+                name = _remove_parametrization(item, scope)
+            manager = DependencyManager.get_manager(item, scope)
+            if manager is None:
+                continue
+            highest_index = max(
+                highest_index, manager.reorder(depends, item, name, i)
+            )
+        highest_indexes[item] = highest_index
+    # sort the results - this ensures a stable sort too
+    items.sort(key=lambda i: highest_indexes[i])
