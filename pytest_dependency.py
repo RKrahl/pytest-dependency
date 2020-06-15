@@ -1,7 +1,6 @@
 """$DOC"""
 
 import logging
-from collections import deque
 
 import pytest
 
