@@ -1,6 +1,7 @@
 """$DOC"""
 
 import logging
+from collections import deque
 
 import pytest
 
@@ -105,10 +106,14 @@ class DependencyManager(object):
     def __init__(self, scope):
         self.scope = scope
         self.results = {}
-        self.dependencies = {}
+        self.names = set()
+        self.dependencies = set()
 
-    def register_dependency(self, name, index):
-        self.dependencies[name] = index
+    def register_dependency(self, name):
+        self.dependencies.add(name)
+
+    def register_dependency_name(self, name):
+        self.names.add(name)
 
     def add_result(self, item, name, rep):
         if not name:
@@ -154,20 +159,20 @@ class DependencyManager(object):
             logger.info("skip %s because it depends on %s", item.name, i)
             pytest.skip("%s depends on %s" % (item.name, i))
 
-    def reorder(self, depends, item, name, index):
-        for dep in depends:
-            di = self.dependencies.get(dep)
-            if di is None:
+    def check_order(self, depends, item, name):
+        for d in depends:
+            if d not in self.names:
                 item.warn(pytest.PytestWarning(
                     "Dependency '%s' of '%s' doesn't exist, "
-                    "or has incorrect scope!" % (dep, name)
+                    "or has incorrect scope!" % (d, name)
                 ))
-                continue
-            # change the index for the current item so that it'll execute
-            # after the dependency
-            if di > index:
-                self.dependencies[name] = index = di + 1
-        return self.dependencies[name]
+                if _ignore_unknown:
+                    continue
+                else:
+                    return False
+            elif d not in self.dependencies:
+                return False
+        return True
 
 
 def depends(request, other, scope="module"):
@@ -254,8 +259,11 @@ def pytest_runtest_setup(item):
 
 # special hook to make pytest-dependency support reordering based on deps
 def pytest_collection_modifyitems(items):
+    # store the markers between passes - improves speed
+    markers_cache = {}
     # register items and their names, according to scopes
-    for i, item in enumerate(items):
+    for item in items:
+        markers_cache[item] = markers = []
         for marker in item.iter_markers("dependency"):
             depends = marker.kwargs.get("depends", [])
             scope = marker.kwargs.get("scope", "module")
@@ -265,26 +273,34 @@ def pytest_collection_modifyitems(items):
             manager = DependencyManager.get_manager(item, scope)
             if manager is None:
                 continue
-            manager.register_dependency(name, i)
-    # prepare a dictionary of final, highest indexes
-    highest_indexes = {}
-    # change stored indexes so that they point at
-    # 'index + 1' of the furthest / latest dependency
-    for i, item in enumerate(items):
-        # this keeps track of the highest index between different markers
-        highest_index = i
-        for marker in item.iter_markers("dependency"):
-            depends = marker.kwargs.get("depends", [])
-            scope = marker.kwargs.get("scope", "module")
-            name = marker.kwargs.get("name")
-            if not name:
-                name = _remove_parametrization(item, scope)
-            manager = DependencyManager.get_manager(item, scope)
-            if manager is None:
-                continue
-            highest_index = max(
-                highest_index, manager.reorder(depends, item, name, i)
-            )
-        highest_indexes[item] = highest_index
-    # sort the results - this ensures a stable sort too
-    items.sort(key=lambda i: highest_indexes[i])
+            markers.append((depends, name, manager))
+            manager.register_dependency_name(name)
+    miss_list = []
+    final_items = []
+    deque_items = deque(items)
+    # loop until all items are sorted out
+    while deque_items:
+        item = deque_items.popleft()
+        # store managers and only register when adding to the final list
+        to_register = []
+        for depends, name, manager in markers_cache[item]:
+            if manager.check_order(depends, item, name):
+                to_register.append((manager, name))
+            else:
+                miss_list.append(item)
+                break
+        else:
+            # runs only when the for loop wasn't broken out of
+            for manager, name in to_register:
+                manager.register_dependency(name)
+            final_items.append(item)
+            # add the missing items back in the correct order
+            if miss_list:
+                deque_items.extendleft(reversed(miss_list))
+                miss_list.clear()
+    if miss_list:
+        # this list being non-empty here means there are
+        # cyclic or missing dependencies
+        final_items.extend(miss_list)
+    assert len(items) == len(final_items)
+    items[:] = final_items
