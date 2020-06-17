@@ -371,15 +371,15 @@ def test_scope_nodeid(ctestdir):
     result.stdout.fnmatch_lines("""
         test_scope_nodeid.py::test_a PASSED
         test_scope_nodeid.py::test_b PASSED
+        test_scope_nodeid.py::TestClass::test_f PASSED
+        test_scope_nodeid.py::TestClass::test_k PASSED
         test_scope_nodeid.py::test_c SKIPPED
         test_scope_nodeid.py::test_d SKIPPED
         test_scope_nodeid.py::test_e PASSED
-        test_scope_nodeid.py::TestClass::test_f PASSED
         test_scope_nodeid.py::TestClass::test_g PASSED
         test_scope_nodeid.py::TestClass::test_h SKIPPED
         test_scope_nodeid.py::TestClass::test_i SKIPPED
         test_scope_nodeid.py::TestClass::test_j SKIPPED
-        test_scope_nodeid.py::TestClass::test_k PASSED
         test_scope_nodeid.py::TestClass::test_l SKIPPED
         test_scope_nodeid.py::TestClass::test_m SKIPPED
         test_scope_nodeid.py::TestClass::test_n SKIPPED
@@ -480,13 +480,13 @@ def test_scope_named(ctestdir):
     result.stdout.fnmatch_lines("""
         test_scope_named.py::test_a PASSED
         test_scope_named.py::test_b PASSED
+        test_scope_named.py::TestClass::test_f PASSED
+        test_scope_named.py::TestClass::test_i PASSED
         test_scope_named.py::test_c SKIPPED
         test_scope_named.py::test_d PASSED
         test_scope_named.py::test_e SKIPPED
-        test_scope_named.py::TestClass::test_f PASSED
         test_scope_named.py::TestClass::test_g PASSED
         test_scope_named.py::TestClass::test_h SKIPPED
-        test_scope_named.py::TestClass::test_i PASSED
         test_scope_named.py::TestClass::test_j SKIPPED
         test_scope_named.py::TestClass::test_k PASSED
         test_scope_named.py::TestClass::test_l SKIPPED
