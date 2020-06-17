@@ -36,7 +36,7 @@ def test_order_standard(ctestdir):
             pass
 
         # same here
-        @pytest.mark.dependency(depends=["test_b", "test_c"])
+        @pytest.mark.dependency(depends=["test_c", "test_d"])
         def test_f():
             pass
 
@@ -70,7 +70,7 @@ def test_order_cycles(ctestdir):
             pass
 
         # depends on 'test_d' - cycle
-        @pytest.mark.dependency(depends=["test_d")
+        @pytest.mark.dependency(depends=["test_d"])
         def test_b():
             pass
 
@@ -84,12 +84,12 @@ def test_order_cycles(ctestdir):
             pass
     """)
     result = ctestdir.runpytest("--verbose")
-    result.assert_outcomes(passed=4, skipped=0, failed=0)
+    result.assert_outcomes(passed=2, skipped=2, failed=0)
     result.stdout.fnmatch_lines("""
         test_order_cycles.py::test_a PASSED
         test_order_cycles.py::test_c PASSED
-        test_order_cycles.py::test_b PASSED
-        test_order_cycles.py::test_d PASSED
+        test_order_cycles.py::test_b SKIPPED
+        test_order_cycles.py::test_d SKIPPED
     """)
 
 
@@ -105,7 +105,7 @@ def test_order_nesting(ctestdir):
         def test_a():
             pass
 
-        @pytest.mark.dependency(depends=["test_d")
+        @pytest.mark.dependency(depends=["test_d"])
         def test_b():
             pass
 
