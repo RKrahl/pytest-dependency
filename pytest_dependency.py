@@ -297,7 +297,7 @@ def pytest_collection_modifyitems(items):
             # add the missing items back in the correct order
             if miss_list:
                 deque_items.extendleft(reversed(miss_list))
-                miss_list.clear()
+                miss_list = []  # can't use '.clear()' in 2.7
     if miss_list:
         # this list being non-empty here means there are
         # cyclic or missing dependencies
