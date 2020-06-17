@@ -1,7 +1,6 @@
-"""A scenario featuring parametrized tests.
 """
-
-import pytest
+A scenario featuring parametrized tests.
+"""
 
 
 def test_multiple(ctestdir):

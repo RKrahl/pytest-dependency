@@ -1,11 +1,11 @@
-"""Test the automark_dependency option.
 """
-
-import pytest
+Test the automark_dependency option.
+"""
 
 
 def test_not_set(ctestdir):
-    """No pytest.ini file, e.g. automark_dependency is not set.
+    """
+    No pytest.ini file, e.g. automark_dependency is not set.
 
     Since automark_dependency defaults to false and test_a is not
     marked, the outcome of test_a will not be recorded.  As a result,
@@ -30,7 +30,8 @@ def test_not_set(ctestdir):
 
 
 def test_set_false(ctestdir):
-    """A pytest.ini is present, automark_dependency is set to false.
+    """
+    A pytest.ini is present, automark_dependency is set to false.
 
     Since automark_dependency is set to false and test_a is not
     marked, the outcome of test_a will not be recorded.  As a result,
@@ -60,7 +61,8 @@ def test_set_false(ctestdir):
 
 
 def test_set_true(ctestdir):
-    """A pytest.ini is present, automark_dependency is set to false.
+    """
+    A pytest.ini is present, automark_dependency is set to false.
 
     Since automark_dependency is set to true, the outcome of test_a
     will be recorded, even though it is not marked.  As a result,

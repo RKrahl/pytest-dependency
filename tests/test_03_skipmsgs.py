@@ -1,11 +1,11 @@
-"""Verify the messages issued when a dependent test is skipped.
 """
-
-import pytest
+Verify the messages issued when a dependent test is skipped.
+"""
 
 
 def test_simple(ctestdir):
-    """One test fails, other dependent tests are skipped.
+    """
+    One test fails, other dependent tests are skipped.
     This also includes indirect dependencies.
     """
     ctestdir.makepyfile("""

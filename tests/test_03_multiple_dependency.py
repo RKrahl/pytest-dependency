@@ -1,7 +1,6 @@
-"""A complicated scenario with tests having multiple dependencies.
 """
-
-import pytest
+A complicated scenario with tests having multiple dependencies.
+"""
 
 
 def test_multiple(ctestdir):

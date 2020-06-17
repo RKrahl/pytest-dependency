@@ -1,7 +1,6 @@
-"""The most basic test: check that the marker works.
 """
-
-import pytest
+The most basic test: check that the marker works.
+"""
 
 
 def test_marker_registered(ctestdir):

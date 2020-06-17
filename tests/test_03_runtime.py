@@ -1,11 +1,11 @@
-"""Using depends() to mark dependencies at runtime.
 """
-
-import pytest
+Using depends() to mark dependencies at runtime.
+"""
 
 
 def test_skip_depend_runtime(ctestdir):
-    """One test is skipped, other dependent tests are skipped as well.
+    """
+    One test is skipped, other dependent tests are skipped as well.
     This also includes indirect dependencies.
     """
     ctestdir.makepyfile("""
