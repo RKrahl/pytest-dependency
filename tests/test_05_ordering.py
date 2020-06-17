@@ -58,9 +58,49 @@ def test_order_standard(ctestdir):
     """)
 
 
+def test_order_missing(ctestdir):
+    """
+    5 tests, with 2 of them having mislabeled (missing) dependencies.
+    """
+    ctestdir.makepyfile("""
+        import pytest
+
+        @pytest.mark.dependency()
+        def test_a():
+            pass
+
+        # mislabeled 'test_c'
+        @pytest.mark.dependency(depends=["tets_c"])
+        def test_b():
+            pass
+
+        @pytest.mark.dependency()
+        def test_c():
+            pass
+
+        # mislabeled 'test_a'
+        @pytest.mark.dependency(depends=["tets_a"])
+        def test_d():
+            pass
+
+        @pytest.mark.dependency()
+        def test_e():
+            pass
+    """)
+    result = ctestdir.runpytest("--verbose")
+    result.assert_outcomes(passed=3, skipped=2, failed=0)
+    result.stdout.fnmatch_lines("""
+        test_order_missing.py::test_a PASSED
+        test_order_missing.py::test_c PASSED
+        test_order_missing.py::test_e PASSED
+        test_order_missing.py::test_b SKIPPED
+        test_order_missing.py::test_d SKIPPED
+    """)
+
+
 def test_order_cycles(ctestdir):
     """
-    4 tests, with 2 of them creating an "accidental" cycle.
+    5 tests, with 2 of them creating an "accidental" cycle.
     """
     ctestdir.makepyfile("""
         import pytest
@@ -82,12 +122,17 @@ def test_order_cycles(ctestdir):
         @pytest.mark.dependency(depends=["test_b", "test_c"])
         def test_d():
             pass
+
+        @pytest.mark.dependency()
+        def test_e():
+            pass
     """)
     result = ctestdir.runpytest("--verbose")
-    result.assert_outcomes(passed=2, skipped=2, failed=0)
+    result.assert_outcomes(passed=3, skipped=2, failed=0)
     result.stdout.fnmatch_lines("""
         test_order_cycles.py::test_a PASSED
         test_order_cycles.py::test_c PASSED
+        test_order_cycles.py::test_e PASSED
         test_order_cycles.py::test_b SKIPPED
         test_order_cycles.py::test_d SKIPPED
     """)
@@ -144,4 +189,65 @@ def test_order_nesting(ctestdir):
         test_order_nesting.py::test_d PASSED
         test_order_nesting.py::test_b PASSED
         test_order_nesting.py::test_h PASSED
+    """)
+
+
+def test_order_scopes(ctestdir):
+    """
+    9 tests, with dependencies spread between 'module' and 'session' scopes.
+    """
+    ctestdir.makepyfile("""
+        import pytest
+
+        @pytest.mark.dependency()
+        def test_a():
+            pass
+
+        @pytest.mark.dependency(depends=["test_c"])
+        def test_b():
+            pass
+
+        @pytest.mark.dependency()
+        def test_c():
+            pass
+
+        @pytest.mark.dependency(depends=["test_order_scopes.py::test_e"], scope="session")
+        def test_d():
+            pass
+
+        @pytest.mark.dependency()
+        @pytest.mark.dependency(scope="session")
+        def test_e():
+            pass
+
+        @pytest.mark.dependency(depends=["test_g"])
+        @pytest.mark.dependency(depends=["test_order_scopes.py::test_e"], scope="session")
+        def test_f():
+            pass
+
+        @pytest.mark.dependency()
+        def test_g():
+            pass
+
+        @pytest.mark.dependency(depends=["test_order_scopes.py::test_i"], scope="session")
+        @pytest.mark.dependency(depends=["test_e"])
+        def test_h():
+            pass
+
+        @pytest.mark.dependency(scope="session")
+        def test_i():
+            pass
+    """)
+    result = ctestdir.runpytest("--verbose")
+    result.assert_outcomes(passed=9, skipped=0, failed=0)
+    result.stdout.fnmatch_lines("""
+        test_order_scopes.py::test_a PASSED
+        test_order_scopes.py::test_c PASSED
+        test_order_scopes.py::test_b PASSED
+        test_order_scopes.py::test_e PASSED
+        test_order_scopes.py::test_d PASSED
+        test_order_scopes.py::test_g PASSED
+        test_order_scopes.py::test_f PASSED
+        test_order_scopes.py::test_i PASSED
+        test_order_scopes.py::test_h PASSED
     """)
