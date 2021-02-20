@@ -90,7 +90,7 @@ setup(
         'Source Code': 'https://github.com/RKrahl/pytest-dependency',
     },
     py_modules=['pytest_dependency'],
-    install_requires=['pytest >= 3.6.0'],
+    install_requires=['pytest >= 3.7.0'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Pytest',
@@ -105,6 +105,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Operating System :: OS Independent',
         'License :: OSI Approved :: Apache Software License',
     ],
