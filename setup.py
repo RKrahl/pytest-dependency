@@ -6,14 +6,15 @@ some tests as dependent from other tests.  These tests will then be
 skipped if any of the dependencies did fail or has been skipped.
 """
 
-from distutils.cmd import Command as du_cmd
-import distutils.command.sdist
-import distutils.log
 import os
 import os.path
 import re
 import stat
 import string
+import setuptools
+from distutils.cmd import Command as du_cmd
+import distutils.command.sdist
+import distutils.log
 from setuptools import setup
 import setuptools.command.build_py
 try:
