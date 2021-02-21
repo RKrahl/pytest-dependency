@@ -21,8 +21,8 @@ Configuration file options can be set in the `ini file`.
 
 minversion
    This is a builtin configuration option of pytest itself.  Since
-   pytest-dependency requires pytest 3.6.0 or newer, it is recommended
-   to set this option accordingly, either to 3.6.0 or to a newer
+   pytest-dependency requires pytest 3.7.0 or newer, it is recommended
+   to set this option accordingly, either to 3.7.0 or to a newer
    version, if required by your test code.
 
 automark_dependency

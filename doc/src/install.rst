@@ -6,7 +6,7 @@ System requirements
 
 + Python 2.7 or 3.4 and newer.
 + `setuptools`_.
-+ `pytest`_ 3.6.0 or newer.
++ `pytest`_ 3.7.0 or newer.
 
 
 .. _install-other-packages:
