@@ -23,9 +23,9 @@ def test_not_set(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose", "-rs")
     result.assert_outcomes(passed=1, skipped=1, failed=0)
-    result.stdout.fnmatch_lines("""
-        *::test_a PASSED
-        *::test_b SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_b SKIPPED(?:\s+\(.*\))?
     """)
 
 
@@ -53,9 +53,9 @@ def test_set_false(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose", "-rs")
     result.assert_outcomes(passed=1, skipped=1, failed=0)
-    result.stdout.fnmatch_lines("""
-        *::test_a PASSED
-        *::test_b SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_b SKIPPED(?:\s+\(.*\))?
     """)
 
 
@@ -83,7 +83,7 @@ def test_set_true(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose", "-rs")
     result.assert_outcomes(passed=2, skipped=0, failed=0)
-    result.stdout.fnmatch_lines("""
-        *::test_a PASSED
-        *::test_b PASSED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_b PASSED
     """)

@@ -29,11 +29,11 @@ def test_simple(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose", "-rs")
     result.assert_outcomes(passed=1, skipped=2, failed=1)
-    result.stdout.fnmatch_lines("""
-        *::test_a PASSED
-        *::test_b FAILED
-        *::test_c SKIPPED
-        *::test_d SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_b FAILED
+        .*::test_c SKIPPED(?:\s+\(.*\))?
+        .*::test_d SKIPPED(?:\s+\(.*\))?
     """)
     result.stdout.fnmatch_lines_random("""
         SKIP* test_c depends on test_b
