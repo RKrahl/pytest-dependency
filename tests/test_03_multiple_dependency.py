@@ -53,16 +53,16 @@ def test_multiple(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=5, skipped=5, failed=1)
-    result.stdout.fnmatch_lines("""
-        *::test_a SKIPPED
-        *::test_b FAILED
-        *::test_c PASSED
-        *::test_d PASSED
-        *::test_e PASSED
-        *::test_f SKIPPED
-        *::test_g SKIPPED
-        *::test_h PASSED
-        *::test_i SKIPPED
-        *::test_j PASSED
-        *::test_k SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::test_a SKIPPED(?:\s+\(.*\))?
+        .*::test_b FAILED
+        .*::test_c PASSED
+        .*::test_d PASSED
+        .*::test_e PASSED
+        .*::test_f SKIPPED(?:\s+\(.*\))?
+        .*::test_g SKIPPED(?:\s+\(.*\))?
+        .*::test_h PASSED
+        .*::test_i SKIPPED(?:\s+\(.*\))?
+        .*::test_j PASSED
+        .*::test_k SKIPPED(?:\s+\(.*\))?
     """)

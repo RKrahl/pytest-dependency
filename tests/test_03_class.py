@@ -36,12 +36,12 @@ def test_class_simple(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=2, skipped=2, failed=1)
-    result.stdout.fnmatch_lines("""
-        *::TestClass::test_a FAILED
-        *::TestClass::test_b PASSED
-        *::TestClass::test_c SKIPPED
-        *::TestClass::test_d PASSED
-        *::TestClass::test_e SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::TestClass::test_a FAILED
+        .*::TestClass::test_b PASSED
+        .*::TestClass::test_c SKIPPED(?:\s+\(.*\))?
+        .*::TestClass::test_d PASSED
+        .*::TestClass::test_e SKIPPED(?:\s+\(.*\))?
     """)
 
 
@@ -77,12 +77,12 @@ def test_class_simple_named(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=2, skipped=2, failed=1)
-    result.stdout.fnmatch_lines("""
-        *::TestClassNamed::test_a FAILED
-        *::TestClassNamed::test_b PASSED
-        *::TestClassNamed::test_c SKIPPED
-        *::TestClassNamed::test_d PASSED
-        *::TestClassNamed::test_e SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::TestClassNamed::test_a FAILED
+        .*::TestClassNamed::test_b PASSED
+        .*::TestClassNamed::test_c SKIPPED(?:\s+\(.*\))?
+        .*::TestClassNamed::test_d PASSED
+        .*::TestClassNamed::test_e SKIPPED(?:\s+\(.*\))?
     """)
 
 
@@ -115,8 +115,8 @@ def test_class_default_name(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=1, skipped=1, failed=1)
-    result.stdout.fnmatch_lines("""
-        *::test_a FAILED
-        *::TestClass::test_a PASSED
-        *::test_b SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::test_a FAILED
+        .*::TestClass::test_a PASSED
+        .*::test_b SKIPPED(?:\s+\(.*\))?
     """)

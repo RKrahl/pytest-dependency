@@ -6,14 +6,15 @@ some tests as dependent from other tests.  These tests will then be
 skipped if any of the dependencies did fail or has been skipped.
 """
 
-from distutils.cmd import Command as du_cmd
-import distutils.command.sdist
-import distutils.log
 import os
 import os.path
 import re
 import stat
 import string
+import setuptools
+from distutils.cmd import Command as du_cmd
+import distutils.command.sdist
+import distutils.log
 from setuptools import setup
 import setuptools.command.build_py
 try:
@@ -90,7 +91,7 @@ setup(
         'Source Code': 'https://github.com/RKrahl/pytest-dependency',
     },
     py_modules=['pytest_dependency'],
-    install_requires=['pytest >= 3.6.0'],
+    install_requires=['pytest >= 3.7.0'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Pytest',
@@ -105,6 +106,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Operating System :: OS Independent',
         'License :: OSI Approved :: Apache Software License',
     ],

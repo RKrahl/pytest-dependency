@@ -4,11 +4,13 @@ History of changes to pytest-dependency
 dev (not yet released)
     Bug fixes and minor changes
       + `#40`_: add logging.
+      + `#50`_, `#51`_: test suite incompatibility with pytest 6.2.0.
 
 .. _#40: https://github.com/RKrahl/pytest-dependency/issues/40
+.. _#50: https://github.com/RKrahl/pytest-dependency/issues/50
+.. _#51: https://github.com/RKrahl/pytest-dependency/pull/51
 
 0.5.1 (2020-02-14)
-
     Bug fixes and minor changes
       + Fix failing documentation build.
 
@@ -16,6 +18,9 @@ dev (not yet released)
     New features
       + `#3`_, `#35`_: add a scope to dependencies.
         (Thanks to JoeSc and selenareneephillips!)
+
+    Incompatible changes
+      + Require pytest version 3.7.0 or newer.
 
     Bug fixes and minor changes
       + `#34`_: failing test with pytest 4.2.0 and newer.

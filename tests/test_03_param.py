@@ -39,18 +39,18 @@ def test_multiple(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=7, skipped=5, failed=1)
-    result.stdout.fnmatch_lines("""
-        *::test_a?0-0? PASSED
-        *::test_a?0-1? PASSED
-        *::test_a?1-0? PASSED
-        *::test_a?1-1? FAILED
-        *::test_b?1-2? PASSED
-        *::test_b?1-3? PASSED
-        *::test_b?1-4? SKIPPED
-        *::test_b?2-3? PASSED
-        *::test_b?2-4? SKIPPED
-        *::test_b?3-4? SKIPPED
-        *::test_c?1? SKIPPED
-        *::test_c?2? SKIPPED
-        *::test_c?3? PASSED
+    result.stdout.re_match_lines(r"""
+        .*::test_a\[0-0\] PASSED
+        .*::test_a\[0-1\] PASSED
+        .*::test_a\[1-0\] PASSED
+        .*::test_a\[1-1\] FAILED
+        .*::test_b\[1-2\] PASSED
+        .*::test_b\[1-3\] PASSED
+        .*::test_b\[1-4\] SKIPPED(?:\s+\(.*\))?
+        .*::test_b\[2-3\] PASSED
+        .*::test_b\[2-4\] SKIPPED(?:\s+\(.*\))?
+        .*::test_b\[3-4\] SKIPPED(?:\s+\(.*\))?
+        .*::test_c\[1\] SKIPPED(?:\s+\(.*\))?
+        .*::test_c\[2\] SKIPPED(?:\s+\(.*\))?
+        .*::test_c\[3\] PASSED
     """)

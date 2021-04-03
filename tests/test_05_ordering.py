@@ -47,14 +47,14 @@ def test_order_standard(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=7, skipped=0, failed=0)
-    result.stdout.fnmatch_lines("""
-        test_order_standard.py::test_a PASSED
-        test_order_standard.py::test_c PASSED
-        test_order_standard.py::test_d PASSED
-        test_order_standard.py::test_e PASSED
-        test_order_standard.py::test_f PASSED
-        test_order_standard.py::test_b PASSED
-        test_order_standard.py::test_g PASSED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_c PASSED
+        .*::test_d PASSED
+        .*::test_e PASSED
+        .*::test_f PASSED
+        .*::test_b PASSED
+        .*::test_g PASSED
     """)
 
 
@@ -89,12 +89,12 @@ def test_order_missing(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=3, skipped=2, failed=0)
-    result.stdout.fnmatch_lines("""
-        test_order_missing.py::test_a PASSED
-        test_order_missing.py::test_c PASSED
-        test_order_missing.py::test_e PASSED
-        test_order_missing.py::test_b SKIPPED
-        test_order_missing.py::test_d SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_c PASSED
+        .*::test_e PASSED
+        .*::test_b SKIPPED(?:\s+\(.*\))?
+        .*::test_d SKIPPED(?:\s+\(.*\))?
     """)
 
 
@@ -129,12 +129,12 @@ def test_order_cycles(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=3, skipped=2, failed=0)
-    result.stdout.fnmatch_lines("""
-        test_order_cycles.py::test_a PASSED
-        test_order_cycles.py::test_c PASSED
-        test_order_cycles.py::test_e PASSED
-        test_order_cycles.py::test_b SKIPPED
-        test_order_cycles.py::test_d SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_c PASSED
+        .*::test_e PASSED
+        .*::test_b SKIPPED(?:\s+\(.*\))?
+        .*::test_d SKIPPED(?:\s+\(.*\))?
     """)
 
 
@@ -180,15 +180,15 @@ def test_order_nesting(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=8, skipped=0, failed=0)
-    result.stdout.fnmatch_lines("""
-        test_order_nesting.py::test_a PASSED
-        test_order_nesting.py::test_c PASSED
-        test_order_nesting.py::test_e PASSED
-        test_order_nesting.py::test_g PASSED
-        test_order_nesting.py::test_f PASSED
-        test_order_nesting.py::test_d PASSED
-        test_order_nesting.py::test_b PASSED
-        test_order_nesting.py::test_h PASSED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_c PASSED
+        .*::test_e PASSED
+        .*::test_g PASSED
+        .*::test_f PASSED
+        .*::test_d PASSED
+        .*::test_b PASSED
+        .*::test_h PASSED
     """)
 
 
@@ -240,14 +240,14 @@ def test_order_scopes(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=9, skipped=0, failed=0)
-    result.stdout.fnmatch_lines("""
-        test_order_scopes.py::test_a PASSED
-        test_order_scopes.py::test_c PASSED
-        test_order_scopes.py::test_b PASSED
-        test_order_scopes.py::test_e PASSED
-        test_order_scopes.py::test_d PASSED
-        test_order_scopes.py::test_g PASSED
-        test_order_scopes.py::test_f PASSED
-        test_order_scopes.py::test_i PASSED
-        test_order_scopes.py::test_h PASSED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_c PASSED
+        .*::test_b PASSED
+        .*::test_e PASSED
+        .*::test_d PASSED
+        .*::test_g PASSED
+        .*::test_f PASSED
+        .*::test_i PASSED
+        .*::test_h PASSED
     """)

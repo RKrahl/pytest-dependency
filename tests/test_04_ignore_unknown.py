@@ -32,8 +32,8 @@ def test_no_ignore(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose", "test_no_ignore.py::test_d")
     result.assert_outcomes(passed=0, skipped=1, failed=0)
-    result.stdout.fnmatch_lines("""
-        *::test_d SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::test_d SKIPPED(?:\s+\(.*\))?
     """)
 
 
@@ -68,6 +68,6 @@ def test_ignore(ctestdir):
     result = ctestdir.runpytest("--verbose", "--ignore-unknown-dependency",
                                 "test_ignore.py::test_d")
     result.assert_outcomes(passed=1, skipped=0, failed=0)
-    result.stdout.fnmatch_lines("""
-        *::test_d PASSED
+    result.stdout.re_match_lines(r"""
+        .*::test_d PASSED
     """)
