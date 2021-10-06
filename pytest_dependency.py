@@ -143,7 +143,10 @@ def pytest_addoption(parser):
     parser.addini("automark_dependency", 
                   "Add the dependency marker to all tests automatically", 
                   default=False)
-    parser.addoption("--ignore-unknown-dependency", 
+    parser.addini("collect_dependencies",
+                  "Collect the dependent' tests",
+                  default=False)
+    parser.addoption("--ignore-unknown-dependency",
                      action="store_true", default=False, 
                      help="ignore dependencies whose outcome is not known")
 
@@ -184,3 +187,28 @@ def pytest_runtest_setup(item):
             scope = marker.kwargs.get('scope', 'module')
             manager = DependencyManager.getManager(item, scope=scope)
             manager.checkDepend(depends, item)
+
+
+def collect_dependencies(item, items):
+    dependencies = list()
+    markers = item.own_markers
+    for marker in markers:
+        depends = marker.kwargs.get('depends')
+        parent = item.parent
+        if marker.name == 'dependency' and depends:
+            for depend in depends:
+                dependencies.append((depend, parent))
+
+        for dependency, parent in dependencies:
+            if dependency not in [item_i.name for item_i in items]:
+                item_to_add = pytest.Function.from_parent(name=dependency, parent=parent)
+                items.insert(0, item_to_add)
+                # recursive look for dependencies into item_to_add
+                collect_dependencies(item_to_add, items)
+        return
+
+
+def pytest_collection_modifyitems(config, items):
+    if _get_bool(config.getini('collect_dependencies')):
+        for item in items:
+            collect_dependencies(item, items)
