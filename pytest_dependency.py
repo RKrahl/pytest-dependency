@@ -4,6 +4,8 @@ __version__ = "$VERSION"
 
 import logging
 import pytest
+from _pytest.python import Module
+import py
 
 logger = logging.getLogger(__name__)
 
@@ -194,14 +196,25 @@ def collect_dependencies(item, items):
     markers = item.own_markers
     for marker in markers:
         depends = marker.kwargs.get('depends')
-        parent = item.parent
+        scope = marker.kwargs.get('scope')
         if marker.name == 'dependency' and depends:
             for depend in depends:
-                dependencies.append((depend, parent))
+                if scope == 'session' or scope == 'package':
+                    depend_module, depend_func = depend.split("::", 1)
+                    depend_path = py.path.local(depend_module)
+                    depend_parent = Module.from_parent(item.parent, fspath=depend_path)
+                    depend_nodeid = depend
+                else:
+                    depend_func = depend
+                    depend_parent = item.parent
+                    depend_nodeid = '{}::{}'.format(depend_parent.nodeid, depend_func)
+                    # assert depend_nodeid == depend_nodeid2
+                dependencies.append((depend_func, depend_nodeid, depend_parent))
 
-        for dependency, parent in dependencies:
-            if dependency not in [item_i.name for item_i in items]:
-                item_to_add = pytest.Function.from_parent(name=dependency, parent=parent)
+        for depend_func, depend_nodeid, depend_parent in dependencies:
+            list_of_items_nodeid = [item_i.nodeid for item_i in items]
+            if depend_nodeid not in list_of_items_nodeid:
+                item_to_add = pytest.Function.from_parent(name=depend_func, parent=depend_parent)
                 items.insert(0, item_to_add)
                 # recursive look for dependencies into item_to_add
                 collect_dependencies(item_to_add, items)
