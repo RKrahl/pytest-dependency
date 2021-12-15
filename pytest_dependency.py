@@ -3,6 +3,7 @@
 __version__ = "$VERSION"
 
 import logging
+from pathlib import Path
 
 import py
 import pytest
@@ -192,7 +193,7 @@ def pytest_runtest_setup(item):
             manager.checkDepend(depends, item)
 
 
-def collect_dependencies(item, items):
+def collect_dependencies(config, item, items):
     dependencies = list()
     markers = item.own_markers
     for marker in markers:
@@ -202,7 +203,7 @@ def collect_dependencies(item, items):
             for depend in depends:
                 if scope == 'session' or scope == 'package':
                     depend_module, depend_func = depend.split("::", 1)
-                    depend_path = py.path.local(depend_module)
+                    depend_path = py.path.local(Path(config.rootdir) / Path(depend_module))
                     depend_parent = Module.from_parent(item.parent, fspath=depend_path)
                     depend_nodeid = depend
                 else:
@@ -218,11 +219,11 @@ def collect_dependencies(item, items):
                 item_to_add = pytest.Function.from_parent(name=depend_func, parent=depend_parent)
                 items.insert(0, item_to_add)
                 # recursive look for dependencies into item_to_add
-                collect_dependencies(item_to_add, items)
+                collect_dependencies(config, item_to_add, items)
         return
 
 
 def pytest_collection_modifyitems(config, items):
     if _get_bool(config.getini('collect_dependencies')):
         for item in items:
-            collect_dependencies(item, items)
+            collect_dependencies(config, item, items)
