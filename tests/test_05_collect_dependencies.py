@@ -151,7 +151,6 @@ def test_collect_dependencies_true_recursive(ctestdir):
             pass
     """)
     result = ctestdir.runpytest("--verbose", "test_collect_dependencies_true_recursive.py::test_d")
-    print(result)
     result.assert_outcomes(passed=4, skipped=0, failed=0)
     result.stdout.re_match_lines(r"""
             .*::test_a PASSED
@@ -266,7 +265,6 @@ def test_scope_session_collect_dependencies_true_single_test_run_1(ctestdir):
     """)
 
     result = ctestdir.runpytest("--verbose", "test_scope_session_02.py::test_b")
-    print(result)
     result.assert_outcomes(passed=2, skipped=0, failed=0)
     result.stdout.re_match_lines(r"""
             test_scope_session_01.py::test_a PASSED
@@ -306,7 +304,6 @@ def test_scope_session_collect_dependencies_true_single_test_run_2(ctestdir):
     """)
 
     result = ctestdir.runpytest("--verbose", "test_scope_session_02.py::test_b")
-    print(result)
     result.assert_outcomes(passed=3, skipped=0, failed=0)
     result.stdout.re_match_lines(r"""
             test_scope_session_02.py::test_a PASSED
@@ -351,7 +348,6 @@ def test_scope_session_collect_dependencies_true_single_test_run_3(ctestdir):
     """)
 
     result = ctestdir.runpytest("--verbose", "test_scope_session_02.py::test_b")
-    print(result)
     result.assert_outcomes(passed=4, skipped=0, failed=0)
     result.stdout.re_match_lines(r"""
             test_scope_session_02.py::test_a PASSED
@@ -429,7 +425,6 @@ def test_scope_session_collect_dependencies_true_single_test_run_4a(ctestdir):
             pass
     """)
     result = ctestdir.runpytest("--verbose", "test_scope_session_02.py::test_e")
-    print(result)
     result.assert_outcomes(passed=3, skipped=0, failed=0)
     result.stdout.re_match_lines(r"""
         test_scope_session_01.py::test_c PASSED
@@ -503,7 +498,6 @@ def test_scope_session_collect_dependencies_true_single_test_run_4b(ctestdir):
             pass
     """)
     result = ctestdir.runpytest("--verbose", "test_scope_session_02.py::test_e", "--order-dependencies")
-    print(result)
     result.assert_outcomes(passed=3, skipped=0, failed=0)
     result.stdout.re_match_lines(r"""
         test_scope_session_01.py::test_a PASSED
