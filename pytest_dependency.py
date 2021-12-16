@@ -3,7 +3,11 @@
 __version__ = "$VERSION"
 
 import logging
+from pathlib import Path
+
+import py
 import pytest
+from _pytest.python import Module
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +36,7 @@ class DependencyItemStatus(object):
     Phases = ('setup', 'call', 'teardown')
 
     def __init__(self):
-        self.results = { w:None for w in self.Phases }
+        self.results = {w: None for w in self.Phases}
 
     def __str__(self):
         l = ["%s: %s" % (w, self.results[w]) for w in self.Phases]
@@ -140,11 +144,14 @@ def depends(request, other, scope='module'):
 
 
 def pytest_addoption(parser):
-    parser.addini("automark_dependency", 
-                  "Add the dependency marker to all tests automatically", 
+    parser.addini("automark_dependency",
+                  "Add the dependency marker to all tests automatically",
                   default=False)
-    parser.addoption("--ignore-unknown-dependency", 
-                     action="store_true", default=False, 
+    parser.addini("collect_dependencies",
+                  "Collect the dependent' tests",
+                  default=False)
+    parser.addoption("--ignore-unknown-dependency",
+                     action="store_true", default=False,
                      help="ignore dependencies whose outcome is not known")
 
 
@@ -152,7 +159,7 @@ def pytest_configure(config):
     global _automark, _ignore_unknown
     _automark = _get_bool(config.getini("automark_dependency"))
     _ignore_unknown = config.getoption("--ignore-unknown-dependency")
-    config.addinivalue_line("markers", 
+    config.addinivalue_line("markers",
                             "dependency(name=None, depends=[]): "
                             "mark a test to be used as a dependency for "
                             "other tests or to depend on other tests.")
@@ -184,3 +191,39 @@ def pytest_runtest_setup(item):
             scope = marker.kwargs.get('scope', 'module')
             manager = DependencyManager.getManager(item, scope=scope)
             manager.checkDepend(depends, item)
+
+
+def collect_dependencies(config, item, items):
+    dependencies = list()
+    markers = item.own_markers
+    for marker in markers:
+        depends = marker.kwargs.get('depends')
+        scope = marker.kwargs.get('scope')
+        if marker.name == 'dependency' and depends:
+            for depend in depends:
+                if scope == 'session' or scope == 'package':
+                    depend_module, depend_func = depend.split("::", 1)
+                    depend_path = py.path.local(Path(config.rootdir) / Path(depend_module))
+                    depend_parent = Module.from_parent(item.parent, fspath=depend_path)
+                    depend_nodeid = depend
+                else:
+                    depend_func = depend
+                    depend_parent = item.parent
+                    depend_nodeid = '{}::{}'.format(depend_parent.nodeid, depend_func)
+                    # assert depend_nodeid == depend_nodeid2
+                dependencies.append((depend_func, depend_nodeid, depend_parent))
+
+        for depend_func, depend_nodeid, depend_parent in dependencies:
+            list_of_items_nodeid = [item_i.nodeid for item_i in items]
+            if depend_nodeid not in list_of_items_nodeid:
+                item_to_add = pytest.Function.from_parent(name=depend_func, parent=depend_parent)
+                items.insert(0, item_to_add)
+                # recursive look for dependencies into item_to_add
+                collect_dependencies(config, item_to_add, items)
+        return
+
+
+def pytest_collection_modifyitems(config, items):
+    if _get_bool(config.getini('collect_dependencies')):
+        for item in items:
+            collect_dependencies(config, item, items)

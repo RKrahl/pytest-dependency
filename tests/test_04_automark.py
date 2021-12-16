@@ -60,7 +60,7 @@ def test_set_false(ctestdir):
 
 
 def test_set_true(ctestdir):
-    """A pytest.ini is present, automark_dependency is set to false.
+    """A pytest.ini is present, automark_dependency is set to true.
 
     Since automark_dependency is set to true, the outcome of test_a
     will be recorded, even though it is not marked.  As a result,
