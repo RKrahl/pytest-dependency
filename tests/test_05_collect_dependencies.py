@@ -429,6 +429,7 @@ def test_scope_session_collect_dependencies_true_single_test_run_4a(ctestdir):
     """)
 
 
+@pytest.mark.skip(reason="This test requires the pytest-order package")
 def test_scope_session_collect_dependencies_true_single_test_run_4b(ctestdir):
     """Two modules, some cross module dependencies in session scope.
     """
