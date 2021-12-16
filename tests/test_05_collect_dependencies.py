@@ -78,8 +78,6 @@ def test_collect_dependencies_false(ctestdir):
     """)
 
 
-
-
 def test_collect_dependencies_true(ctestdir):
     """A pytest.ini is present, collect_dependencies is set to true.
 
@@ -238,6 +236,7 @@ def test_scope_session_collect_dependencies_true(ctestdir):
         test_scope_session_02.py::test_h PASSED
     """)
 
+
 def test_scope_session_collect_dependencies_true_single_test_run_1(ctestdir):
     """Two modules, some cross module dependencies in session scope.
     """
@@ -355,9 +354,6 @@ def test_scope_session_collect_dependencies_true_single_test_run_3(ctestdir):
             test_scope_session_01.py::test_b PASSED
             test_scope_session_02.py::test_b PASSED
         """)
-
-
-
 
 
 def test_scope_session_collect_dependencies_true_single_test_run_4a(ctestdir):
