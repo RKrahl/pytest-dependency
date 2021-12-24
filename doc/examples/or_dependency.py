@@ -5,7 +5,7 @@ def depends_or(request, other, scope='module'):
     """Add dependency on any of the other tests.
 
     Call pytest.skip() unless a successful outcome of any of the tests
-    in other has been registered previously.  This helper is similar
+    in `other` has been registered previously.  This helper is similar
     to `pytest_dependency.depends()`.  It takes the same arguments.
     But while `pytest_dependency.depends()` combines the tests in
     `other` in an and-like manner, it skips the current test unless
