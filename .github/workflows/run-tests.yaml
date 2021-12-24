@@ -32,4 +32,4 @@ jobs:
       - name: Test with pytest
         run: |
           export PYTHONPATH=$(pwd)/build/lib
-          python -m pytest
+          python -m pytest tests
