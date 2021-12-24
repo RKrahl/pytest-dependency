@@ -1,9 +1,9 @@
-|travis| |rtd| |pypi|
+|gh-test| |rtd| |pypi|
 
-.. |travis| image:: https://img.shields.io/travis/com/RKrahl/pytest-dependency
-   :target: https://travis-ci.com/RKrahl/pytest-dependency
-   :alt: Travis build status
-
+.. |gh-test| image:: https://github.com/RKrahl/pytest-dependency/actions/workflows/run-tests.yaml/badge.svg
+   :target: https://github.com/RKrahl/pytest-dependency/actions/workflows/run-tests.yaml
+   :alt: GitHub Workflow Status
+	 
 .. |rtd| image:: https://img.shields.io/readthedocs/pytest-dependency/latest
    :target: https://pytest-dependency.readthedocs.io/en/latest/
    :alt: Documentation build status

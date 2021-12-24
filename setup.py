@@ -39,7 +39,7 @@ class copy_file_mixin:
     does some substitutions on the fly into distutils command class
     hierarchy.
     """
-    Subst_srcs = {"pytest_dependency.py"}
+    Subst_srcs = {"src/pytest_dependency.py"}
     Subst = {'DOC': doc_string, 'VERSION': version}
     def copy_file(self, infile, outfile, preserve_mode=1, preserve_times=1,
                   link=None, level=1):
@@ -90,6 +90,7 @@ setup(
         'Documentation': 'https://pytest-dependency.readthedocs.io/',
         'Source Code': 'https://github.com/RKrahl/pytest-dependency',
     },
+    package_dir = {'': 'src'},
     py_modules=['pytest_dependency'],
     install_requires=['pytest >= 3.7.0'],
     classifiers=[
@@ -107,6 +108,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Operating System :: OS Independent',
         'License :: OSI Approved :: Apache Software License',
     ],
