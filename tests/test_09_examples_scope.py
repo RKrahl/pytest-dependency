@@ -27,7 +27,7 @@ def test_scope_module(ctestdir):
 def test_scope_session(ctestdir):
     """Dependencies in session scope
     """
-    subdir = Path(ctestdir.tmpdir) / "tests"
+    subdir = Path(str(ctestdir.tmpdir)) / "tests"
     subdir.mkdir()
     with get_example("scope_session_mod_01.py").open("rt") as sf:
         with (subdir / "test_mod_01.py").open("wt") as df:
