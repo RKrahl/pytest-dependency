@@ -80,3 +80,31 @@ It requires the parameter values to be scalars that can easily be
 converted to strings.  And it will fail if the same list of parameters
 is passed to the same test more then once, because then, pytest will
 add an index to the name to disambiguate the parameter values.
+
+Logical combinations of dependencies
+------------------------------------
+
+The dependencies passed as in the `depends` argument to the
+:func:`pytest.mark.dependency` marker are combined in an and-like
+manner: the current test is skipped unless *all* dependencies did
+succeed.  Sometimes one may want to combine the dependencies in a
+different way.  This is not supported by pytest-dependency out of the
+box, but it is not difficult to implement.  Consider the following
+example:
+
+.. literalinclude:: ../examples/or_dependency.py
+
+The helper function `depends_or()` is similar to
+:func:`pytest_dependency.depends`, it takes the same arguments.  The
+only difference is that it combines the dependencies passed in the
+`other` argument in an or-like manner: the current test will be run if
+*at least one* of the other tests did succeed.
+
+The tests `test_c`, `test_d`, `test_e`, and `test_f` in this example
+all depend on two other tests.  Only `test_c` will be skipped, because
+all tests in its dependency list fail.  The other ones are run,
+because they have at least one succeeding test in their dependency
+list.
+
+Other logical combinations of dependencies are conceivable and may be
+implemented in a similar way, according to the use case at hand.
