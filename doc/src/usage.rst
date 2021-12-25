@@ -21,7 +21,7 @@ test, we will get the following result:
 .. literalinclude:: ../examples/basic.out
 
 The first test has deliberately been set to fail to illustrate the
-effect.  We will get the following resuts:
+effect.  We will get the following results:
 
 `test_a`
   deliberately fails.
