@@ -1,6 +1,21 @@
+import packaging.version
+from pathlib import Path
 import pytest
 
 pytest_plugins = "pytester"
+
+example_dir = (Path(__file__).parent / "../doc/examples").resolve()
+
+def require_pytest_version(minversion):
+    pytest_version = packaging.version.parse(pytest.__version__)
+    if pytest_version < packaging.version.parse(minversion):
+        pytest.skip("need pytest version %s or newer" % minversion,
+                    allow_module_level=True)
+
+def get_example(fname):
+    path = example_dir / fname
+    assert path.is_file()
+    return path
 
 
 @pytest.fixture
