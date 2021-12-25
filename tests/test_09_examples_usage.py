@@ -60,6 +60,21 @@ def test_testclass(ctestdir):
     """)
 
 
+def test_mark_class(ctestdir):
+    """Applying the dependency marker to a class as a whole
+    """
+    with get_example("mark-class.py").open("rt") as f:
+        ctestdir.makepyfile(f.read())
+    result = ctestdir.runpytest("--verbose")
+    result.assert_outcomes(passed=1, skipped=2, failed=0, xfailed=1)
+    result.stdout.re_match_lines(r"""
+        .*::test_f XFAIL(?:\s+\(.*\))?
+        .*::TestClass::test_a SKIPPED(?:\s+\(.*\))?
+        .*::TestClass::test_b PASSED
+        .*::TestClass::test_c SKIPPED(?:\s+\(.*\))?
+    """)
+
+
 def test_parametrized(ctestdir):
     """Parametrized tests
     """
