@@ -1,0 +1,72 @@
+$ pytest --log-cli-format='%(levelname)s: %(message)s' --log-cli-level=DEBUG debugging.py
+============================= test session starts ==============================
+platform linux -- Python 3.10.1, pytest-6.2.5, py-1.11.0, pluggy-1.0.0
+rootdir: /home/user
+plugins: dependency-0.5.1
+collected 5 items
+
+debugging.py::test_a 
+-------------------------------- live log setup --------------------------------
+DEBUG: register setup debugging.py::test_a passed in session scope
+DEBUG: register setup test_a passed in module scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::test_a skipped in session scope
+DEBUG: register call test_a skipped in module scope
+XFAIL (deliberate fail)                                                  [ 20%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_a passed in session scope
+DEBUG: register teardown test_a passed in module scope
+
+debugging.py::test_b 
+-------------------------------- live log setup --------------------------------
+DEBUG: register setup debugging.py::test_b passed in session scope
+DEBUG: register setup test_b passed in module scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::test_b passed in session scope
+DEBUG: register call test_b passed in module scope
+PASSED                                                                   [ 40%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_b passed in session scope
+DEBUG: register teardown test_b passed in module scope
+
+debugging.py::test_c 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_c in module scope ...
+DEBUG: ... test_a has not succeeded
+INFO: skip test_c because it depends on test_a
+DEBUG: register setup debugging.py::test_c skipped in session scope
+DEBUG: register setup test_c skipped in module scope
+SKIPPED (test_c depends on test_a)                                       [ 60%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_c passed in session scope
+DEBUG: register teardown test_c passed in module scope
+
+debugging.py::test_d 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_d in module scope ...
+DEBUG: ... test_b succeeded
+DEBUG: register setup debugging.py::test_d passed in session scope
+DEBUG: register setup test_d passed in module scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::test_d passed in session scope
+DEBUG: register call test_d passed in module scope
+PASSED                                                                   [ 80%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_d passed in session scope
+DEBUG: register teardown test_d passed in module scope
+
+debugging.py::test_e 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_e in module scope ...
+DEBUG: ... test_b succeeded
+DEBUG: ... test_c has not succeeded
+INFO: skip test_e because it depends on test_c
+DEBUG: register setup debugging.py::test_e skipped in session scope
+DEBUG: register setup test_e skipped in module scope
+SKIPPED (test_e depends on test_c)                                       [100%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_e passed in session scope
+DEBUG: register teardown test_e passed in module scope
+
+
+=================== 2 passed, 2 skipped, 1 xfailed in 0.03s ====================

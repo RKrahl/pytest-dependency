@@ -1,0 +1,15 @@
+$ pytest --verbose debugging.py
+============================= test session starts ==============================
+platform linux -- Python 3.10.1, pytest-6.2.5, py-1.11.0, pluggy-1.0.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/user
+plugins: dependency-0.5.1
+collecting ... collected 5 items
+
+debugging.py::test_a XFAIL (deliberate fail)                             [ 20%]
+debugging.py::test_b PASSED                                              [ 40%]
+debugging.py::test_c SKIPPED (test_c depends on test_a)                  [ 60%]
+debugging.py::test_d PASSED                                              [ 80%]
+debugging.py::test_e SKIPPED (test_e depends on test_c)                  [100%]
+
+=================== 2 passed, 2 skipped, 1 xfailed in 0.03s ====================
