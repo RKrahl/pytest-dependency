@@ -2,8 +2,8 @@ $ pytest --log-cli-format='%(levelname)s: %(message)s' --log-cli-level=DEBUG deb
 ============================= test session starts ==============================
 platform linux -- Python 3.10.1, pytest-6.2.5, py-1.11.0, pluggy-1.0.0
 rootdir: /home/user
-plugins: dependency-0.5.1
-collected 5 items
+plugins: dependency-0.6.0
+collected 25 items
 
 debugging.py::test_a 
 -------------------------------- live log setup --------------------------------
@@ -12,7 +12,7 @@ DEBUG: register setup test_a passed in module scope
 -------------------------------- live log call ---------------------------------
 DEBUG: register call debugging.py::test_a skipped in session scope
 DEBUG: register call test_a skipped in module scope
-XFAIL (deliberate fail)                                                  [ 20%]
+XFAIL (deliberate fail)                                                  [  4%]
 ------------------------------ live log teardown -------------------------------
 DEBUG: register teardown debugging.py::test_a passed in session scope
 DEBUG: register teardown test_a passed in module scope
@@ -24,7 +24,7 @@ DEBUG: register setup test_b passed in module scope
 -------------------------------- live log call ---------------------------------
 DEBUG: register call debugging.py::test_b passed in session scope
 DEBUG: register call test_b passed in module scope
-PASSED                                                                   [ 40%]
+PASSED                                                                   [  8%]
 ------------------------------ live log teardown -------------------------------
 DEBUG: register teardown debugging.py::test_b passed in session scope
 DEBUG: register teardown test_b passed in module scope
@@ -36,7 +36,7 @@ DEBUG: ... test_a has not succeeded
 INFO: skip test_c because it depends on test_a
 DEBUG: register setup debugging.py::test_c skipped in session scope
 DEBUG: register setup test_c skipped in module scope
-SKIPPED (test_c depends on test_a)                                       [ 60%]
+SKIPPED (test_c depends on test_a)                                       [ 12%]
 ------------------------------ live log teardown -------------------------------
 DEBUG: register teardown debugging.py::test_c passed in session scope
 DEBUG: register teardown test_c passed in module scope
@@ -50,7 +50,7 @@ DEBUG: register setup test_d passed in module scope
 -------------------------------- live log call ---------------------------------
 DEBUG: register call debugging.py::test_d passed in session scope
 DEBUG: register call test_d passed in module scope
-PASSED                                                                   [ 80%]
+PASSED                                                                   [ 16%]
 ------------------------------ live log teardown -------------------------------
 DEBUG: register teardown debugging.py::test_d passed in session scope
 DEBUG: register teardown test_d passed in module scope
@@ -63,10 +63,263 @@ DEBUG: ... test_c has not succeeded
 INFO: skip test_e because it depends on test_c
 DEBUG: register setup debugging.py::test_e skipped in session scope
 DEBUG: register setup test_e skipped in module scope
-SKIPPED (test_e depends on test_c)                                       [100%]
+SKIPPED (test_e depends on test_c)                                       [ 20%]
 ------------------------------ live log teardown -------------------------------
 DEBUG: register teardown debugging.py::test_e passed in session scope
 DEBUG: register teardown test_e passed in module scope
 
+debugging.py::TestClass::test_a 
+-------------------------------- live log setup --------------------------------
+DEBUG: register setup debugging.py::TestClass::test_a passed in session scope
+DEBUG: register setup TestClass::test_a passed in module scope
+DEBUG: register setup test_a passed in class scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::TestClass::test_a passed in session scope
+DEBUG: register call TestClass::test_a passed in module scope
+DEBUG: register call test_a passed in class scope
+PASSED                                                                   [ 24%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::TestClass::test_a passed in session scope
+DEBUG: register teardown TestClass::test_a passed in module scope
+DEBUG: register teardown test_a passed in class scope
 
-=================== 2 passed, 2 skipped, 1 xfailed in 0.03s ====================
+debugging.py::TestClass::test_b 
+-------------------------------- live log setup --------------------------------
+DEBUG: register setup debugging.py::TestClass::test_b passed in session scope
+DEBUG: register setup TestClass::test_b passed in module scope
+DEBUG: register setup test_b passed in class scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::TestClass::test_b skipped in session scope
+DEBUG: register call TestClass::test_b skipped in module scope
+DEBUG: register call test_b skipped in class scope
+XFAIL (deliberate fail)                                                  [ 28%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::TestClass::test_b passed in session scope
+DEBUG: register teardown TestClass::test_b passed in module scope
+DEBUG: register teardown test_b passed in class scope
+
+debugging.py::TestClass::test_c 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_c in module scope ...
+DEBUG: ... test_b succeeded
+DEBUG: register setup debugging.py::TestClass::test_c passed in session scope
+DEBUG: register setup TestClass::test_c passed in module scope
+DEBUG: register setup test_c passed in class scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::TestClass::test_c passed in session scope
+DEBUG: register call TestClass::test_c passed in module scope
+DEBUG: register call test_c passed in class scope
+PASSED                                                                   [ 32%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::TestClass::test_c passed in session scope
+DEBUG: register teardown TestClass::test_c passed in module scope
+DEBUG: register teardown test_c passed in class scope
+
+debugging.py::test_colors[RED] 
+-------------------------------- live log setup --------------------------------
+DEBUG: register setup debugging.py::test_colors[RED] passed in session scope
+DEBUG: register setup test_colors[RED] passed in module scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::test_colors[RED] passed in session scope
+DEBUG: register call test_colors[RED] passed in module scope
+PASSED                                                                   [ 36%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_colors[RED] passed in session scope
+DEBUG: register teardown test_colors[RED] passed in module scope
+
+debugging.py::test_colors[GREEN] 
+-------------------------------- live log setup --------------------------------
+DEBUG: register setup debugging.py::test_colors[GREEN] passed in session scope
+DEBUG: register setup test_colors[GREEN] passed in module scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::test_colors[GREEN] passed in session scope
+DEBUG: register call test_colors[GREEN] passed in module scope
+PASSED                                                                   [ 40%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_colors[GREEN] passed in session scope
+DEBUG: register teardown test_colors[GREEN] passed in module scope
+
+debugging.py::test_colors[BLUE] 
+-------------------------------- live log setup --------------------------------
+DEBUG: register setup debugging.py::test_colors[BLUE] passed in session scope
+DEBUG: register setup test_colors[BLUE] passed in module scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::test_colors[BLUE] passed in session scope
+DEBUG: register call test_colors[BLUE] passed in module scope
+PASSED                                                                   [ 44%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_colors[BLUE] passed in session scope
+DEBUG: register teardown test_colors[BLUE] passed in module scope
+
+debugging.py::test_multicolored 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_multicolored in module scope ...
+DEBUG: ... test_colors is unknown
+INFO: skip test_multicolored because it depends on test_colors
+DEBUG: register setup debugging.py::test_multicolored skipped in session scope
+DEBUG: register setup test_multicolored skipped in module scope
+SKIPPED (test_multicolored depends on test_colors)                       [ 48%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_multicolored passed in session scope
+DEBUG: register teardown test_multicolored passed in module scope
+
+debugging.py::test_alert 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_alert in module scope ...
+DEBUG: ... test_colors[Color.RED] is unknown
+INFO: skip test_alert because it depends on test_colors[Color.RED]
+DEBUG: register setup debugging.py::test_alert skipped in session scope
+DEBUG: register setup test_alert skipped in module scope
+SKIPPED (test_alert depends on test_colors[Color.RED])                   [ 52%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_alert passed in session scope
+DEBUG: register teardown test_alert passed in module scope
+
+debugging.py::test_g 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_g in module scope ...
+DEBUG: ... test_f is unknown
+INFO: skip test_g because it depends on test_f
+DEBUG: register setup debugging.py::test_g skipped in session scope
+DEBUG: register setup test_g skipped in module scope
+SKIPPED (test_g depends on test_f)                                       [ 56%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_g passed in session scope
+DEBUG: register teardown test_g passed in module scope
+
+debugging.py::test_h 
+-------------------------------- live log setup --------------------------------
+DEBUG: register setup h passed in session scope
+DEBUG: register setup h passed in module scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call h passed in session scope
+DEBUG: register call h passed in module scope
+PASSED                                                                   [ 60%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown h passed in session scope
+DEBUG: register teardown h passed in module scope
+
+debugging.py::test_k 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_k in module scope ...
+DEBUG: ... test_b succeeded
+DEBUG: register setup debugging.py::test_k passed in session scope
+DEBUG: register setup test_k passed in module scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::test_k skipped in session scope
+DEBUG: register call test_k skipped in module scope
+SKIPPED (could not import 'fleet': No module named 'fleet')              [ 64%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_k passed in session scope
+DEBUG: register teardown test_k passed in module scope
+
+debugging.py::test_l[0] 
+-------------------------------- live log setup --------------------------------
+DEBUG: register setup debugging.py::test_l[0] passed in session scope
+DEBUG: register setup test_l[0] passed in module scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::test_l[0] passed in session scope
+DEBUG: register call test_l[0] passed in module scope
+PASSED                                                                   [ 68%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_l[0] passed in session scope
+DEBUG: register teardown test_l[0] passed in module scope
+
+debugging.py::test_q[0] 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_q[0] in module scope ...
+DEBUG: ... test_p is unknown
+INFO: skip test_q[0] because it depends on test_p
+DEBUG: register setup debugging.py::test_q[0] skipped in session scope
+DEBUG: register setup test_q[0] skipped in module scope
+SKIPPED (test_q[0] depends on test_p)                                    [ 72%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_q[0] passed in session scope
+DEBUG: register teardown test_q[0] passed in module scope
+
+debugging.py::test_l[1] 
+-------------------------------- live log setup --------------------------------
+DEBUG: register setup debugging.py::test_l[1] passed in session scope
+DEBUG: register setup test_l[1] passed in module scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::test_l[1] passed in session scope
+DEBUG: register call test_l[1] passed in module scope
+PASSED                                                                   [ 76%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_l[1] passed in session scope
+DEBUG: register teardown test_l[1] passed in module scope
+
+debugging.py::test_q[1] 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_q[1] in module scope ...
+DEBUG: ... test_p is unknown
+INFO: skip test_q[1] because it depends on test_p
+DEBUG: register setup debugging.py::test_q[1] skipped in session scope
+DEBUG: register setup test_q[1] skipped in module scope
+SKIPPED (test_q[1] depends on test_p)                                    [ 80%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_q[1] passed in session scope
+DEBUG: register teardown test_q[1] passed in module scope
+
+debugging.py::test_m 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_m in session scope ...
+DEBUG: ... test_b is unknown
+INFO: skip test_m because it depends on test_b
+DEBUG: register setup debugging.py::test_m skipped in session scope
+DEBUG: register setup test_m skipped in module scope
+SKIPPED (test_m depends on test_b)                                       [ 84%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_m passed in session scope
+DEBUG: register teardown test_m passed in module scope
+
+debugging.py::test_o 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_o in module scope ...
+DEBUG: ... test_h is unknown
+INFO: skip test_o because it depends on test_h
+DEBUG: register setup debugging.py::test_o skipped in session scope
+DEBUG: register setup test_o skipped in module scope
+SKIPPED (test_o depends on test_h)                                       [ 88%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_o passed in session scope
+DEBUG: register teardown test_o passed in module scope
+
+debugging.py::test_p 
+-------------------------------- live log setup --------------------------------
+DEBUG: register setup debugging.py::test_p passed in session scope
+DEBUG: register setup test_p passed in module scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call debugging.py::test_p passed in session scope
+DEBUG: register call test_p passed in module scope
+PASSED                                                                   [ 92%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_p passed in session scope
+DEBUG: register teardown test_p passed in module scope
+
+debugging.py::test_r 
+-------------------------------- live log setup --------------------------------
+DEBUG: register setup r passed in session scope
+DEBUG: register setup r passed in module scope
+-------------------------------- live log call ---------------------------------
+DEBUG: register call r passed in session scope
+DEBUG: register call r passed in module scope
+PASSED                                                                   [ 96%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown r passed in session scope
+DEBUG: register teardown r passed in module scope
+
+debugging.py::test_s 
+-------------------------------- live log setup --------------------------------
+DEBUG: check dependencies of test_s in module scope ...
+DEBUG: ... test_l is unknown
+INFO: skip test_s because it depends on test_l
+DEBUG: register setup debugging.py::test_s skipped in session scope
+DEBUG: register setup test_s skipped in module scope
+SKIPPED (test_s depends on test_l)                                       [100%]
+------------------------------ live log teardown -------------------------------
+DEBUG: register teardown debugging.py::test_s passed in session scope
+DEBUG: register teardown test_s passed in module scope
+
+
+================== 12 passed, 11 skipped, 2 xfailed in 0.09s ===================

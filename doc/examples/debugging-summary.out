@@ -2,12 +2,21 @@ $ pytest -rs debugging.py
 ============================= test session starts ==============================
 platform linux -- Python 3.10.1, pytest-6.2.5, py-1.11.0, pluggy-1.0.0
 rootdir: /home/user
-plugins: dependency-0.5.1
-collected 5 items
+plugins: dependency-0.6.0
+collected 25 items
 
-debugging.py x.s.s                                                       [100%]
+debugging.py x.s.s.x....sss.s.s.sss..s                                   [100%]
 
 =========================== short test summary info ============================
-SKIPPED [1] /usr/lib/python3.10/site-packages/pytest_dependency.py:103: test_c depends on test_a
-SKIPPED [1] /usr/lib/python3.10/site-packages/pytest_dependency.py:103: test_e depends on test_c
-=================== 2 passed, 2 skipped, 1 xfailed in 0.02s ====================
+SKIPPED [1] /usr/lib/python3.10/site-packages/pytest_dependency.py:101: test_c depends on test_a
+SKIPPED [1] /usr/lib/python3.10/site-packages/pytest_dependency.py:101: test_e depends on test_c
+SKIPPED [1] /usr/lib/python3.10/site-packages/pytest_dependency.py:101: test_multicolored depends on test_colors
+SKIPPED [1] /usr/lib/python3.10/site-packages/pytest_dependency.py:101: test_alert depends on test_colors[Color.RED]
+SKIPPED [1] /usr/lib/python3.10/site-packages/pytest_dependency.py:101: test_g depends on test_f
+SKIPPED [1] debugging.py:15: could not import 'fleet': No module named 'fleet'
+SKIPPED [1] /usr/lib/python3.10/site-packages/pytest_dependency.py:101: test_q[0] depends on test_p
+SKIPPED [1] /usr/lib/python3.10/site-packages/pytest_dependency.py:101: test_q[1] depends on test_p
+SKIPPED [1] /usr/lib/python3.10/site-packages/pytest_dependency.py:101: test_m depends on test_b
+SKIPPED [1] /usr/lib/python3.10/site-packages/pytest_dependency.py:101: test_o depends on test_h
+SKIPPED [1] /usr/lib/python3.10/site-packages/pytest_dependency.py:101: test_s depends on test_l
+================== 12 passed, 11 skipped, 2 xfailed in 0.05s ===================
