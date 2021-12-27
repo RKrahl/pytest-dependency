@@ -108,3 +108,11 @@ list.
 
 Other logical combinations of dependencies are conceivable and may be
 implemented in a similar way, according to the use case at hand.
+
+.. note::
+   The `depends_or()` helper function above is based on pytest
+   internals: skipping of tests works by raising an exception and the
+   exception class is exposed as :attr:`pytest.skip.Exception`.  This
+   is not documented in pytest.  It has been tested to work for pytest
+   versions 3.7.0 through 6.2.5, but it is not guaranteed to be stable
+   for future pytest versions.
