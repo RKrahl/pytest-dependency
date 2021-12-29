@@ -2,9 +2,7 @@
 """
 
 import pytest
-from conftest import get_example, require_pytest_version
-
-require_pytest_version("4.2.0")
+from conftest import get_example
 
 
 def test_basic(ctestdir):
@@ -13,9 +11,12 @@ def test_basic(ctestdir):
     with get_example("basic.py").open("rt") as f:
         ctestdir.makepyfile(f.read())
     result = ctestdir.runpytest("--verbose")
-    result.assert_outcomes(passed=2, skipped=2, failed=0, xfailed=1)
+    try:
+        result.assert_outcomes(passed=2, skipped=2, failed=0, xfailed=1)
+    except TypeError:
+        result.assert_outcomes(passed=2, skipped=2, failed=0)
     result.stdout.re_match_lines(r"""
-        .*::test_a XFAIL(?:\s+\(.*\))?
+        .*::test_a (?:XFAIL(?:\s+\(.*\))?|xfail)
         .*::test_b PASSED
         .*::test_c SKIPPED(?:\s+\(.*\))?
         .*::test_d PASSED
@@ -29,9 +30,12 @@ def test_named(ctestdir):
     with get_example("named.py").open("rt") as f:
         ctestdir.makepyfile(f.read())
     result = ctestdir.runpytest("--verbose")
-    result.assert_outcomes(passed=2, skipped=2, failed=0, xfailed=1)
+    try:
+        result.assert_outcomes(passed=2, skipped=2, failed=0, xfailed=1)
+    except TypeError:
+        result.assert_outcomes(passed=2, skipped=2, failed=0)
     result.stdout.re_match_lines(r"""
-        .*::test_a XFAIL(?:\s+\(.*\))?
+        .*::test_a (?:XFAIL(?:\s+\(.*\))?|xfail)
         .*::test_b PASSED
         .*::test_c SKIPPED(?:\s+\(.*\))?
         .*::test_d PASSED
@@ -45,14 +49,17 @@ def test_testclass(ctestdir):
     with get_example("testclass.py").open("rt") as f:
         ctestdir.makepyfile(f.read())
     result = ctestdir.runpytest("--verbose")
-    result.assert_outcomes(passed=4, skipped=4, failed=0, xfailed=2)
+    try:
+        result.assert_outcomes(passed=4, skipped=4, failed=0, xfailed=2)
+    except TypeError:
+        result.assert_outcomes(passed=4, skipped=4, failed=0)
     result.stdout.re_match_lines(r"""
-        .*::TestClass::test_a XFAIL(?:\s+\(.*\))?
+        .*::TestClass::test_a (?:XFAIL(?:\s+\(.*\))?|xfail)
         .*::TestClass::test_b PASSED
         .*::TestClass::test_c SKIPPED(?:\s+\(.*\))?
         .*::TestClass::test_d PASSED
         .*::TestClass::test_e SKIPPED(?:\s+\(.*\))?
-        .*::TestClassNamed::test_a XFAIL(?:\s+\(.*\))?
+        .*::TestClassNamed::test_a (?:XFAIL(?:\s+\(.*\))?|xfail)
         .*::TestClassNamed::test_b PASSED
         .*::TestClassNamed::test_c SKIPPED(?:\s+\(.*\))?
         .*::TestClassNamed::test_d PASSED
@@ -66,9 +73,12 @@ def test_mark_class(ctestdir):
     with get_example("mark-class.py").open("rt") as f:
         ctestdir.makepyfile(f.read())
     result = ctestdir.runpytest("--verbose")
-    result.assert_outcomes(passed=1, skipped=2, failed=0, xfailed=1)
+    try:
+        result.assert_outcomes(passed=1, skipped=2, failed=0, xfailed=1)
+    except TypeError:
+        result.assert_outcomes(passed=1, skipped=2, failed=0)
     result.stdout.re_match_lines(r"""
-        .*::test_f XFAIL(?:\s+\(.*\))?
+        .*::test_f (?:XFAIL(?:\s+\(.*\))?|xfail)
         .*::TestClass::test_a SKIPPED(?:\s+\(.*\))?
         .*::TestClass::test_b PASSED
         .*::TestClass::test_c SKIPPED(?:\s+\(.*\))?
@@ -81,10 +91,13 @@ def test_parametrized(ctestdir):
     with get_example("parametrized.py").open("rt") as f:
         ctestdir.makepyfile(f.read())
     result = ctestdir.runpytest("--verbose")
-    result.assert_outcomes(passed=7, skipped=5, failed=0, xfailed=1)
+    try:
+        result.assert_outcomes(passed=7, skipped=5, failed=0, xfailed=1)
+    except TypeError:
+        result.assert_outcomes(passed=7, skipped=5, failed=0)
     result.stdout.re_match_lines(r"""
         .*::test_a\[0-0\] PASSED
-        .*::test_a\[0-1\] XFAIL(?:\s+\(.*\))?
+        .*::test_a\[0-1\] (?:XFAIL(?:\s+\(.*\))?|xfail)
         .*::test_a\[1-0\] PASSED
         .*::test_a\[1-1\] PASSED
         .*::test_b\[1-2\] SKIPPED(?:\s+\(.*\))?
@@ -105,10 +118,13 @@ def test_runtime(ctestdir):
     with get_example("runtime.py").open("rt") as f:
         ctestdir.makepyfile(f.read())
     result = ctestdir.runpytest("--verbose")
-    result.assert_outcomes(passed=1, skipped=2, failed=0, xfailed=1)
+    try:
+        result.assert_outcomes(passed=1, skipped=2, failed=0, xfailed=1)
+    except TypeError:
+        result.assert_outcomes(passed=1, skipped=2, failed=0)
     result.stdout.re_match_lines(r"""
         .*::test_a PASSED
-        .*::test_b XFAIL(?:\s+\(.*\))?
+        .*::test_b (?:XFAIL(?:\s+\(.*\))?|xfail)
         .*::test_c SKIPPED(?:\s+\(.*\))?
         .*::test_d SKIPPED(?:\s+\(.*\))?
     """)
