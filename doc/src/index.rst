@@ -17,6 +17,7 @@ Content of the documentation
    scope
    advanced
    names
+   debugging
    configuration
    changelog
    reference
