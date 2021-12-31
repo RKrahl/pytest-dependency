@@ -8,6 +8,10 @@ from conftest import get_example
 def test_debugging(ctestdir):
     """Debugging example
     """
+    # The debugging example requires the enum module which is has been
+    # added to the standard kibrary in Python 3.4.  Skip this test if
+    # the module is not available.
+    _ = pytest.importorskip("enum")
     with get_example("debugging.py").open("rt") as f:
         ctestdir.makepyfile(f.read())
     result = ctestdir.runpytest("--verbose")
