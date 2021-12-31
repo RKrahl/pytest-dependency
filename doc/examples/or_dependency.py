@@ -33,20 +33,20 @@ def test_bx():
 
 @pytest.mark.dependency()
 def test_c(request):
-    depends_or(request, ["test_ax", "test_bx"])    
+    depends_or(request, ["test_ax", "test_bx"])
     pass
 
 @pytest.mark.dependency()
 def test_d(request):
-    depends_or(request, ["test_ax", "test_bp"])    
+    depends_or(request, ["test_ax", "test_bp"])
     pass
 
 @pytest.mark.dependency()
 def test_e(request):
-    depends_or(request, ["test_ap", "test_bx"])    
+    depends_or(request, ["test_ap", "test_bx"])
     pass
 
 @pytest.mark.dependency()
 def test_f(request):
-    depends_or(request, ["test_ap", "test_bp"])    
+    depends_or(request, ["test_ap", "test_bp"])
     pass
