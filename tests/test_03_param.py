@@ -3,6 +3,58 @@ A scenario featuring parametrized tests.
 """
 
 
+def test_removed_params(ctestdir):
+    """
+    Test for a dependency on a parametrized test, but with parametrization removed.
+    """
+    ctestdir.makepyfile("""
+        import pytest
+
+        @pytest.mark.parametrize("x", [0, 1])
+        @pytest.mark.dependency()
+        def test_a(x):
+            # passes, then fails
+            assert x == 0
+
+        @pytest.mark.parametrize("x", [0, 1])
+        @pytest.mark.dependency()
+        def test_b(x):
+            # fails, then passes
+            assert x == 1
+
+        @pytest.mark.parametrize("x", [0, 1])
+        @pytest.mark.dependency()
+        def test_c(x):
+            # always passes
+            pass
+
+        @pytest.mark.dependency(depends=["test_a"])
+        def test_d():
+            pass
+
+        @pytest.mark.dependency(depends=["test_b"])
+        def test_e():
+            pass
+
+        @pytest.mark.dependency(depends=["test_c"])
+        def test_f():
+            pass
+    """)
+    result = ctestdir.runpytest("--verbose")
+    result.assert_outcomes(passed=5, skipped=2, failed=2)
+    result.stdout.re_match_lines(r"""
+        .*::test_a\[0\] PASSED
+        .*::test_a\[1\] FAILED
+        .*::test_b\[0\] FAILED
+        .*::test_b\[1\] PASSED
+        .*::test_c\[0\] PASSED
+        .*::test_c\[1\] PASSED
+        .*::test_d SKIPPED(?:\s+\(.*\))?
+        .*::test_e SKIPPED(?:\s+\(.*\))?
+        .*::test_f PASSED
+    """)
+
+
 def test_simple_params(ctestdir):
     """Simple test for a dependency on a parametrized test.
 
@@ -13,7 +65,7 @@ def test_simple_params(ctestdir):
 
         _md = pytest.mark.dependency
 
-        @pytest.mark.parametrize("x", [ 0, 1 ])
+        @pytest.mark.parametrize("x", [0, 1])
         @pytest.mark.dependency()
         def test_a(x):
             assert x == 0

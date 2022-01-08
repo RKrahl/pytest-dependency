@@ -14,7 +14,7 @@ _automark = False
 _ignore_unknown = False
 
 
-def _remove_parametrization(item, scope):
+def _get_name(item, scope):
     # Old versions of pytest used to add an extra "::()" to
     # the node ids of class methods to denote the class
     # instance.  This has been removed in pytest 4.0.0.
@@ -29,7 +29,10 @@ def _remove_parametrization(item, scope):
         raise RuntimeError(
             "Internal error: invalid scope '%s'" % scope
         )
+    return name
 
+
+def _remove_parametrization(item, name):
     original = item.originalname if item.originalname is not None else item.name
     # remove the parametrization part at the end
     if not name.endswith(original):
@@ -102,21 +105,25 @@ class DependencyManager(object):
 
     def add_result(self, item, name, rep):
         if not name:
-            name = _remove_parametrization(item, self.scope)
+            name = _get_name(item, self.scope)
+            parameterless_name = _remove_parametrization(item, name)
+            if parameterless_name not in self.results:
+                self.results[parameterless_name] = DependencyItemStatus()
+            status = self.results[parameterless_name]
+            # only add the result if the status is incomplete or it's (still) a success
+            # this prevents overwriting a failed status of one parametrized test,
+            # with a success status of the following tests
+            if not status.is_done() or status.is_success():
+                status.add_result(rep)
 
-        # check if we failed - if so, return without adding the result
         if name not in self.results:
             self.results[name] = DependencyItemStatus()
-        status = self.results[name]
-        if status.is_done() and not status.is_success():
-            return
-
         # add the result
         logger.debug(
             "register %s %s %s in %s scope",
             rep.when, name, rep.outcome, self.scope
         )
-        status.add_result(rep)
+        self.results[name].add_result(rep)
 
     @classmethod
     def add_all_scopes(cls, item, name, rep):
@@ -256,7 +263,7 @@ def pytest_collection_modifyitems(items):
             scope = marker.kwargs.get("scope", "module")
             name = marker.kwargs.get("name")
             if not name:
-                name = _remove_parametrization(item, scope)
+                name = _remove_parametrization(item, _get_name(item, scope))
             manager = DependencyManager.get_manager(item, scope)
             if manager is None:
                 continue

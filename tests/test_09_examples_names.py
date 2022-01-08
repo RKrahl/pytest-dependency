@@ -1,7 +1,7 @@
-"""Test the included examples.
+"""
+Test the included examples.
 """
 
-import pytest
 from conftest import get_example
 
 
