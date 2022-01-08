@@ -76,24 +76,28 @@ class DependencyManager(object):
             else:
                 raise RuntimeError("Internal error: invalid scope '%s'"
                                    % self.scope)
-
+            # store an extra result for parameterless name
+            # this enables dependencies based on an overall test status
             original = item.originalname if item.originalname is not None else item.name
-            # remove the parametrization part at the end
             if not name.endswith(original):
+                # remove the parametrization part at the end
                 index = name.rindex(original) + len(original)
-                name = name[:index]
+                parameterless_name = name[:index]
+                if parameterless_name not in self.results:
+                    self.results[parameterless_name] = DependencyItemStatus()
+                status = self.results[parameterless_name]
+                # only add the result if the status is incomplete or it's (still) a success
+                # this prevents overwriting a failed status of one parametrized test,
+                # with a success status of the following tests
+                if not status.isDone() or status.isSuccess():
+                    status.addResult(rep)
 
-        # check if we failed - if so, return without adding the result
         if name not in self.results:
             self.results[name] = DependencyItemStatus()
-        status = self.results[name]
-        if status.isDone() and not status.isSuccess():
-            return
-
         # add the result
         logger.debug("register %s %s %s in %s scope",
                      rep.when, name, rep.outcome, self.scope)
-        status.addResult(rep)
+        self.results[name].addResult(rep)
 
     def checkDepend(self, depends, item):
         logger.debug("check dependencies of %s in %s scope ...",
