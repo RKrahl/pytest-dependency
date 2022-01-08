@@ -2,6 +2,8 @@
 Test the automark_dependency option.
 """
 
+import pytest
+
 
 def test_not_set(ctestdir):
     """
@@ -29,9 +31,11 @@ def test_not_set(ctestdir):
     """)
 
 
-def test_set_false(ctestdir):
-    """
-    A pytest.ini is present, automark_dependency is set to false.
+@pytest.mark.parametrize(
+    "false_value", ["0", "no", "n", "False", "false", "f", "off"]
+)
+def test_set_false(ctestdir, false_value):
+    """A pytest.ini is present, automark_dependency is set to false.
 
     Since automark_dependency is set to false and test_a is not
     marked, the outcome of test_a will not be recorded.  As a result,
@@ -39,9 +43,9 @@ def test_set_false(ctestdir):
     """
     ctestdir.makefile('.ini', pytest="""
         [pytest]
-        automark_dependency = false
+        automark_dependency = %s
         console_output_style = classic
-    """)
+    """ % false_value)
     ctestdir.makepyfile("""
         import pytest
 
@@ -60,9 +64,11 @@ def test_set_false(ctestdir):
     """)
 
 
-def test_set_true(ctestdir):
-    """
-    A pytest.ini is present, automark_dependency is set to false.
+@pytest.mark.parametrize(
+    "true_value", ["1", "yes", "y", "True", "true", "t", "on"]
+)
+def test_set_true(ctestdir, true_value):
+    """A pytest.ini is present, automark_dependency is set to false.
 
     Since automark_dependency is set to true, the outcome of test_a
     will be recorded, even though it is not marked.  As a result,
@@ -70,9 +76,9 @@ def test_set_true(ctestdir):
     """
     ctestdir.makefile('.ini', pytest="""
         [pytest]
-        automark_dependency = true
+        automark_dependency = %s
         console_output_style = classic
-    """)
+    """ % true_value)
     ctestdir.makepyfile("""
         import pytest
 

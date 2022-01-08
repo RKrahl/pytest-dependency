@@ -43,7 +43,7 @@ Installation
 
 3. Test (optional)::
 
-     $ python -m pytest
+     $ python -m pytest tests
 
 4. Install::
 
