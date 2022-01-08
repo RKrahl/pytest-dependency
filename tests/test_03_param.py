@@ -4,6 +4,43 @@
 import pytest
 
 
+def test_removed_params(ctestdir):
+    """
+    Test for a dependency on a parametrized test, but with parametrization removed.
+    """
+    ctestdir.makepyfile("""
+        import pytest
+
+        @pytest.mark.parametrize("x", [ 0, 1 ])
+        @pytest.mark.dependency()
+        def test_a(x):
+            assert x == 0
+
+        @pytest.mark.parametrize("x", [ 0, 1 ])
+        @pytest.mark.dependency()
+        def test_b(x):
+            pass
+
+        @pytest.mark.dependency(depends=["test_a"])
+        def test_c():
+            pass
+
+        @pytest.mark.dependency(depends=["test_b"])
+        def test_d():
+            pass
+    """)
+    result = ctestdir.runpytest("--verbose")
+    result.assert_outcomes(passed=4, skipped=1, failed=1)
+    result.stdout.re_match_lines(r"""
+        .*::test_a\[0\] PASSED
+        .*::test_a\[1\] FAILED
+        .*::test_b\[0\] PASSED
+        .*::test_b\[1\] PASSED
+        .*::test_c SKIPPED(?:\s+\(.*\))?
+        .*::test_d PASSED
+    """)
+
+
 def test_simple_params(ctestdir):
     """Simple test for a dependency on a parametrized test.
 
