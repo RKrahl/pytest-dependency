@@ -11,20 +11,6 @@ _automark = False
 _ignore_unknown = False
 
 
-def _get_bool(value):
-    """Evaluate string representation of a boolean value.
-    """
-    if value:
-        if value.lower() in ["0", "no", "n", "false", "f", "off"]:
-            return False
-        elif value.lower() in ["1", "yes", "y", "true", "t", "on"]:
-            return True
-        else:
-            raise ValueError("Invalid truth value '%s'" % value)
-    else:
-        return False
-
-
 class DependencyItemStatus(object):
     """Status of a test item in a dependency manager.
     """
@@ -157,17 +143,23 @@ def depends(request, other, scope='module'):
 
 
 def pytest_addoption(parser):
-    parser.addini("automark_dependency",
-                  "Add the dependency marker to all tests automatically",
-                  default=False)
-    parser.addoption("--ignore-unknown-dependency",
-                     action="store_true", default=False,
-                     help="ignore dependencies whose outcome is not known")
+    parser.addini(
+        "automark_dependency",
+        "Add the dependency marker to all tests automatically",
+        type="bool",
+        default=False,
+    )
+    parser.addoption(
+        "--ignore-unknown-dependency",
+        action="store_true",
+        default=False,
+        help="ignore dependencies whose outcome is not known",
+    )
 
 
 def pytest_configure(config):
     global _automark, _ignore_unknown
-    _automark = _get_bool(config.getini("automark_dependency"))
+    _automark = config.getini("automark_dependency")
     _ignore_unknown = config.getoption("--ignore-unknown-dependency")
     config.addinivalue_line("markers",
                             "dependency(name=None, depends=[]): "

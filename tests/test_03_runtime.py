@@ -32,9 +32,9 @@ def test_skip_depend_runtime(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=1, skipped=3, failed=0)
-    result.stdout.fnmatch_lines("""
-        *::test_a PASSED
-        *::test_b SKIPPED
-        *::test_c SKIPPED
-        *::test_d SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_b SKIPPED(?:\s+\(.*\))?
+        .*::test_c SKIPPED(?:\s+\(.*\))?
+        .*::test_d SKIPPED(?:\s+\(.*\))?
     """)
