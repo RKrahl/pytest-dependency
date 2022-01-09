@@ -14,7 +14,14 @@ System requirements
 Interaction with other packages
 -------------------------------
 
-pytest-xdist
+`pytest-order`_
+   pytest-dependency is based on the assumption that dependencies are
+   run before the test that depends on them.  If this assumption is
+   not satisfied in the default execution order in pytest, you may
+   want to have a look on pytest-order.  It implements reordering of
+   tests and supports taking the dependencies into account.
+
+`pytest-xdist`_
    pytest-xdist features test run parallelization, e.g. distributing
    tests over separate processes that run in parallel.  This is based
    on the assumption that the tests can be run independent of each
@@ -58,3 +65,5 @@ version from PyPI, see above.
 
 .. _setuptools: http://pypi.python.org/pypi/setuptools/
 .. _pytest: http://pytest.org/
+.. _pytest-order: https://github.com/pytest-dev/pytest-order
+.. _pytest-xdist: https://github.com/pytest-dev/pytest-xdist
