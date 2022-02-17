@@ -4,6 +4,38 @@
 import pytest
 
 
+def test_simple_params(ctestdir):
+    """Simple test for a dependency on a parametrized test.
+
+    This example has been used in the discussion of PR #43.
+    """
+    ctestdir.makepyfile("""
+        import pytest
+
+        _md = pytest.mark.dependency
+
+        @pytest.mark.parametrize("x", [ 0, 1 ])
+        @pytest.mark.dependency()
+        def test_a(x):
+            assert x == 0
+
+        @pytest.mark.parametrize("x", [
+            pytest.param(0, marks=_md(depends=["test_a[0]"])),
+            pytest.param(1, marks=_md(depends=["test_a[1]"])),
+        ])
+        def test_b(x):
+            pass
+    """)
+    result = ctestdir.runpytest("--verbose")
+    result.assert_outcomes(passed=2, skipped=1, failed=1)
+    result.stdout.re_match_lines(r"""
+        .*::test_a\[0\] PASSED
+        .*::test_a\[1\] FAILED
+        .*::test_b\[0\] PASSED
+        .*::test_b\[1\] SKIPPED(?:\s+\(.*\))?
+    """)
+
+
 def test_multiple(ctestdir):
     ctestdir.makepyfile("""
         import pytest

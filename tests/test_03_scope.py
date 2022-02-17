@@ -5,7 +5,7 @@ import pytest
 
 
 def test_scope_module(ctestdir):
-    """One single module, module scope is explicitely set in the
+    """One single module, module scope is explicitly set in the
     pytest.mark.dependency() marker.
     """
     ctestdir.makepyfile("""
@@ -379,7 +379,7 @@ def test_scope_nodeid(ctestdir):
     """)
 
 def test_scope_named(ctestdir):
-    """Explicitely named tests are always referenced by that name,
+    """Explicitly named tests are always referenced by that name,
     regardless of the scope.
     """
     ctestdir.makepyfile("""

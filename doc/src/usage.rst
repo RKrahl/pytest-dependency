@@ -50,7 +50,7 @@ see Section :ref:`names` for details.  In some cases, it's not easy to
 predict the names of the node ids.  For this reason, the name of the
 tests can be overridden by an explicit `name` argument to the marker.
 The names must be unique.  The following example works exactly as the
-last one, only the test names are explicitely set:
+last one, only the test names are explicitly set:
 
 .. literalinclude:: ../examples/named.py
 
@@ -110,7 +110,7 @@ Marking dependencies at runtime
 -------------------------------
 
 Sometimes, dependencies of test instances are too complicated to be
-formulated explicitely beforehand using the
+formulated explicitly beforehand using the
 :func:`pytest.mark.dependency` marker.  It may be easier to compile
 the list of dependencies of a test at run time.  In such cases, the
 function :func:`pytest_dependency.depends` comes handy.  Consider the
