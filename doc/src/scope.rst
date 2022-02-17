@@ -17,7 +17,7 @@ or `'class'`.
 
 
 Explicitly specifying the scope
---------------------------------
+-------------------------------
 
 The default value for the `scope` argument is `'module'`.  Thus, the
 very first example from Section :ref:`usage-basic` could also be
