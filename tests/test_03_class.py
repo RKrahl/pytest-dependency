@@ -47,7 +47,7 @@ def test_class_simple(ctestdir):
 
 def test_class_simple_named(ctestdir):
     """Mostly the same as test_class_simple(), but name the test methods
-    now explicitely.
+    now explicitly.
     """
     ctestdir.makepyfile("""
         import pytest

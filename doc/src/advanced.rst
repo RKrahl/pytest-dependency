@@ -18,7 +18,7 @@ Consider the following example test module:
 
 In principle, this example works the very same way as the basic
 example for :ref:`usage-parametrized`.  The only difference is that
-the lists of paramters are dynamically compiled beforehand.  The test
+the lists of parameters are dynamically compiled beforehand.  The test
 for child `l` deliberately fails, just to show the effect.  As a
 consequence, the test for its parent `d` will be skipped.
 

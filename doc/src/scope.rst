@@ -16,7 +16,7 @@ or `'class'`.
     versions, all dependencies were implicitly in module scope.
 
 
-Explicitely specifying the scope
+Explicitly specifying the scope
 --------------------------------
 
 The default value for the `scope` argument is `'module'`.  Thus, the
