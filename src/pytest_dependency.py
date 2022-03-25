@@ -7,6 +7,7 @@ import pytest
 
 logger = logging.getLogger(__name__)
 
+_accept_xfail = False
 _automark = False
 _ignore_unknown = False
 
@@ -24,8 +25,12 @@ class DependencyItemStatus(object):
         l = ["%s: %s" % (w, self.results[w]) for w in self.Phases]
         return "Status(%s)" % ", ".join(l)
 
+    def _accept_xfail(self, rep):
+        '''Take xfail and accept_xfail into account.'''
+        return _accept_xfail and (rep.when == 'call') and (rep.outcome == 'skipped') and (hasattr(rep, 'wasxfail'))
+
     def addResult(self, rep):
-        self.results[rep.when] = rep.outcome
+        self.results[rep.when] = 'passed' if self._accept_xfail(rep) else rep.outcome
 
     def isSuccess(self):
         return list(self.results.values()) == ['passed', 'passed', 'passed']
@@ -129,13 +134,17 @@ def pytest_addoption(parser):
     parser.addini("automark_dependency", 
                   "Add the dependency marker to all tests automatically", 
                   type="bool", default=False)
+    parser.addini("accept_xfail", 
+                  "Consider xfailing dependencies as succesful dependencies.", 
+                  type="bool", default=False)
     parser.addoption("--ignore-unknown-dependency", 
                      action="store_true", default=False, 
                      help="ignore dependencies whose outcome is not known")
 
 
 def pytest_configure(config):
-    global _automark, _ignore_unknown
+    global _accept_xfail, _automark, _ignore_unknown
+    _accept_xfail = config.getini("accept_xfail")
     _automark = config.getini("automark_dependency")
     _ignore_unknown = config.getoption("--ignore-unknown-dependency")
     config.addinivalue_line("markers", 
