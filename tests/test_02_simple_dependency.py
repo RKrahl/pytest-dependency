@@ -1,11 +1,11 @@
-"""Simple dependencies between tests.
 """
-
-import pytest
+Simple dependencies between tests.
+"""
 
 
 def test_no_skip(ctestdir):
-    """One test is skipped, but no other test depends on it,
+    """
+    One test is skipped, but no other test depends on it,
     so all other tests pass.
     """
     ctestdir.makepyfile("""
@@ -38,7 +38,8 @@ def test_no_skip(ctestdir):
 
 
 def test_skip_depend(ctestdir):
-    """One test is skipped, other dependent tests are skipped as well.
+    """
+    One test is skipped, other dependent tests are skipped as well.
     This also includes indirect dependencies.
     """
     ctestdir.makepyfile("""
@@ -71,7 +72,8 @@ def test_skip_depend(ctestdir):
 
 
 def test_fail_depend(ctestdir):
-    """One test fails, other dependent tests are skipped.
+    """
+    One test fails, other dependent tests are skipped.
     This also includes indirect dependencies.
     """
     ctestdir.makepyfile("""
@@ -104,7 +106,8 @@ def test_fail_depend(ctestdir):
 
 
 def test_named_fail_depend(ctestdir):
-    """Same as test_fail_depend, but using custom test names.
+    """
+    Same as test_fail_depend, but using custom test names.
     """
     ctestdir.makepyfile("""
         import pytest
@@ -136,7 +139,8 @@ def test_named_fail_depend(ctestdir):
 
 
 def test_explicit_select(ctestdir):
-    """Explicitly select only a single test that depends on another one.
+    """
+    Explicitly select only a single test that depends on another one.
 
     Since the other test has not been run at all, the selected test
     will be skipped.
@@ -168,7 +172,8 @@ def test_explicit_select(ctestdir):
 
 
 def test_depend_unknown(ctestdir):
-    """Depend on an unknown test that is not even defined in the test set.
+    """
+    Depend on an unknown test that is not even defined in the test set.
 
     Note that is not an error to depend on an undefined test, but the
     dependent test will be skipped since the non-existent dependency

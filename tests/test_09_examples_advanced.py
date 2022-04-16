@@ -1,7 +1,7 @@
-"""Test the included examples.
+"""
+Test the included examples.
 """
 
-import pytest
 from conftest import get_example
 
 
@@ -133,13 +133,13 @@ def test_all_params(ctestdir):
         .*::test_a\[14\] PASSED
         .*::test_a\[15\] PASSED
         .*::test_a\[16\] PASSED
-        .*::test_b SKIPPED(?:\s+\(.*\))?
         .*::test_c\[0-2\] PASSED
         .*::test_c\[2-3\] PASSED
         .*::test_c\[4-4\] PASSED
         .*::test_c\[6-5\] (?:XFAIL(?:\s+\(.*\))?|xfail)
-        .*::test_d SKIPPED(?:\s+\(.*\))?
         .*::test_e\[abc\] PASSED
         .*::test_e\[def\] (?:XFAIL(?:\s+\(.*\))?|xfail)
+        .*::test_b SKIPPED(?:\s+\(.*\))?
+        .*::test_d SKIPPED(?:\s+\(.*\))?
         .*::test_f SKIPPED(?:\s+\(.*\))?
     """)

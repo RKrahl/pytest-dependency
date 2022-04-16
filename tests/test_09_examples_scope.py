@@ -1,8 +1,8 @@
-"""Test the included examples.
+"""
+Test the included examples.
 """
 
 from pathlib import Path
-import pytest
 from conftest import get_example
 
 

@@ -12,4 +12,5 @@ __pycache__/
 /doc/latex/
 /doc/linkcheck/
 /pytest_dependency.egg-info/
+/src/pytest_dependency.egg-info/
 /python2_6.patch

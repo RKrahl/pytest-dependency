@@ -1,11 +1,11 @@
-"""Usage with test classes.
 """
-
-import pytest
+Usage with test classes.
+"""
 
 
 def test_class_simple(ctestdir):
-    """Simple dependencies of test methods in a class.
+    """
+    Simple dependencies of test methods in a class.
     test_a() deliberately fails, some other methods depend on it, some don't.
     """
     ctestdir.makepyfile("""
@@ -29,7 +29,7 @@ def test_class_simple(ctestdir):
             def test_d(self):
                 pass
 
-            @pytest.mark.dependency(depends=["TestClass::test_b", 
+            @pytest.mark.dependency(depends=["TestClass::test_b",
                                              "TestClass::test_c"])
             def test_e(self):
                 pass
@@ -46,8 +46,9 @@ def test_class_simple(ctestdir):
 
 
 def test_class_simple_named(ctestdir):
-    """Mostly the same as test_class_simple(), but name the test methods
-    now explicitly.
+    """
+    Mostly the same as test_class_simple(), but name the test methods
+    now explicitely.
     """
     ctestdir.makepyfile("""
         import pytest
