@@ -7,7 +7,7 @@ from conftest import get_example
 
 
 def test_scope_module(ctestdir):
-    """Explicitely specifying the scope
+    """Explicitly specifying the scope
     """
     with get_example("scope_module.py").open("rt") as f:
         ctestdir.makepyfile(f.read())
