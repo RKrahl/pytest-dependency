@@ -18,7 +18,7 @@ class DependencyItemStatus(object):
     Phases = ('setup', 'call', 'teardown')
 
     def __init__(self):
-        self.results = { w:None for w in self.Phases }
+        self.results = {w: None for w in self.Phases}
 
     def __str__(self):
         l = ["%s: %s" % (w, self.results[w]) for w in self.Phases]
@@ -29,6 +29,9 @@ class DependencyItemStatus(object):
 
     def isSuccess(self):
         return list(self.results.values()) == ['passed', 'passed', 'passed']
+
+    def isDone(self):
+        return None not in self.results.values()
 
 
 class DependencyManager(object):
@@ -73,10 +76,28 @@ class DependencyManager(object):
             else:
                 raise RuntimeError("Internal error: invalid scope '%s'"
                                    % self.scope)
-        status = self.results.setdefault(name, DependencyItemStatus())
+            # store an extra result for parameterless name
+            # this enables dependencies based on an overall test status
+            original = item.originalname if item.originalname is not None else item.name
+            if not name.endswith(original):
+                # remove the parametrization part at the end
+                index = name.rindex(original) + len(original)
+                parameterless_name = name[:index]
+                if parameterless_name not in self.results:
+                    self.results[parameterless_name] = DependencyItemStatus()
+                status = self.results[parameterless_name]
+                # only add the result if the status is incomplete or it's (still) a success
+                # this prevents overwriting a failed status of one parametrized test,
+                # with a success status of the following tests
+                if not status.isDone() or status.isSuccess():
+                    status.addResult(rep)
+
+        if name not in self.results:
+            self.results[name] = DependencyItemStatus()
+        # add the result
         logger.debug("register %s %s %s in %s scope",
                      rep.when, name, rep.outcome, self.scope)
-        status.addResult(rep)
+        self.results[name].addResult(rep)
 
     def checkDepend(self, depends, item):
         logger.debug("check dependencies of %s in %s scope ...",
@@ -126,19 +147,25 @@ def depends(request, other, scope='module'):
 
 
 def pytest_addoption(parser):
-    parser.addini("automark_dependency", 
-                  "Add the dependency marker to all tests automatically", 
-                  type="bool", default=False)
-    parser.addoption("--ignore-unknown-dependency", 
-                     action="store_true", default=False, 
-                     help="ignore dependencies whose outcome is not known")
+    parser.addini(
+        "automark_dependency",
+        "Add the dependency marker to all tests automatically",
+        type="bool",
+        default=False,
+    )
+    parser.addoption(
+        "--ignore-unknown-dependency",
+        action="store_true",
+        default=False,
+        help="ignore dependencies whose outcome is not known",
+    )
 
 
 def pytest_configure(config):
     global _automark, _ignore_unknown
     _automark = config.getini("automark_dependency")
     _ignore_unknown = config.getoption("--ignore-unknown-dependency")
-    config.addinivalue_line("markers", 
+    config.addinivalue_line("markers",
                             "dependency(name=None, depends=[]): "
                             "mark a test to be used as a dependency for "
                             "other tests or to depend on other tests.")
