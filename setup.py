@@ -28,7 +28,7 @@ except (ImportError, LookupError):
             version = f.read()
     except (OSError, IOError):
         distutils.log.warn("warning: cannot determine version number")
-        version = "UNKNOWN"
+        version = "0.5.1-20212102-ftesser-collect_dependencies-20211216"
 
 doc_string = __doc__
 
