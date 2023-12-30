@@ -40,6 +40,7 @@ version = ".".join(release.split(".")[0:2])
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
+    'sphinx_copybutton',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
