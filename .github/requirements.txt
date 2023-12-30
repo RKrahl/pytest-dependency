@@ -1,5 +1,4 @@
 distutils-pytest
 git-props
-pathlib ; python_version == '2.7'
 pytest >=3.7.0
 setuptools
