@@ -6,6 +6,14 @@
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
 
+from pathlib import Path
+import sys
+
+maindir = Path(__file__).resolve().parent.parent.parent
+buildlib = maindir / "build" / "lib"
+sys.path[0] = str(buildlib)
+sys.dont_write_bytecode = True
+
 import pytest_dependency
 
 # -- Project information -----------------------------------------------------
