@@ -16,6 +16,11 @@ from pathlib import Path
 from stat import ST_ATIME, ST_MTIME, ST_MODE, S_IMODE
 import string
 try:
+    import distutils_pytest
+    cmdclass = distutils_pytest.cmdclass
+except (ImportError, AttributeError):
+    cmdclass = dict()
+try:
     import setuptools_scm
     version = setuptools_scm.get_version()
 except (ImportError, LookupError):
@@ -142,5 +147,5 @@ setup(
             "dependency = pytest_dependency",
         ],
     },
-    cmdclass = dict(build_py=build_py, sdist=sdist, meta=meta),
+    cmdclass = dict(cmdclass, build_py=build_py, sdist=sdist, meta=meta),
 )

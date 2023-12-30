@@ -5,8 +5,8 @@ BUILDLIB = $(CURDIR)/build/lib
 build:
 	$(PYTHON) setup.py build
 
-test: build
-	PYTHONPATH=$(BUILDLIB) $(PYTHON) -m pytest tests
+test:
+	$(PYTHON) setup.py test
 
 sdist:
 	$(PYTHON) setup.py sdist

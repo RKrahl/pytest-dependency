@@ -45,6 +45,10 @@ Optional library packages:
   package is only needed to build out of the plain development source
   tree as cloned from GitHub.
 
++ `distutils-pytest`_ >= 0.2
+
+  Only needed to run the test suite.
+
 
 Installation
 ------------
@@ -57,7 +61,7 @@ Installation
 
 3. Test (optional)::
 
-     $ PYTHONPATH=build/lib python -m pytest tests
+     $ python setup.py test
 
 4. Install::
 
@@ -102,4 +106,5 @@ permissions and limitations under the License.
 .. _setuptools: http://pypi.python.org/pypi/setuptools/
 .. _pytest: http://pytest.org/
 .. _setuptools_scm: https://github.com/pypa/setuptools_scm/
+.. _distutils-pytest: https://github.com/RKrahl/distutils-pytest
 .. _Read the Docs site: https://pytest-dependency.readthedocs.io/
