@@ -1,0 +1,29 @@
+name: Publish
+on:
+  release:
+    types:
+       - published
+jobs:
+  PyPI:
+    name: publish release to PyPI
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write
+    env:
+      SDIST: pytest-dependency-${{ github.event.release.tag_name }}.tar.gz
+    steps:
+      - name: Fetch assets
+        uses: cb80/dlassets@latest
+        with:
+          tag: ${{ github.event.release.tag_name }}
+          to: assets
+      - name: Check assets
+        run: |
+          ls -la assets
+      - name: Copy distfile to dist directory
+        run: |
+          mkdir -p dist
+          cp -p assets/$SDIST dist
+      - name: Upload distfile to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
