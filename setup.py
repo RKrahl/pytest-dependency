@@ -21,14 +21,15 @@ try:
 except (ImportError, AttributeError):
     cmdclass = dict()
 try:
-    import setuptools_scm
-    version = setuptools_scm.get_version()
+    import gitprops
+    release = str(gitprops.get_last_release())
+    version = str(gitprops.get_version())
 except (ImportError, LookupError):
     try:
-        from _meta import version
+        from _meta import release, version
     except ImportError:
         log.warn("warning: cannot determine version number")
-        version = "UNKNOWN"
+        release = version = "UNKNOWN"
 
 docstring = __doc__
 
@@ -75,6 +76,7 @@ class meta(setuptools.Command):
     description = "generate meta files"
     user_options = []
     meta_template = '''
+release = "%(release)s"
 version = "%(version)s"
 '''
     def initialize_options(self):
@@ -85,6 +87,7 @@ version = "%(version)s"
         version = self.distribution.get_version()
         log.info("version: %s", version)
         values = {
+            'release': release,
             'version': version,
         }
         with Path("_meta.py").open("wt") as f:
@@ -136,7 +139,8 @@ setup(
     project_urls = dict(
         Documentation="https://pytest-dependency.readthedocs.io/",
         Source="https://github.com/RKrahl/pytest-dependency",
-        Download="https://github.com/RKrahl/pytest-dependency/releases/latest",
+        Download=("https://github.com/RKrahl/pytest-dependency/releases/%s/"
+                  % release),
     ),
     package_dir = {"": "src"},
     python_requires = ">=3.4",
