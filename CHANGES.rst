@@ -4,6 +4,11 @@ Changelog
 dev (not yet released)
 ~~~~~~~~~~~~~~~~~~~~~~
 
+Incompatible changes
+--------------------
+
++ Drop support for Python 2.
+
 Bug fixes and minor changes
 ---------------------------
 
@@ -12,10 +17,16 @@ Bug fixes and minor changes
 + `#58`_: declare the type of automark_dependency ini-option correctly
   as bool.
 
+Internal
+--------
+
++ `#75`_: review build tool chain.
+
 .. _#40: https://github.com/RKrahl/pytest-dependency/issues/40
 .. _#50: https://github.com/RKrahl/pytest-dependency/issues/50
 .. _#51: https://github.com/RKrahl/pytest-dependency/pull/51
 .. _#58: https://github.com/RKrahl/pytest-dependency/pull/58
+.. _#75: https://github.com/RKrahl/pytest-dependency/pull/75
 
 0.5.1 (2020-02-14)
 ~~~~~~~~~~~~~~~~~~
