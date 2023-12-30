@@ -11,6 +11,7 @@ import setuptools.command.build_py
 import distutils.command.sdist
 import distutils.file_util
 from distutils import log
+from glob import glob
 import os
 from pathlib import Path
 from stat import ST_ATIME, ST_MTIME, ST_MODE, S_IMODE
@@ -100,6 +101,16 @@ class sdist(copy_file_mixin, distutils.command.sdist.sdist):
     def run(self):
         self.run_command('meta')
         super().run()
+        subst = {
+            "version": self.distribution.get_version(),
+            "url": self.distribution.get_url(),
+            "description": docstring.split("\n")[0],
+            "long_description": docstring.split("\n", maxsplit=2)[2].strip(),
+        }
+        for spec in glob("*.spec"):
+            with Path(spec).open('rt') as inf:
+                with Path(self.dist_dir, spec).open('wt') as outf:
+                    outf.write(string.Template(inf.read()).substitute(subst))
 
 class build_py(copy_file_mixin, setuptools.command.build_py.build_py):
     def run(self):
