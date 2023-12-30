@@ -31,19 +31,23 @@ The latest release version can be found `at PyPI`__.
 System requirements
 -------------------
 
-+ Python 2.7 or 3.4 and newer.
++ Python 3.4 and newer.
 + `setuptools`_.
 + `pytest`_ 3.7.0 or newer.
 
 Optional library packages:
 
-+ `setuptools_scm`_
++ `git-props`_
 
-  The version number is managed using this package.  All source
-  distributions add a static text file with the version number and
-  fall back using that if `setuptools_scm` is not available.  So this
-  package is only needed to build out of the plain development source
-  tree as cloned from GitHub.
+  This package is used to extract some metadata such as the version
+  number out of git, the version control system.  All releases embed
+  that metadata in the distribution.  So this package is only needed
+  to build out of the plain development source tree as cloned from
+  GitHub, but not to build a release distribution.
+
++ `distutils-pytest`_ >= 0.2
+
+  Only needed to run the test suite.
 
 
 Installation
@@ -57,7 +61,7 @@ Installation
 
 3. Test (optional)::
 
-     $ PYTHONPATH=build/lib python -m pytest tests
+     $ python setup.py test
 
 4. Install::
 
@@ -101,5 +105,6 @@ permissions and limitations under the License.
 .. _PyPI site: https://pypi.org/project/pytest-dependency/
 .. _setuptools: http://pypi.python.org/pypi/setuptools/
 .. _pytest: http://pytest.org/
-.. _setuptools_scm: https://github.com/pypa/setuptools_scm/
+.. _git-props: https://github.com/RKrahl/git-props
+.. _distutils-pytest: https://github.com/RKrahl/distutils-pytest
 .. _Read the Docs site: https://pytest-dependency.readthedocs.io/

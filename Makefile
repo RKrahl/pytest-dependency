@@ -5,8 +5,8 @@ BUILDLIB = $(CURDIR)/build/lib
 build:
 	$(PYTHON) setup.py build
 
-test: build
-	PYTHONPATH=$(BUILDLIB) $(PYTHON) -m pytest tests
+test:
+	$(PYTHON) setup.py test
 
 sdist:
 	$(PYTHON) setup.py sdist
@@ -15,16 +15,17 @@ doc-html: build
 	$(MAKE) -C doc html PYTHONPATH=$(BUILDLIB)
 
 clean:
-	rm -f *~ tests/*~
 	rm -rf build
+	rm -rf __pycache__
 
 distclean: clean
-	rm -rf .cache tests/.cache .pytest_cache tests/.pytest_cache
-	rm -f *.pyc tests/*.pyc
-	rm -rf __pycache__ tests/__pycache__
-	rm -f MANIFEST .version
+	rm -f MANIFEST _meta.py
 	rm -rf dist
-	rm -rf pytest_dependency.egg-info
+	rm -rf tests/.pytest_cache
 	$(MAKE) -C doc distclean
 
-.PHONY: build test sdist doc-html clean distclean
+meta:
+	$(PYTHON) setup.py meta
+
+
+.PHONY: build test sdist doc-html clean distclean meta
