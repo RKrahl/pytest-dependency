@@ -2,8 +2,8 @@
 *~
 .cache/
 __pycache__/
-/.version
 /MANIFEST
+/_meta.py
 /build/
 /dist/
 /doc/doctest/

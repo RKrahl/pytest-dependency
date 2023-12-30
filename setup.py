@@ -18,13 +18,10 @@ import string
 try:
     import setuptools_scm
     version = setuptools_scm.get_version()
-    with open(".version", "wt") as f:
-        f.write(version)
 except (ImportError, LookupError):
     try:
-        with open(".version", "rt") as f:
-            version = f.read()
-    except (OSError, IOError):
+        from _meta import version
+    except ImportError:
         log.warn("warning: cannot determine version number")
         version = "UNKNOWN"
 
@@ -69,14 +66,38 @@ class copy_file_mixin:
                                                  not self.force, link,
                                                  dry_run=self.dry_run)
 
+class meta(setuptools.Command):
+    description = "generate meta files"
+    user_options = []
+    meta_template = '''
+version = "%(version)s"
+'''
+    def initialize_options(self):
+        pass
+    def finalize_options(self):
+        pass
+    def run(self):
+        version = self.distribution.get_version()
+        log.info("version: %s", version)
+        values = {
+            'version': version,
+        }
+        with Path("_meta.py").open("wt") as f:
+            print(self.meta_template % values, file=f)
+
 # Note: Do not use setuptools for making the source distribution,
 # rather use the good old distutils instead.
 # Rationale: https://rhodesmill.org/brandon/2009/eby-magic/
 class sdist(copy_file_mixin, distutils.command.sdist.sdist):
-    pass
+    def run(self):
+        self.run_command('meta')
+        super().run()
 
 class build_py(copy_file_mixin, setuptools.command.build_py.build_py):
-    pass
+    def run(self):
+        self.run_command('meta')
+        super().run()
+
 
 with Path("README.rst").open("rt", encoding="utf8") as f:
     readme = f.read()
@@ -121,5 +142,5 @@ setup(
             "dependency = pytest_dependency",
         ],
     },
-    cmdclass = {'build_py': build_py, 'sdist': sdist},
+    cmdclass = dict(build_py=build_py, sdist=sdist, meta=meta),
 )

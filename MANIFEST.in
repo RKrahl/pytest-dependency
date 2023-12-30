@@ -1,7 +1,7 @@
-include .version
 include LICENSE.txt
 include MANIFEST.in
 include README.rst
+include _meta.py
 include doc/examples/*.py
 include tests/conftest.py
 include tests/pytest.ini
