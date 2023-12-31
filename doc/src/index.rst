@@ -19,5 +19,5 @@ Content of the documentation
    names
    debugging
    configuration
-   changelog
    reference
+   changelog
