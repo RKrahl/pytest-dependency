@@ -1,8 +1,15 @@
 Debugging guide
 ===============
 
-This section is supposed to provide hints on what to check if
-pytest-dependency does not seem to behave as expected.
+It's just too easy to make errors.  Sometimes, it's not obvious to
+understand the behavior of pytest-dependency: test get skipped
+although their dependencies succeed or the other way round, the
+dependency marker does not seem have any effect and tests are executed
+although their dependency fail.
+
+This section intends to give an overview of the tools that pytest
+provides to investigate the situation in detail, which hopefully helps
+to understand what happens.
 
 Example
 -------
