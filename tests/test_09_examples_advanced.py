@@ -143,3 +143,25 @@ def test_all_params(ctestdir):
         .*::test_e\[def\] (?:XFAIL(?:\s+\(.*\))?|xfail)
         .*::test_f SKIPPED(?:\s+\(.*\))?
     """)
+
+
+def test_or_dependency(ctestdir):
+    """Logical combinations of dependencies
+    """
+    with get_example("or_dependency.py").open("rt") as f:
+        ctestdir.makepyfile(f.read())
+    result = ctestdir.runpytest("--verbose")
+    try:
+        result.assert_outcomes(passed=5, skipped=1, failed=0, xfailed=2)
+    except TypeError:
+        result.assert_outcomes(passed=5, skipped=1, failed=0)
+    result.stdout.re_match_lines(r"""
+        .*::test_ap PASSED
+        .*::test_ax (?:XFAIL(?:\s+\(.*\))?|xfail)
+        .*::test_bp PASSED
+        .*::test_bx (?:XFAIL(?:\s+\(.*\))?|xfail)
+        .*::test_c SKIPPED(?:\s+\(.*\))?
+        .*::test_d PASSED
+        .*::test_e PASSED
+        .*::test_f PASSED
+    """)

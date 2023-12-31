@@ -53,7 +53,7 @@ $long_description
 
 %files %{python_files}
 %license LICENSE.txt
-%doc README.rst
+%doc README.rst CHANGES.rst
 %{python_sitelib}/*
 
 
