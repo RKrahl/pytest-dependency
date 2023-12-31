@@ -2,24 +2,13 @@
 
 __version__ = "$VERSION"
 
+import logging
 import pytest
+
+logger = logging.getLogger(__name__)
 
 _automark = False
 _ignore_unknown = False
-
-
-def _get_bool(value):
-    """Evaluate string representation of a boolean value.
-    """
-    if value:
-        if value.lower() in ["0", "no", "n", "false", "f", "off"]:
-            return False
-        elif value.lower() in ["1", "yes", "y", "true", "t", "on"]:
-            return True
-        else:
-            raise ValueError("Invalid truth value '%s'" % value)
-    else:
-        return False
 
 
 class DependencyItemStatus(object):
@@ -85,16 +74,25 @@ class DependencyManager(object):
                 raise RuntimeError("Internal error: invalid scope '%s'"
                                    % self.scope)
         status = self.results.setdefault(name, DependencyItemStatus())
+        logger.debug("register %s %s %s in %s scope",
+                     rep.when, name, rep.outcome, self.scope)
         status.addResult(rep)
 
     def checkDepend(self, depends, item):
+        logger.debug("check dependencies of %s in %s scope ...",
+                     item.name, self.scope)
         for i in depends:
             if i in self.results:
                 if self.results[i].isSuccess():
+                    logger.debug("... %s succeeded", i)
                     continue
+                else:
+                    logger.debug("... %s has not succeeded", i)
             else:
+                logger.debug("... %s is unknown", i)
                 if _ignore_unknown:
                     continue
+            logger.info("skip %s because it depends on %s", item.name, i)
             pytest.skip("%s depends on %s" % (item.name, i))
 
 
@@ -130,7 +128,7 @@ def depends(request, other, scope='module'):
 def pytest_addoption(parser):
     parser.addini("automark_dependency", 
                   "Add the dependency marker to all tests automatically", 
-                  default=False)
+                  type="bool", default=False)
     parser.addoption("--ignore-unknown-dependency", 
                      action="store_true", default=False, 
                      help="ignore dependencies whose outcome is not known")
@@ -138,7 +136,7 @@ def pytest_addoption(parser):
 
 def pytest_configure(config):
     global _automark, _ignore_unknown
-    _automark = _get_bool(config.getini("automark_dependency"))
+    _automark = config.getini("automark_dependency")
     _ignore_unknown = config.getoption("--ignore-unknown-dependency")
     config.addinivalue_line("markers", 
                             "dependency(name=None, depends=[]): "

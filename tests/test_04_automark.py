@@ -23,13 +23,16 @@ def test_not_set(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose", "-rs")
     result.assert_outcomes(passed=1, skipped=1, failed=0)
-    result.stdout.fnmatch_lines("""
-        *::test_a PASSED
-        *::test_b SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_b SKIPPED(?:\s+\(.*\))?
     """)
 
 
-def test_set_false(ctestdir):
+@pytest.mark.parametrize(
+    "false_value", ["0", "no", "n", "False", "false", "f", "off"]
+)
+def test_set_false(ctestdir, false_value):
     """A pytest.ini is present, automark_dependency is set to false.
 
     Since automark_dependency is set to false and test_a is not
@@ -38,9 +41,9 @@ def test_set_false(ctestdir):
     """
     ctestdir.makefile('.ini', pytest="""
         [pytest]
-        automark_dependency = false
+        automark_dependency = %s
         console_output_style = classic
-    """)
+    """ % false_value)
     ctestdir.makepyfile("""
         import pytest
 
@@ -53,13 +56,16 @@ def test_set_false(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose", "-rs")
     result.assert_outcomes(passed=1, skipped=1, failed=0)
-    result.stdout.fnmatch_lines("""
-        *::test_a PASSED
-        *::test_b SKIPPED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_b SKIPPED(?:\s+\(.*\))?
     """)
 
 
-def test_set_true(ctestdir):
+@pytest.mark.parametrize(
+    "true_value", ["1", "yes", "y", "True", "true", "t", "on"]
+)
+def test_set_true(ctestdir, true_value):
     """A pytest.ini is present, automark_dependency is set to false.
 
     Since automark_dependency is set to true, the outcome of test_a
@@ -68,9 +74,9 @@ def test_set_true(ctestdir):
     """
     ctestdir.makefile('.ini', pytest="""
         [pytest]
-        automark_dependency = true
+        automark_dependency = %s
         console_output_style = classic
-    """)
+    """ % true_value)
     ctestdir.makepyfile("""
         import pytest
 
@@ -83,7 +89,7 @@ def test_set_true(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose", "-rs")
     result.assert_outcomes(passed=2, skipped=0, failed=0)
-    result.stdout.fnmatch_lines("""
-        *::test_a PASSED
-        *::test_b PASSED
+    result.stdout.re_match_lines(r"""
+        .*::test_a PASSED
+        .*::test_b PASSED
     """)

@@ -21,7 +21,7 @@ test, we will get the following result:
 .. literalinclude:: ../examples/basic.out
 
 The first test has deliberately been set to fail to illustrate the
-effect.  We will get the following resuts:
+effect.  We will get the following results:
 
 `test_a`
   deliberately fails.
@@ -50,7 +50,7 @@ see Section :ref:`names` for details.  In some cases, it's not easy to
 predict the names of the node ids.  For this reason, the name of the
 tests can be overridden by an explicit `name` argument to the marker.
 The names must be unique.  The following example works exactly as the
-last one, only the test names are explicitely set:
+last one, only the test names are explicitly set:
 
 .. literalinclude:: ../examples/named.py
 
@@ -73,6 +73,22 @@ explicit `name` argument to the :func:`pytest.mark.dependency` marker.
    The name of the class is prepended to the method name to form the
    default name for the test.
 
+Applying the dependency marker to a class as a whole
+----------------------------------------------------
+
+The :func:`pytest.mark.dependency` marker may also be applied to a test
+class as a whole.  This has the same effect as applying that marker
+with the same arguments to each method of the class individually.
+Consider:
+
+.. literalinclude:: ../examples/mark-class.py
+
+The tests `TestClass::test_a` and `TestClass::test_c` will be skipped,
+because they depend on `test_f`.  But `TestClass::test_b` will be run,
+because it is individually marked.  The marker on the test method
+overrides the marker on the class and thus effectively clears the
+dependency list for `TestClass::test_b`.
+
 .. _usage-parametrized:
 
 Parametrized tests
@@ -94,7 +110,7 @@ Marking dependencies at runtime
 -------------------------------
 
 Sometimes, dependencies of test instances are too complicated to be
-formulated explicitely beforehand using the
+formulated explicitly beforehand using the
 :func:`pytest.mark.dependency` marker.  It may be easier to compile
 the list of dependencies of a test at run time.  In such cases, the
 function :func:`pytest_dependency.depends` comes handy.  Consider the

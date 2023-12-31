@@ -5,7 +5,7 @@ import pytest
 
 
 def test_scope_module(ctestdir):
-    """One single module, module scope is explicitely set in the
+    """One single module, module scope is explicitly set in the
     pytest.mark.dependency() marker.
     """
     ctestdir.makepyfile("""
@@ -33,12 +33,12 @@ def test_scope_module(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=2, skipped=2, failed=1)
-    result.stdout.fnmatch_lines("""
+    result.stdout.re_match_lines(r"""
         test_scope_module.py::test_a FAILED
         test_scope_module.py::test_b PASSED
-        test_scope_module.py::test_c SKIPPED
+        test_scope_module.py::test_c SKIPPED(?:\s+\(.*\))?
         test_scope_module.py::test_d PASSED
-        test_scope_module.py::test_e SKIPPED
+        test_scope_module.py::test_e SKIPPED(?:\s+\(.*\))?
     """)
 
 def test_scope_session(ctestdir):
@@ -102,14 +102,14 @@ def test_scope_session(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=6, skipped=1, failed=2)
-    result.stdout.fnmatch_lines("""
+    result.stdout.re_match_lines(r"""
         test_scope_session_01.py::test_a PASSED
         test_scope_session_01.py::test_b FAILED
         test_scope_session_01.py::test_c PASSED
         test_scope_session_01.py::TestClass::test_b PASSED
         test_scope_session_02.py::test_a FAILED
         test_scope_session_02.py::test_e PASSED
-        test_scope_session_02.py::test_f SKIPPED
+        test_scope_session_02.py::test_f SKIPPED(?:\s+\(.*\))?
         test_scope_session_02.py::test_g PASSED
         test_scope_session_02.py::test_h PASSED
     """)
@@ -174,14 +174,14 @@ def test_scope_package(ctestdir):
     ctestdir.makepyfile(**srcs)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=4, skipped=2, failed=1)
-    result.stdout.fnmatch_lines("""
+    result.stdout.re_match_lines(r"""
         test_scope_package_a/test_01.py::test_a PASSED
         test_scope_package_b/test_02.py::test_c PASSED
         test_scope_package_b/test_02.py::test_d FAILED
         test_scope_package_b/test_03.py::test_e PASSED
-        test_scope_package_b/test_03.py::test_f SKIPPED
+        test_scope_package_b/test_03.py::test_f SKIPPED(?:\s+\(.*\))?
         test_scope_package_b/test_03.py::test_g PASSED
-        test_scope_package_b/test_03.py::test_h SKIPPED
+        test_scope_package_b/test_03.py::test_h SKIPPED(?:\s+\(.*\))?
     """)
 
 def test_scope_class(ctestdir):
@@ -236,17 +236,17 @@ def test_scope_class(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=5, skipped=3, failed=2)
-    result.stdout.fnmatch_lines("""
+    result.stdout.re_match_lines(r"""
         test_scope_class.py::test_a FAILED
         test_scope_class.py::test_b PASSED
         test_scope_class.py::TestClass1::test_c PASSED
         test_scope_class.py::TestClass2::test_a PASSED
         test_scope_class.py::TestClass2::test_b FAILED
-        test_scope_class.py::TestClass2::test_d SKIPPED
+        test_scope_class.py::TestClass2::test_d SKIPPED(?:\s+\(.*\))?
         test_scope_class.py::TestClass2::test_e PASSED
         test_scope_class.py::TestClass2::test_f PASSED
-        test_scope_class.py::TestClass2::test_g SKIPPED
-        test_scope_class.py::TestClass2::test_h SKIPPED
+        test_scope_class.py::TestClass2::test_g SKIPPED(?:\s+\(.*\))?
+        test_scope_class.py::TestClass2::test_h SKIPPED(?:\s+\(.*\))?
     """)
 
 def test_scope_nodeid(ctestdir):
@@ -360,26 +360,26 @@ def test_scope_nodeid(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=7, skipped=8, failed=0)
-    result.stdout.fnmatch_lines("""
+    result.stdout.re_match_lines(r"""
         test_scope_nodeid.py::test_a PASSED
         test_scope_nodeid.py::test_b PASSED
-        test_scope_nodeid.py::test_c SKIPPED
-        test_scope_nodeid.py::test_d SKIPPED
+        test_scope_nodeid.py::test_c SKIPPED(?:\s+\(.*\))?
+        test_scope_nodeid.py::test_d SKIPPED(?:\s+\(.*\))?
         test_scope_nodeid.py::test_e PASSED
         test_scope_nodeid.py::TestClass::test_f PASSED
         test_scope_nodeid.py::TestClass::test_g PASSED
-        test_scope_nodeid.py::TestClass::test_h SKIPPED
-        test_scope_nodeid.py::TestClass::test_i SKIPPED
-        test_scope_nodeid.py::TestClass::test_j SKIPPED
+        test_scope_nodeid.py::TestClass::test_h SKIPPED(?:\s+\(.*\))?
+        test_scope_nodeid.py::TestClass::test_i SKIPPED(?:\s+\(.*\))?
+        test_scope_nodeid.py::TestClass::test_j SKIPPED(?:\s+\(.*\))?
         test_scope_nodeid.py::TestClass::test_k PASSED
-        test_scope_nodeid.py::TestClass::test_l SKIPPED
-        test_scope_nodeid.py::TestClass::test_m SKIPPED
-        test_scope_nodeid.py::TestClass::test_n SKIPPED
+        test_scope_nodeid.py::TestClass::test_l SKIPPED(?:\s+\(.*\))?
+        test_scope_nodeid.py::TestClass::test_m SKIPPED(?:\s+\(.*\))?
+        test_scope_nodeid.py::TestClass::test_n SKIPPED(?:\s+\(.*\))?
         test_scope_nodeid.py::TestClass::test_o PASSED
     """)
 
 def test_scope_named(ctestdir):
-    """Explicitely named tests are always referenced by that name,
+    """Explicitly named tests are always referenced by that name,
     regardless of the scope.
     """
     ctestdir.makepyfile("""
@@ -467,19 +467,19 @@ def test_scope_named(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=7, skipped=5, failed=0)
-    result.stdout.fnmatch_lines("""
+    result.stdout.re_match_lines(r"""
         test_scope_named.py::test_a PASSED
         test_scope_named.py::test_b PASSED
-        test_scope_named.py::test_c SKIPPED
+        test_scope_named.py::test_c SKIPPED(?:\s+\(.*\))?
         test_scope_named.py::test_d PASSED
-        test_scope_named.py::test_e SKIPPED
+        test_scope_named.py::test_e SKIPPED(?:\s+\(.*\))?
         test_scope_named.py::TestClass::test_f PASSED
         test_scope_named.py::TestClass::test_g PASSED
-        test_scope_named.py::TestClass::test_h SKIPPED
+        test_scope_named.py::TestClass::test_h SKIPPED(?:\s+\(.*\))?
         test_scope_named.py::TestClass::test_i PASSED
-        test_scope_named.py::TestClass::test_j SKIPPED
+        test_scope_named.py::TestClass::test_j SKIPPED(?:\s+\(.*\))?
         test_scope_named.py::TestClass::test_k PASSED
-        test_scope_named.py::TestClass::test_l SKIPPED
+        test_scope_named.py::TestClass::test_l SKIPPED(?:\s+\(.*\))?
     """)
 
 def test_scope_dependsfunc(ctestdir):
@@ -578,7 +578,7 @@ def test_scope_dependsfunc(ctestdir):
     """)
     result = ctestdir.runpytest("--verbose")
     result.assert_outcomes(passed=10, skipped=3, failed=3)
-    result.stdout.fnmatch_lines("""
+    result.stdout.re_match_lines(r"""
         test_scope_dependsfunc_01.py::test_a PASSED
         test_scope_dependsfunc_01.py::test_b FAILED
         test_scope_dependsfunc_01.py::test_c PASSED
@@ -586,13 +586,13 @@ def test_scope_dependsfunc(ctestdir):
         test_scope_dependsfunc_02.py::test_a FAILED
         test_scope_dependsfunc_02.py::test_b PASSED
         test_scope_dependsfunc_02.py::test_e PASSED
-        test_scope_dependsfunc_02.py::test_f SKIPPED
+        test_scope_dependsfunc_02.py::test_f SKIPPED(?:\s+\(.*\))?
         test_scope_dependsfunc_02.py::test_g PASSED
         test_scope_dependsfunc_02.py::test_h PASSED
-        test_scope_dependsfunc_02.py::test_i SKIPPED
+        test_scope_dependsfunc_02.py::test_i SKIPPED(?:\s+\(.*\))?
         test_scope_dependsfunc_02.py::test_j PASSED
         test_scope_dependsfunc_02.py::TestClass::test_a PASSED
         test_scope_dependsfunc_02.py::TestClass::test_b FAILED
         test_scope_dependsfunc_02.py::TestClass::test_c PASSED
-        test_scope_dependsfunc_02.py::TestClass::test_d SKIPPED
+        test_scope_dependsfunc_02.py::TestClass::test_d SKIPPED(?:\s+\(.*\))?
     """)

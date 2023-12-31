@@ -1,0 +1,35 @@
+$ pytest --verbose debugging.py
+============================= test session starts ==============================
+platform linux -- Python 3.10.1, pytest-6.2.5, py-1.11.0, pluggy-1.0.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/user
+plugins: dependency-0.6.0
+collecting ... collected 25 items
+
+debugging.py::test_a XFAIL (deliberate fail)                             [  4%]
+debugging.py::test_b PASSED                                              [  8%]
+debugging.py::test_c SKIPPED (test_c depends on test_a)                  [ 12%]
+debugging.py::test_d PASSED                                              [ 16%]
+debugging.py::test_e SKIPPED (test_e depends on test_c)                  [ 20%]
+debugging.py::TestClass::test_a PASSED                                   [ 24%]
+debugging.py::TestClass::test_b XFAIL (deliberate fail)                  [ 28%]
+debugging.py::TestClass::test_c PASSED                                   [ 32%]
+debugging.py::test_colors[RED] PASSED                                    [ 36%]
+debugging.py::test_colors[GREEN] PASSED                                  [ 40%]
+debugging.py::test_colors[BLUE] PASSED                                   [ 44%]
+debugging.py::test_multicolored SKIPPED (test_multicolored depends o...) [ 48%]
+debugging.py::test_alert SKIPPED (test_alert depends on test_colors[...) [ 52%]
+debugging.py::test_g SKIPPED (test_g depends on test_f)                  [ 56%]
+debugging.py::test_h PASSED                                              [ 60%]
+debugging.py::test_k SKIPPED (could not import 'fleet': No module na...) [ 64%]
+debugging.py::test_l[0] PASSED                                           [ 68%]
+debugging.py::test_q[0] SKIPPED (test_q[0] depends on test_p)            [ 72%]
+debugging.py::test_l[1] PASSED                                           [ 76%]
+debugging.py::test_q[1] SKIPPED (test_q[1] depends on test_p)            [ 80%]
+debugging.py::test_m SKIPPED (test_m depends on test_b)                  [ 84%]
+debugging.py::test_o SKIPPED (test_o depends on test_h)                  [ 88%]
+debugging.py::test_p PASSED                                              [ 92%]
+debugging.py::test_r PASSED                                              [ 96%]
+debugging.py::test_s SKIPPED (test_s depends on test_l)                  [100%]
+
+================== 12 passed, 11 skipped, 2 xfailed in 0.06s ===================

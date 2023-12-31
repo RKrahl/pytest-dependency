@@ -1,34 +1,31 @@
-PYTHON   = python
-BUILDDIR = $(CURDIR)/build
+PYTHON   = python3
+BUILDLIB = $(CURDIR)/build/lib
 
 
 build:
 	$(PYTHON) setup.py build
 
-test: build
-	PYTHONPATH=$(BUILDDIR)/lib $(PYTHON) -m pytest tests
+test:
+	$(PYTHON) setup.py test
 
 sdist:
 	$(PYTHON) setup.py sdist
 
-doc-html: .version
-	$(MAKE) -C doc html
+doc-html: build
+	$(MAKE) -C doc html PYTHONPATH=$(BUILDLIB)
 
 clean:
-	rm -f *~ tests/*~
 	rm -rf build
-	$(MAKE) -C doc clean
+	rm -rf __pycache__
 
 distclean: clean
-	rm -rf .cache tests/.cache .pytest_cache tests/.pytest_cache
-	rm -f *.pyc tests/*.pyc
-	rm -rf __pycache__ tests/__pycache__
-	rm -f MANIFEST .version
+	rm -f MANIFEST _meta.py
 	rm -rf dist
-	rm -rf pytest_dependency.egg-info
+	rm -rf tests/.pytest_cache
 	$(MAKE) -C doc distclean
 
-.version:
-	$(PYTHON) setup.py check
+meta:
+	$(PYTHON) setup.py meta
 
-.PHONY: build test sdist doc-html clean distclean
+
+.PHONY: build test sdist doc-html clean distclean meta

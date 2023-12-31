@@ -1,0 +1,5 @@
+git-props
+pytest >=3.7.0
+setuptools
+sphinx-copybutton
+sphinx_rtd_theme
