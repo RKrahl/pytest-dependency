@@ -4,6 +4,11 @@ Changelog
 dev (not yet released)
 ~~~~~~~~~~~~~~~~~~~~~~
 
+Documentation
+-------------
+
++ `#39`_, `#41`_, `#59`_: Review documentation
+
 Incompatible changes
 --------------------
 
@@ -22,10 +27,13 @@ Internal
 
 + `#75`_: review build tool chain.
 
+.. _#39: https://github.com/RKrahl/pytest-dependency/issues/39
 .. _#40: https://github.com/RKrahl/pytest-dependency/issues/40
+.. _#41: https://github.com/RKrahl/pytest-dependency/issues/41
 .. _#50: https://github.com/RKrahl/pytest-dependency/issues/50
 .. _#51: https://github.com/RKrahl/pytest-dependency/pull/51
 .. _#58: https://github.com/RKrahl/pytest-dependency/pull/58
+.. _#59: https://github.com/RKrahl/pytest-dependency/pull/59
 .. _#75: https://github.com/RKrahl/pytest-dependency/pull/75
 
 0.5.1 (2020-02-14)
