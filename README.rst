@@ -15,61 +15,10 @@
 pytest-dependency – Manage dependencies of tests
 ================================================
 
-This pytest plugin manages dependencies of tests.  It allows to mark
-some tests as dependent from other tests.  These tests will then be
-skipped if any of the dependencies did fail or has been skipped.
-
-
-Download
---------
-
-The latest release version can be found `at PyPI`__.
-
-.. __: `PyPI site`_
-
-
-System requirements
--------------------
-
-+ Python 3.4 and newer.
-+ `setuptools`_.
-+ `pytest`_ 3.7.0 or newer.
-
-Optional library packages:
-
-+ `git-props`_
-
-  This package is used to extract some metadata such as the version
-  number out of git, the version control system.  All releases embed
-  that metadata in the distribution.  So this package is only needed
-  to build out of the plain development source tree as cloned from
-  GitHub, but not to build a release distribution.
-
-+ `distutils-pytest`_ >= 0.2
-
-  Only needed to run the test suite.
-
-
-Installation
-------------
-
-1. Download the sources, unpack, and change into the source directory.
-
-2. Build (optional)::
-
-     $ python setup.py build
-
-3. Test (optional)::
-
-     $ python setup.py test
-
-4. Install::
-
-     $ python setup.py install
-
-The last step might require admin privileges in order to write into
-the site-packages directory of your Python installation.
-
+This module is a plugin for the popular Python testing framework
+`pytest`_.  It manages dependencies of tests: you may mark some tests
+as dependent from other tests.  These tests will then be skipped if
+any of the dependencies did fail or has been skipped.
 
 Documentation
 -------------
@@ -87,7 +36,7 @@ Copyright and License
 
 - Copyright 2013–2015
   Helmholtz-Zentrum Berlin für Materialien und Energie GmbH
-- Copyright 2016–2020 Rolf Krahl
+- Copyright 2016–2023 Rolf Krahl
 
 Licensed under the `Apache License`_, Version 2.0 (the "License"); you
 may not use this file except in compliance with the License.
@@ -99,10 +48,6 @@ implied.  See the License for the specific language governing
 permissions and limitations under the License.
 
 
-.. _PyPI site: https://pypi.org/project/pytest-dependency/
-.. _setuptools: http://pypi.python.org/pypi/setuptools/
 .. _pytest: http://pytest.org/
-.. _git-props: https://github.com/RKrahl/git-props
-.. _distutils-pytest: https://github.com/RKrahl/distutils-pytest
 .. _Read the Docs site: https://pytest-dependency.readthedocs.io/
 .. _Apache License: https://www.apache.org/licenses/LICENSE-2.0

@@ -19,7 +19,7 @@ import pytest_dependency
 # -- Project information -----------------------------------------------------
 
 project = 'pytest-dependency'
-copyright = '2016–2020, Rolf Krahl'
+copyright = '2016–2023, Rolf Krahl'
 author = 'Rolf Krahl'
 
 # The full version, including alpha/beta/rc tags

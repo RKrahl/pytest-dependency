@@ -71,7 +71,7 @@ Copyright and License
 
 - Copyright 2013–2015
   Helmholtz-Zentrum Berlin für Materialien und Energie GmbH
-- Copyright 2016–2020 Rolf Krahl
+- Copyright 2016–2023 Rolf Krahl
 
 Licensed under the `Apache License`_, Version 2.0 (the "License"); you
 may not use this file except in compliance with the License.
