@@ -89,7 +89,7 @@ build from the source distribution:
    You may verify the integrity of the source distribution by checking
    the signature::
 
-     $ gpg --verify pytest-dependency-0.5.1.tar.gz.asc 
+     $ gpg --verify pytest-dependency-0.5.1.tar.gz.asc
      gpg: assuming signed data in 'pytest-dependency-0.5.1.tar.gz'
      gpg: Signature made Fri Feb 14 21:58:30 2020 CET
      gpg:                using RSA key B4EB920861DF33F31B55A07C08A1264175343E6E
