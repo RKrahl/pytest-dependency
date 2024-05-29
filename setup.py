@@ -158,7 +158,7 @@ setup(
     ),
     package_dir = {"": "src"},
     python_requires = ">=3.4",
-    py_modules = ["pytest_dependency"],
+    py_modules = ["pytest_dependency", "pytest_dependency_hooks"],
     install_requires = ["setuptools", "pytest >= 3.7.0"],
     entry_points = {
         "pytest11": [
