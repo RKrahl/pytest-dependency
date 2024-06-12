@@ -89,7 +89,7 @@ class DependencyManager(object):
                 else:
                     logger.debug("... %s has not succeeded", i)
             else:
-                logger.debug("... %s is unknown", i)
+                logger.debug("... %s is unknown (did you forget to mark it?)", i)
                 if _ignore_unknown:
                     continue
             logger.info("skip %s because it depends on %s", item.name, i)
