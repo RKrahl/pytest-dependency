@@ -25,5 +25,8 @@ jobs:
         run: |
           mkdir -p dist
           cp -p assets/$SDIST dist
-      - name: Upload distfile to PyPI
+      - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
+          verify-metadata: false
