@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Configuration file for the Sphinx documentation builder.
 #
 # This file does only contain a selection of the most common options. For a
@@ -7,6 +5,7 @@
 # http://www.sphinx-doc.org/en/master/config
 
 import os
+from importlib.metadata import version, PackageNotFoundError
 from pathlib import Path
 import sys
 
@@ -25,7 +24,10 @@ copyright = '2016–2026, Rolf Krahl'
 author = 'Rolf Krahl'
 
 # The full version, including alpha/beta/rc tags
-release = pytest_dependency.__version__
+try:
+    release = version(project)
+except PackageNotFoundError:
+    release = '0.0.0'
 # The short X.Y version
 version = ".".join(release.split(".")[0:2])
 
