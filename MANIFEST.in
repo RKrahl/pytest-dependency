@@ -1,9 +1,8 @@
-include CHANGES.rst
-include LICENSE.txt
-include MANIFEST.in
-include README.rst
-include _meta.py
+recursive-exclude .github *
+exclude .gitignore
+exclude .readthedocs.yaml
+exclude .rtd-require
+recursive-exclude doc *
 include doc/examples/*.py
-include tests/conftest.py
-include tests/pytest.ini
-include tests/test_*.py
+exclude Makefile
+exclude python-pytest-dependency.spec
