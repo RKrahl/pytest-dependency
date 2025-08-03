@@ -11,7 +11,7 @@ _automark = False
 _ignore_unknown = False
 
 
-class DependencyItemStatus(object):
+class DependencyItemStatus:
     """Status of a test item in a dependency manager.
     """
 
@@ -31,7 +31,7 @@ class DependencyItemStatus(object):
         return list(self.results.values()) == ['passed', 'passed', 'passed']
 
 
-class DependencyManager(object):
+class DependencyManager:
     """Dependency manager, stores the results of tests.
     """
 
