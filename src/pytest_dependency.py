@@ -64,7 +64,7 @@ class DependencyManager(object):
             # the node ids of class methods to denote the class
             # instance.  This has been removed in pytest 4.0.0.
             nodeid = item.nodeid.replace("::()::", "::")
-            if self.scope == 'session' or self.scope == 'package':
+            if self.scope in {'session', 'package'}:
                 name = nodeid
             elif self.scope == 'module':
                 name = nodeid.split("::", 1)[1]
