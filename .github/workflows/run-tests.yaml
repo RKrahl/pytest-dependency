@@ -36,4 +36,4 @@ jobs:
           pip install -r .github/requirements.txt
       - name: Test with pytest
         run: |
-          python setup.py test
+          python -m pytest
