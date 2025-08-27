@@ -36,6 +36,12 @@ automark_dependency
 
    .. versionadded:: 0.3
 
+accept_xfail
+   This is a flag. If set to `True`, will treat xfailing dependencies as
+   successful. Defaults to `False`.
+
+   .. versionadded:: 0.6
+
 Command line options
 --------------------
 
