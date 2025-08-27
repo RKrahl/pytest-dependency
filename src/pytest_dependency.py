@@ -30,6 +30,8 @@ class DependencyItemStatus:
     def isSuccess(self):
         return list(self.results.values()) == ['passed', 'passed', 'passed']
 
+    def hasFailure(self):
+        return any(outcome == 'failed' for outcome in self.results.values())
 
 class DependencyManager:
     """Dependency manager, stores the results of tests.
@@ -82,16 +84,23 @@ class DependencyManager:
         logger.debug("check dependencies of %s in %s scope ...",
                      item.name, self.scope)
         for i in depends:
+            has_failure = False
             if i in self.results:
                 if self.results[i].isSuccess():
                     logger.debug("... %s succeeded", i)
                     continue
                 else:
                     logger.debug("... %s has not succeeded", i)
+                    if self.results[i].hasFailure():
+                        has_failure = True
             else:
                 logger.debug("... %s is unknown", i)
                 if _ignore_unknown:
                     continue
+            if not has_failure and any(item.config.hook.pytest_dependency_override_skip(
+                    item=item, dependency=i, scope=self.scope)):
+                logger.info("NOT skipping %s because its dependency on %s", item.name, i)
+                continue
             logger.info("skip %s because it depends on %s", item.name, i)
             pytest.skip("%s depends on %s" % (item.name, i))
 
@@ -170,3 +179,10 @@ def pytest_runtest_setup(item):
             scope = marker.kwargs.get('scope', 'module')
             manager = DependencyManager.getManager(item, scope=scope)
             manager.checkDepend(depends, item)
+
+
+def pytest_addhooks(pluginmanager):
+    """This example assumes the hooks are grouped in the 'sample_hook' module."""
+    import pytest_dependency_hooks
+
+    pluginmanager.add_hookspecs(pytest_dependency_hooks)
