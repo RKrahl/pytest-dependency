@@ -68,10 +68,11 @@ class copy_file_mixin:
                     outfile.chmod(S_IMODE(st[ST_MODE]))
             return (str(outfile), 1)
         else:
+            if self.dry_run:
+                return (outfile, 0)
             return distutils.file_util.copy_file(infile, outfile,
                                                  preserve_mode, preserve_times,
-                                                 not self.force, link,
-                                                 dry_run=self.dry_run)
+                                                 not self.force, link)
 
 class meta(setuptools.Command):
     description = "generate meta files"
