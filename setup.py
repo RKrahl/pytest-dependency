@@ -9,9 +9,9 @@ import setuptools
 from setuptools import setup
 import setuptools.command.build_py
 import distutils.command.sdist
+import distutils.dist
 import distutils.file_util
 from distutils import log
-from glob import glob
 import os
 from pathlib import Path
 from stat import ST_ATIME, ST_MTIME, ST_MODE, S_IMODE
@@ -23,7 +23,8 @@ except (ImportError, AttributeError):
     cmdclass = dict()
 try:
     import gitprops
-    release = str(gitprops.get_last_release())
+    release = gitprops.get_last_release()
+    release = release and str(release)
     version = str(gitprops.get_version())
 except (ImportError, LookupError):
     try:
@@ -33,6 +34,16 @@ except (ImportError, LookupError):
         release = version = "UNKNOWN"
 
 docstring = __doc__
+
+
+# Enforcing of PEP 625 has been added in setuptools 69.3.0.  We don't
+# want this, we want to keep control on the name of the sdist
+# ourselves.  Disable it.
+def _fixed_get_fullname(self):
+    return "%s-%s" % (self.get_name(), self.get_version())
+
+distutils.dist.DistributionMetadata.get_fullname = _fixed_get_fullname
+
 
 class copy_file_mixin:
     """Distutils copy_file() mixin.
@@ -82,8 +93,8 @@ class meta(setuptools.Command):
     description = "generate meta files"
     user_options = []
     meta_template = '''
-release = "%(release)s"
-version = "%(version)s"
+release = %(release)r
+version = %(version)r
 '''
     def initialize_options(self):
         pass
@@ -112,8 +123,8 @@ class sdist(copy_file_mixin, distutils.command.sdist.sdist):
             "description": docstring.split("\n")[0],
             "long_description": docstring.split("\n", maxsplit=2)[2].strip(),
         }
-        for spec in glob("*.spec"):
-            with Path(spec).open('rt') as inf:
+        for spec in Path().glob("*.spec"):
+            with spec.open('rt') as inf:
                 with Path(self.dist_dir, spec).open('wt') as outf:
                     outf.write(string.Template(inf.read()).substitute(subst))
 
@@ -152,6 +163,8 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Topic :: Software Development :: Testing",
     ],
     project_urls = dict(
@@ -159,7 +172,8 @@ setup(
         Source="https://github.com/RKrahl/pytest-dependency",
         Download=("https://github.com/RKrahl/pytest-dependency/releases/%s/"
                   % release),
-        Changes="https://pytest-dependency.readthedocs.io/en/latest/changelog.html",
+        Changes=("https://pytest-dependency.readthedocs.io/en/stable"
+                 "/changelog.html#changes-%s" % release.replace('.', '-')),
     ),
     package_dir = {"": "src"},
     python_requires = ">=3.4",

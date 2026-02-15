@@ -12,6 +12,7 @@ jobs:
       id-token: write
     env:
       SDIST: pytest-dependency-${{ github.event.release.tag_name }}.tar.gz
+      PYPI_SDIST: pytest_dependency-${{ github.event.release.tag_name }}.tar.gz
     steps:
       - name: Fetch assets
         uses: cb80/dlassets@latest
@@ -24,9 +25,8 @@ jobs:
       - name: Copy distfile to dist directory
         run: |
           mkdir -p dist
-          cp -p assets/$SDIST dist
+          cp -p assets/$SDIST dist/$PYPI_SDIST
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           verbose: true
-          verify-metadata: false
