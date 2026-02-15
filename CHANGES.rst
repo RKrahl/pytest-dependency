@@ -1,6 +1,9 @@
 Changelog
 =========
 
+
+.. _changes-0_6_0:
+
 0.6.0 (2023-12-31)
 ~~~~~~~~~~~~~~~~~~
 
@@ -36,6 +39,9 @@ Internal
 .. _#59: https://github.com/RKrahl/pytest-dependency/pull/59
 .. _#75: https://github.com/RKrahl/pytest-dependency/pull/75
 
+
+.. _changes-0_5_1:
+
 0.5.1 (2020-02-14)
 ~~~~~~~~~~~~~~~~~~
 
@@ -43,6 +49,9 @@ Bug fixes and minor changes
 ---------------------------
 
 + Fix failing documentation build.
+
+
+.. _changes-0_5_0:
 
 0.5.0 (2020-02-14)
 ~~~~~~~~~~~~~~~~~~
@@ -69,6 +78,9 @@ Bug fixes and minor changes
 .. _#34: https://github.com/RKrahl/pytest-dependency/issues/34
 .. _#3: https://github.com/RKrahl/pytest-dependency/issues/3
 
+
+.. _changes-0_4_0:
+
 0.4.0 (2018-12-02)
 ~~~~~~~~~~~~~~~~~~
 
@@ -91,6 +103,9 @@ Bug fixes and minor changes
 .. _#25: https://github.com/RKrahl/pytest-dependency/pull/25
 .. _#24: https://github.com/RKrahl/pytest-dependency/issues/24
 
+
+.. _changes-0_3_2:
+
 0.3.2 (2018-01-17)
 ~~~~~~~~~~~~~~~~~~
 
@@ -103,6 +118,9 @@ Bug fixes and minor changes
 
 .. _#5: https://github.com/RKrahl/pytest-dependency/issues/5
 
+
+.. _changes-0_3_1:
+
 0.3.1 (2017-12-26)
 ~~~~~~~~~~~~~~~~~~
 
@@ -114,6 +132,9 @@ Bug fixes and minor changes
 + Some improvements in the documentation.
 
 .. _#17: https://github.com/RKrahl/pytest-dependency/issues/17
+
+
+.. _changes-0_3_0:
 
 0.3 (2017-12-26)
 ~~~~~~~~~~~~~~~~
@@ -190,6 +211,9 @@ Bug fixes and minor changes
 .. _#7: https://github.com/RKrahl/pytest-dependency/issues/7
 .. _#6: https://github.com/RKrahl/pytest-dependency/issues/6
 
+
+.. _changes-0_2_0:
+
 0.2 (2017-05-28)
 ~~~~~~~~~~~~~~~~
 
@@ -203,6 +227,9 @@ New features
 
 .. _#4: https://github.com/RKrahl/pytest-dependency/issues/4
 .. _#2: https://github.com/RKrahl/pytest-dependency/issues/2
+
+
+.. _changes-0_1_0:
 
 0.1 (2017-01-29)
 ~~~~~~~~~~~~~~~~

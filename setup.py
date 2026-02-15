@@ -154,7 +154,8 @@ setup(
         Source="https://github.com/RKrahl/pytest-dependency",
         Download=("https://github.com/RKrahl/pytest-dependency/releases/%s/"
                   % release),
-        Changes="https://pytest-dependency.readthedocs.io/en/latest/changelog.html",
+        Changes=("https://pytest-dependency.readthedocs.io/en/stable"
+                 "/changelog.html#changes-%s" % release.replace('.', '-')),
     ),
     package_dir = {"": "src"},
     python_requires = ">=3.4",
