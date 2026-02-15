@@ -2,6 +2,22 @@ Changelog
 =========
 
 
+.. _changes-0_6_1:
+
+0.6.1 (2026-02-15)
+~~~~~~~~~~~~~~~~~~
+
+Bug fixes and minor changes
+---------------------------
+
++ `#91`_, `#92`_: fix compatibility with setuptools 81.0.0.
++ `#93`_: Minor review of the build tool chain.
+
+.. _#91: https://github.com/RKrahl/pytest-dependency/issues/91
+.. _#92: https://github.com/RKrahl/pytest-dependency/pull/92
+.. _#93: https://github.com/RKrahl/pytest-dependency/pull/93
+
+
 .. _changes-0_6_0:
 
 0.6.0 (2023-12-31)
