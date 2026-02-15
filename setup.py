@@ -45,6 +45,10 @@ class copy_file_mixin:
     Subst = {'DOC': docstring, 'VERSION': version}
     def copy_file(self, infile, outfile,
                   preserve_mode=1, preserve_times=1, link=None, level=1):
+        try:
+            dry_run = self.dry_run
+        except AttributeError:
+            dry_run = False
         if infile in self.Subst_srcs:
             infile = Path(infile)
             outfile = Path(outfile)
@@ -54,7 +58,7 @@ class copy_file_mixin:
             else:
                 log.info("copying (with substitutions) %s -> %s",
                          infile, outfile)
-            if not self.dry_run:
+            if not dry_run:
                 st = infile.stat()
                 try:
                     outfile.unlink()
@@ -68,7 +72,7 @@ class copy_file_mixin:
                     outfile.chmod(S_IMODE(st[ST_MODE]))
             return (str(outfile), 1)
         else:
-            if self.dry_run:
+            if dry_run:
                 return (outfile, 1)
             return distutils.file_util.copy_file(infile, outfile,
                                                  preserve_mode, preserve_times,
