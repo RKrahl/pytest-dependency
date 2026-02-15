@@ -69,7 +69,7 @@ class copy_file_mixin:
             return (str(outfile), 1)
         else:
             if self.dry_run:
-                return (outfile, 0)
+                return (outfile, 1)
             return distutils.file_util.copy_file(infile, outfile,
                                                  preserve_mode, preserve_times,
                                                  not self.force, link)
