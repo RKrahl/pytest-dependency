@@ -1,5 +1,4 @@
 PYTHON   = python3
-BUILDLIB = $(CURDIR)/build/lib
 
 
 build:
@@ -12,7 +11,7 @@ sdist:
 	$(PYTHON) setup.py sdist
 
 doc-html: build
-	$(MAKE) -C doc html PYTHONPATH=$(BUILDLIB)
+	$(MAKE) -C doc html
 
 clean:
 	rm -rf build
