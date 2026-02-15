@@ -9,6 +9,7 @@ import setuptools
 from setuptools import setup
 import setuptools.command.build_py
 import distutils.command.sdist
+import distutils.dist
 import distutils.file_util
 from distutils import log
 from glob import glob
@@ -33,6 +34,16 @@ except (ImportError, LookupError):
         release = version = "UNKNOWN"
 
 docstring = __doc__
+
+
+# Enforcing of PEP 625 has been added in setuptools 69.3.0.  We don't
+# want this, we want to keep control on the name of the sdist
+# ourselves.  Disable it.
+def _fixed_get_fullname(self):
+    return "%s-%s" % (self.get_name(), self.get_version())
+
+distutils.dist.DistributionMetadata.get_fullname = _fixed_get_fullname
+
 
 class copy_file_mixin:
     """Distutils copy_file() mixin.
