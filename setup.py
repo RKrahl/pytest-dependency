@@ -12,7 +12,6 @@ import distutils.command.sdist
 import distutils.dist
 import distutils.file_util
 from distutils import log
-from glob import glob
 import os
 from pathlib import Path
 from stat import ST_ATIME, ST_MTIME, ST_MODE, S_IMODE
@@ -24,7 +23,8 @@ except (ImportError, AttributeError):
     cmdclass = dict()
 try:
     import gitprops
-    release = str(gitprops.get_last_release())
+    release = gitprops.get_last_release()
+    release = release and str(release)
     version = str(gitprops.get_version())
 except (ImportError, LookupError):
     try:
@@ -88,8 +88,8 @@ class meta(setuptools.Command):
     description = "generate meta files"
     user_options = []
     meta_template = '''
-release = "%(release)s"
-version = "%(version)s"
+release = %(release)r
+version = %(version)r
 '''
     def initialize_options(self):
         pass
@@ -118,8 +118,8 @@ class sdist(copy_file_mixin, distutils.command.sdist.sdist):
             "description": docstring.split("\n")[0],
             "long_description": docstring.split("\n", maxsplit=2)[2].strip(),
         }
-        for spec in glob("*.spec"):
-            with Path(spec).open('rt') as inf:
+        for spec in Path().glob("*.spec"):
+            with spec.open('rt') as inf:
                 with Path(self.dist_dir, spec).open('wt') as outf:
                     outf.write(string.Template(inf.read()).substitute(subst))
 
