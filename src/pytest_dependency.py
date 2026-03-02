@@ -25,6 +25,11 @@ class DependencyItemStatus:
         return "Status(%s)" % ", ".join(l)
 
     def addResult(self, rep):
+        existing = self.results[rep.when]
+        outcome = rep.outcome
+        if existing is not None and existing != 'passed':
+            #don't override a failng case
+            return
         self.results[rep.when] = rep.outcome
 
     def isSuccess(self):
