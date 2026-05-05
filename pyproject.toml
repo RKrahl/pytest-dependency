@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm"] 
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytest-dependency"
+description = "Manage dependencies of tests"
+authors = [{name = "Rolf Krahl", email = "rolf@rotkraut.de"}]
+readme = "README.rst"
+requires-python = ">=3.4"
+dependencies = [
+  "pytest>=3.7.0",
+]
+dynamic = ["version"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Framework :: Pytest",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Testing",
+]
+
+[project.urls]
+Homepage = "https://github.com/RKrahl/pytest-dependency"
+Documentation = "https://pytest-dependency.readthedocs.io"
+Source = "https://github.com/RKrahl/pytest-dependency.git"
+Download = "https://github.com/RKrahl/pytest-dependency/releases/"
+Changelog = "https://pytest-dependency.readthedocs.io/en/latest/changelog.html"
+
+[project.entry-points.pytest11]
+dependency = "pytest_dependency"

@@ -1,7 +1,5 @@
 """$DOC"""
 
-__version__ = "$VERSION"
-
 import logging
 import pytest
 
