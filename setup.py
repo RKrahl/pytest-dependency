@@ -5,13 +5,12 @@ some tests as dependent from other tests.  These tests will then be
 skipped if any of the dependencies did fail or has been skipped.
 """
 
+import logging
+import shutil
 import setuptools
 from setuptools import setup
 import setuptools.command.build_py
-import distutils.command.sdist
-import distutils.dist
-import distutils.file_util
-from distutils import log
+import setuptools.command.sdist
 import os
 from pathlib import Path
 from stat import ST_ATIME, ST_MTIME, ST_MODE, S_IMODE
@@ -30,19 +29,11 @@ except (ImportError, LookupError):
     try:
         from _meta import release, version
     except ImportError:
-        log.warn("warning: cannot determine version number")
-        release = version = "UNKNOWN"
+        logging.warning("warning: cannot determine version number")
+        # Fallback version for gitless source builds (PEP 440 compliance for modern setuptools)
+        release = version = "0.6.1"
 
-docstring = __doc__
-
-
-# Enforcing of PEP 625 has been added in setuptools 69.3.0.  We don't
-# want this, we want to keep control on the name of the sdist
-# ourselves.  Disable it.
-def _fixed_get_fullname(self):
-    return "%s-%s" % (self.get_name(), self.get_version())
-
-distutils.dist.DistributionMetadata.get_fullname = _fixed_get_fullname
+docstring = __doc__ or ""
 
 
 class copy_file_mixin:
@@ -55,7 +46,8 @@ class copy_file_mixin:
     Subst_srcs = {"src/pytest_dependency.py"}
     Subst = {'DOC': docstring, 'VERSION': version}
     def copy_file(self, infile, outfile,
-                  preserve_mode=1, preserve_times=1, link=None, level=1):
+                  preserve_mode=1, preserve_times=1, link=None, level=1,
+                  *args, **kwargs):
         try:
             dry_run = self.dry_run
         except AttributeError:
@@ -64,10 +56,10 @@ class copy_file_mixin:
             infile = Path(infile)
             outfile = Path(outfile)
             if outfile.name == infile.name:
-                log.info("copying (with substitutions) %s -> %s",
+                logging.info("copying (with substitutions) %s -> %s",
                          infile, outfile.parent)
             else:
-                log.info("copying (with substitutions) %s -> %s",
+                logging.info("copying (with substitutions) %s -> %s",
                          infile, outfile)
             if not dry_run:
                 st = infile.stat()
@@ -85,9 +77,8 @@ class copy_file_mixin:
         else:
             if dry_run:
                 return (outfile, 1)
-            return distutils.file_util.copy_file(infile, outfile,
-                                                 preserve_mode, preserve_times,
-                                                 not self.force, link)
+            shutil.copy2(infile, outfile)
+            return (str(outfile), 1)
 
 class meta(setuptools.Command):
     description = "generate meta files"
@@ -102,7 +93,7 @@ version = %(version)r
         pass
     def run(self):
         version = self.distribution.get_version()
-        log.info("version: %s", version)
+        logging.info("version: %s", version)
         values = {
             'release': release,
             'version': version,
@@ -113,7 +104,7 @@ version = %(version)r
 # Note: Do not use setuptools for making the source distribution,
 # rather use the good old distutils instead.
 # Rationale: https://rhodesmill.org/brandon/2009/eby-magic/
-class sdist(copy_file_mixin, distutils.command.sdist.sdist):
+class sdist(copy_file_mixin, setuptools.command.sdist.sdist):
     def run(self):
         self.run_command('meta')
         super().run()
