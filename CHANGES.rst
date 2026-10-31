@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Unreleased
+~~~~~~~~~~
+
++ Resolve class-scoped dependency names relative to nested test classes.
+
 
 .. _changes-0_6_1:
 

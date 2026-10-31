@@ -119,3 +119,57 @@ def test_class_default_name(ctestdir):
         .*::TestClass::test_a PASSED
         .*::test_b SKIPPED(?:\s+\(.*\))?
     """)
+
+
+def test_nested_class_scope_names(ctestdir):
+    """Class-scoped names are relative to the innermost collected class."""
+    ctestdir.makepyfile("""
+        import pytest
+        from pytest_dependency import depends
+
+        class TestOuter:
+            class TestFirst:
+                @pytest.mark.dependency()
+                def test_a(self):
+                    pass
+
+                @pytest.mark.dependency(depends=["test_a"], scope="class")
+                def test_b(self, request):
+                    depends(request, ["test_a"], scope="class")
+
+            class TestSecond:
+                @pytest.mark.dependency()
+                def test_a(self):
+                    assert False
+
+                @pytest.mark.dependency(depends=["test_a"], scope="class")
+                def test_b(self):
+                    pass
+
+        @pytest.mark.dependency(depends=["TestOuter::TestFirst::test_a"])
+        def test_module_reference():
+            pass
+    """)
+    result = ctestdir.runpytest("--verbose")
+    result.assert_outcomes(passed=3, failed=1, skipped=1)
+
+
+def test_nested_class_parametrized_scope_names(ctestdir):
+    """Parameter IDs containing double colons remain part of method names."""
+    ctestdir.makepyfile("""
+        import pytest
+
+        class TestOuter:
+            class TestInner:
+                @pytest.mark.dependency()
+                @pytest.mark.parametrize("value", [1], ids=["part::value"])
+                def test_a(self, value):
+                    pass
+
+                @pytest.mark.dependency(
+                    depends=["test_a[part::value]"], scope="class")
+                def test_b(self):
+                    pass
+    """)
+    result = ctestdir.runpytest()
+    result.assert_outcomes(passed=2)
