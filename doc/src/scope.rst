@@ -75,7 +75,9 @@ The class scope
 
 Test dependencies may also be in class scope.  This is only available
 for methods of a test class and restricts the dependencies to other
-test methods of the same class.
+test methods of the same class.  For nested test classes, names are
+relative to the innermost class: use ``test_a`` rather than
+``TestInner::test_a`` for a class-scoped dependency.
 
 Consider the following example:
 

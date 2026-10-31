@@ -69,7 +69,9 @@ class DependencyManager:
             elif self.scope == 'module':
                 name = nodeid.split("::", 1)[1]
             elif self.scope == 'class':
-                name = nodeid.split("::", 2)[2]
+                class_node = item.getparent(pytest.Class)
+                class_nodeid = class_node.nodeid.replace("::()::", "::")
+                name = nodeid[len(class_nodeid) + 2:]
             else:
                 raise RuntimeError("Internal error: invalid scope '%s'"
                                    % self.scope)
